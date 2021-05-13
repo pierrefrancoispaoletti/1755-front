@@ -2,7 +2,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Route, Switch } from "react-router";
-import { Divider } from "semantic-ui-react";
+import { Divider, Message, Transition } from "semantic-ui-react";
 import Categories from "../../pages/Categories";
 import Home from "../../pages/Home";
 import { $SERVER } from "../../_const/_const";
@@ -30,6 +30,14 @@ const App = () => {
   const [appMessage, setAppMessage] = useState({});
 
   useEffect(() => {
+    if (Object.keys(appMessage).length !== 0) {
+      setTimeout(() => {
+        setAppMessage({});
+      }, 5000);
+    }
+  }, [appMessage]);
+
+  useEffect(() => {
     axios.get(`${$SERVER}/api/products/allProducts`).then((response) => {
       if (response) {
         setProducts(response.data.data);
@@ -39,6 +47,20 @@ const App = () => {
 
   return (
     <div className="App">
+      <Transition
+        animation="jiggle"
+        duration={500}
+        visible={Object.keys(appMessage).length > 0}
+      >
+        <Message
+          style={{ position: "fixed", top:15, zIndex: "1000", width: "100%" }}
+          hidden={Object.keys(appMessage).length === 0}
+          success={appMessage.success ? true : false}
+          error={!appMessage.success ? true : false}
+        >
+          {appMessage.message}
+        </Message>
+      </Transition>
       <CategoriesSidebar
         sidebarVisible={sidebarVisible}
         setSidebarVisible={setSidebarVisible}
