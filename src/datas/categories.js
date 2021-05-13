@@ -5,7 +5,7 @@ const categories = [
     {
         name: "Les Vins",
         slug: "vins",
-        icon: <FontAwesomeIcon icon={faWineBottle} size="4x" style={{"--fa-primary-color": "#AF2127"}} />,
+        icon: <FontAwesomeIcon icon={faWineBottle} size="4x" style={{"--fa-primary-color": "#AF2127", "--fa-secondary-color": "grey"}} />,
         subCategories: [
             {
                 name: "Vins Rouges",
@@ -65,12 +65,12 @@ const categories = [
     {
         name: "Les Bières",
         slug: "bieres",
-        icon: <FontAwesomeIcon size="4x" icon={faBeer} style={{"--fa-primary-color": "#AF2127"}} />,
+        icon: <FontAwesomeIcon size="4x" icon={faBeer} style={{"--fa-primary-color": "#AF2127", "--fa-secondary-color": "grey"}} />,
     },
     {
         name: "Les Alcools",
         slug: "alcools",
-        icon: <FontAwesomeIcon size="4x" icon={faGlassWhiskeyRocks} style={{"--fa-primary-color": "#AF2127"}} />,
+        icon: <FontAwesomeIcon size="4x" icon={faGlassWhiskeyRocks} style={{"--fa-primary-color": "#AF2127", "--fa-secondary-color": "grey"}} />,
         subCategories: [
             {
                 name: "Les Classiques",
@@ -105,17 +105,17 @@ const categories = [
     {
         name: "Les Cocktails",
         slug: "cocktails",
-        icon: <FontAwesomeIcon size="4x" icon={faCocktail} style={{"--fa-primary-color": "#AF2127"}} />,
+        icon: <FontAwesomeIcon size="4x" icon={faCocktail} style={{"--fa-primary-color": "#AF2127", "--fa-secondary-color": "grey"}} />,
     },
     {
         name: "Les Softs",
         slug: "softs",
-        icon: <FontAwesomeIcon size="4x" icon={faGlassCitrus} style={{"--fa-primary-color": "#AF2127"}} />,
+        icon: <FontAwesomeIcon size="4x" icon={faGlassCitrus} style={{"--fa-primary-color": "#AF2127", "--fa-secondary-color": "grey"}} />,
     },
     {
         name: "La Cuisine",
         slug: "cuisine",
-        icon: <FontAwesomeIcon size="4x" icon={faHatChef} style={{"--fa-primary-color": "#AF2127"}} />,
+        icon: <FontAwesomeIcon size="4x" icon={faHatChef} style={{"--fa-primary-color": "#AF2127", "--fa-secondary-color": "grey"}} />,
     },
 ]
 

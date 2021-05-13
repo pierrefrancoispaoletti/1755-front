@@ -9,6 +9,7 @@ import { Button, Container, Divider, Header } from "semantic-ui-react";
 import AdminCrudButtons from "../../components/Small/AdminCrudButtons";
 import ProductItem from "../../components/Small/ProductItem";
 import ProductsFilteringMenu from "../../components/Small/ProductsFilteringMenu";
+import categories from "../../datas/categories";
 import { $SERVER } from "../../_const/_const";
 import "./categories.css";
 const Categories = ({
@@ -20,6 +21,8 @@ const Categories = ({
   setOpenLoginModal,
   setSelectedProduct,
   setOpenEditProductModal,
+  setOpenImageModal,
+  setOpenUpdateImageModal,
 }) => {
   const category = useParams();
   const { name, subCategories } = selectedCategory;
@@ -93,7 +96,7 @@ const Categories = ({
     } else {
       setOpenLoginModal(true);
     }
-  };
+  };  
 
   const handleChangeChoice = (product) => {
     let { image, ...newProduct } = product;
@@ -133,7 +136,12 @@ const Categories = ({
           </Button>
         </div>
       )}
-      <Header className="categories-header" as="h2">{name}</Header>
+      <Header className="categories-header" as="h2">
+        {name}
+      </Header>
+      <Header className="categories-subheader" as="h3">
+        {}
+      </Header>
       {subCategories && (
         <ProductsFilteringMenu
           subCategories={subCategories}
@@ -145,12 +153,12 @@ const Categories = ({
       <Divider />
       <div className="products">
         {filteredProducts
-          .sort((a, b) => a.choice || a.price - b.price)
+          .sort((a, b) => (a.choice === b.choice ? 0 : a.choice ? -1 : 1 ) || a.price - b.price)
+  
           .map((p) => (
             <>
               {user && (
                 <AdminCrudButtons
-                  key={p._id}
                   {...p}
                   product={p}
                   handleDeleteProduct={handleDeleteProduct}
@@ -158,13 +166,29 @@ const Categories = ({
                   handleChangeChoice={handleChangeChoice}
                   setSelectedProduct={setSelectedProduct}
                   setOpenEditProductModal={setOpenEditProductModal}
-
+                  setOpenUpdateImageModal={setOpenUpdateImageModal}
                 />
               )}
-              <ProductItem key={p._id} {...p} user={user} />
+              <ProductItem
+                key={p._id}
+                product={p}
+                {...p}
+                user={user}
+                setOpenImageModal={setOpenImageModal}
+                setSelectedProduct={setSelectedProduct}
+              />
             </>
           ))}
       </div>
+      <Divider />
+      {(subCategories && filteredProducts.length > 3) &&  (
+        <ProductsFilteringMenu
+          subCategories={subCategories}
+          activeMenu={activeMenu}
+          setActiveMenu={setActiveMenu}
+          setDropdownValue={setDropdownValue}
+        />
+      )}
     </Container>
   );
 };

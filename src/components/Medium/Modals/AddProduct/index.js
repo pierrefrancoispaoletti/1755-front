@@ -74,6 +74,7 @@ const AddProductModal = ({
     let formData = new FormData();
     formData.append("name", product.name);
     formData.append("description", product.description || "");
+    formData.append("region", product.region);
     formData.append("price", product.price);
     formData.append("type", product.type);
     formData.append("category", product.category);
@@ -239,7 +240,13 @@ const AddProductModal = ({
           )}
           <Form.Field>
             <label>Choix du Patron ?</label>
-            <Radio toggle checked={product.choice} onChange={() => setProduct({...product, choice: !product.choice})} />
+            <Radio
+              toggle
+              checked={product.choice}
+              onChange={() =>
+                setProduct({ ...product, choice: !product.choice })
+              }
+            />
           </Form.Field>
           <Form.Field>
             <input

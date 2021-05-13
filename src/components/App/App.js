@@ -8,7 +8,9 @@ import Home from "../../pages/Home";
 import { $SERVER } from "../../_const/_const";
 import AddProductModal from "../Medium/Modals/AddProduct";
 import EditProductModal from "../Medium/Modals/EditProduct";
+import ImageModal from "../Medium/Modals/ImageModal";
 import Login from "../Medium/Modals/Login";
+import UpdateImageModal from "../Medium/Modals/UpdateImageModal";
 import CategoriesSidebar from "../Small/CategoriesSidebar";
 import Copyright from "../Small/Copyright";
 import TopAppBar from "../Small/TopAppBar";
@@ -21,6 +23,8 @@ const App = () => {
   const [openLoginModal, setOpenLoginModal] = useState(false);
   const [openAddProductModal, setOpenAddProductModal] = useState(false);
   const [openEditProductModal, setOpenEditProductModal] = useState(false);
+  const [openImageModal, setOpenImageModal] = useState(false);
+  const [openUpdateImageModal, setOpenUpdateImageModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState({});
   const [products, setProducts] = useState([]);
   const [appMessage, setAppMessage] = useState({});
@@ -73,15 +77,30 @@ const App = () => {
               openEditProductModal={openEditProductModal}
               setProducts={setProducts}
             />
+            <UpdateImageModal
+              openUpdateImageModal={openUpdateImageModal}
+              setOpenUpdateImageModal={setOpenUpdateImageModal}
+              setProducts={setProducts}
+              product={selectedProduct}
+              setOpenLoginModal={setOpenLoginModal}
+              setAppMessage={setAppMessage}
+            />
+            <ImageModal
+              openImageModal={openImageModal}
+              setOpenImageModal={setOpenImageModal}
+              product={selectedProduct}
+            />
             <Categories
               user={user}
               selectedCategory={selectedCategory}
-              setOpenLoginModal={setOpenLoginModal}
               products={products}
               setProducts={setProducts}
+              setOpenLoginModal={setOpenLoginModal}
               setOpenAddProductModal={setOpenAddProductModal}
-              setSelectedProduct={setSelectedProduct}
+              setOpenImageModal={setOpenImageModal}
+              setOpenUpdateImageModal={setOpenUpdateImageModal}
               setOpenEditProductModal={setOpenEditProductModal}
+              setSelectedProduct={setSelectedProduct}
             />
           </Route>
         </Switch>
