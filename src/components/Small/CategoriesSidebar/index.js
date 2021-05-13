@@ -27,8 +27,7 @@ const CategoriesSidebar = ({ setSelectedCategory, sidebarVisible, setSidebarVisi
               </Link>
             ))}
           </Sidebar>
-
-          <Sidebar.Pusher>
+          <Sidebar.Pusher dimmed={sidebarVisible}>
             <Segment basic>{children}</Segment>
           </Sidebar.Pusher>
         </Sidebar.Pushable>

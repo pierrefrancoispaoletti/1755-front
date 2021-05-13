@@ -150,6 +150,7 @@ const Categories = ({
             <>
               {user && (
                 <AdminCrudButtons
+                  key={p._id}
                   {...p}
                   product={p}
                   handleDeleteProduct={handleDeleteProduct}

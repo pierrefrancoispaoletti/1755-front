@@ -8,6 +8,7 @@ const ProductsFilteringMenu = ({subCategories, activeMenu, setActiveMenu, setDro
           <>
             {subCategory.subCat ? (
               <Dropdown
+                key={subCategory.slug}
                 className="categories-dropdown"
                 item
                 icon={subCategory.icon}
