@@ -9,7 +9,7 @@ const TopAppBar = ({ setSidebarVisible, setOpenLoginModal, user }) => {
     <div className="topappbar">
       <Link to="/">
         <div className="topappbar-image">
-          <img src="/assets/images/1755small.png" alt="logo 1755" />
+          <img src="./assets/images/1755small.png" alt="logo 1755" />
         </div>
       </Link>
       <div className="topappbar-icons">

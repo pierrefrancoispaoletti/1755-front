@@ -21,7 +21,7 @@ const CategoriesSidebar = ({ setSelectedCategory, sidebarVisible, setSidebarVisi
              <Link to={`/`}>
                 <Menu.Item className="categories-sidebar-item">
                   <Menu.Header>
-                    <img src="/assets/images/1755small.png" alt=""/>
+                    <img src="./assets/images/1755small.png" alt=""/>
                   </Menu.Header>
                 </Menu.Item>
               </Link>
