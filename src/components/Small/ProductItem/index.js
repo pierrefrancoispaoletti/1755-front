@@ -24,7 +24,7 @@ const ProductItem = ({
   setSelectedProduct,
 }) => {
   const userLang = navigator.language || navigator.userLanguage;
-  console.log(userLang);
+
   const cacheProvider = {
     get: (language, key) =>
       ((JSON.parse(localStorage.getItem("translations")) || {})[key] || {})[
@@ -92,7 +92,7 @@ const ProductItem = ({
         <Translator
           cacheProvider={cacheProvider}
           from="fr"
-          to={userLang}
+          to={userLang.substr(0,2)}
           googleApiKey={GOOGLE_API_KEY}
         >
           <p className="description">
