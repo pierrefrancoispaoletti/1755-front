@@ -9,7 +9,6 @@ import { Button, Container, Divider, Header } from "semantic-ui-react";
 import AdminCrudButtons from "../../components/Small/AdminCrudButtons";
 import ProductItem from "../../components/Small/ProductItem";
 import ProductsFilteringMenu from "../../components/Small/ProductsFilteringMenu";
-import categories from "../../datas/categories";
 import { $SERVER } from "../../_const/_const";
 import "./categories.css";
 const Categories = ({
@@ -32,22 +31,33 @@ const Categories = ({
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    setFilteredProducts([])
     setFilteredProducts(
-      products.filter((p) => p.type === selectedCategory.slug)
+      products?.filter((p) => p.type === selectedCategory.slug)
     );
-  }, [selectedCategory]);
+  }, [category]);
 
   useEffect(() => {
-    setFilteredProducts(products.filter((p) => p.category === activeMenu));
-  }, [activeMenu]);
-
-  useEffect(() => {
-    setFilteredProducts(products.filter((p) => p.category === activeMenu));
+    setFilteredProducts([])
+    setFilteredProducts(
+      products?.filter((p) => p.type === category.categorie)
+    );
   }, [products]);
 
   useEffect(() => {
+    setFilteredProducts([])
+    setFilteredProducts(products?.filter((p) => p.category === activeMenu));
+  }, [activeMenu]);
+
+  useEffect(() => {
+    setFilteredProducts([])
+    setFilteredProducts(products?.filter((p) => p.category === activeMenu));
+  }, [products]);
+
+  useEffect(() => {
+    setFilteredProducts([])
     setFilteredProducts(
-      products.filter((p) => p.subCategory === dropdownValue)
+      products?.filter((p) => p.subCategory === dropdownValue)
     );
   }, [dropdownValue]);
 
@@ -96,7 +106,7 @@ const Categories = ({
     } else {
       setOpenLoginModal(true);
     }
-  };  
+  };
 
   const handleChangeChoice = (product) => {
     let { image, ...newProduct } = product;
@@ -153,8 +163,12 @@ const Categories = ({
       <Divider />
       <div className="products">
         {filteredProducts
-          .sort((a, b) => (a.choice === b.choice ? 0 : a.choice ? -1 : 1 ) || a.price - b.price)
-  
+          ?.sort(
+            (a, b) =>
+              (a.choice === b.choice ? 0 : a.choice ? -1 : 1) ||
+              a.price - b.price
+          )
+
           .map((p) => (
             <>
               {user && (
@@ -181,7 +195,7 @@ const Categories = ({
           ))}
       </div>
       <Divider />
-      {(subCategories && filteredProducts.length > 3) &&  (
+      {subCategories && filteredProducts.length > 3 && (
         <ProductsFilteringMenu
           subCategories={subCategories}
           activeMenu={activeMenu}
