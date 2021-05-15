@@ -4,7 +4,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "semantic-ui-react";
 import "./topappbar.css";
-const TopAppBar = ({ setSidebarVisible, setOpenLoginModal, user }) => {
+const TopAppBar = ({ setSidebarVisible, setOpenLoginModal, user, loading }) => {
   return (
     <div className="topappbar">
       <Link to="/">
@@ -13,10 +13,10 @@ const TopAppBar = ({ setSidebarVisible, setOpenLoginModal, user }) => {
         </div>
       </Link>
       <div className="topappbar-icons">
-        <Button icon circular color={user ? "green" : "grey"} onClick={() => setOpenLoginModal(true)}>
+        <Button disabled={loading} loading={loading} icon circular color={user ? "green" : "grey"} onClick={() => setOpenLoginModal(true)}>
           <FontAwesomeIcon size="3x" icon={faUser} />
         </Button>
-        <Button icon circular onClick={() => setSidebarVisible(true)}>
+        <Button disabled={loading} loading={loading} icon circular onClick={() => setSidebarVisible(true)}>
           <FontAwesomeIcon size="3x" icon={faBars} />
         </Button>
       </div>

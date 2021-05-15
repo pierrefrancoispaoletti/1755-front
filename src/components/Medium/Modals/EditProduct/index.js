@@ -41,7 +41,6 @@ const EditProductModal = ({
 
   const token = localStorage.getItem("token-1755");
 
-
   const onChangeTypeRadio = (value) => {
     let selectedCheckboxes = product.type;
 
@@ -101,140 +100,158 @@ const EditProductModal = ({
 
   return (
     <Modal
-    onClose={() => setOpenEditProductModal(false)}
-    onOpen={() => setOpenEditProductModal(true)}
-    open={openEditProductModal}
-    size="small"
-  >
-    <Header icon>
-      <Icon name="edit" />
-      Editer {p.name}
-    </Header>
-    <Modal.Content>
-      <Form onSubmit={handleSubmit} id="editProduct-form">
-        <Form.Field>
-          <label>Nom du Produit</label>
-          <input
-            value={editedProduct.name}
-            name="name"
-            type="text"
-            onChange={(e) => changeProduct(e)}
-          />
-        </Form.Field>
-        <Form.Field>
-          <label>Description</label>
-          <textarea
-            value={editedProduct.description}
-            name="description"
-            rows="5"
-            cols="33"
-            onChange={(e) => changeProduct(e)}
-          />
-        </Form.Field>
-        <Form.Field>
-          <label>Région</label>
-          <input
-            value={editedProduct.region}
-            name="region"
-            type="text"
-            onChange={(e) => changeProduct(e)}
-          />
-        </Form.Field>
-        <Form.Field>
-          <label>Prix</label>
-          <input
-            min={1}
-            step={0.1}
-            value={editedProduct.price}
-            name="price"
-            type="number"
-            onChange={(e) => changeProduct(e)}
-          />
-        </Form.Field>
-        <Form.Field>
-          <label>Type de Produit</label>
-          {categories.map(
-            (cat) =>
-              cat.slug && (
-                <Radio
-                  style={{ padding: 5 }}
-                  key={cat.slug}
-                  label={cat.name}
-                  name={cat.slug}
-                  value={cat.slug}
-                  onChange={() => onChangeTypeRadio(cat.slug)}
-                  checked={editedProduct.type === cat.slug}
-                />
-              )
-          )}
-        </Form.Field>
-        {(editedProduct.type === "vins" || editedProduct.type === "alcools") && (
+      onClose={() => setOpenEditProductModal(false)}
+      onOpen={() => setOpenEditProductModal(true)}
+      open={openEditProductModal}
+      size="small"
+    >
+      <Header icon>
+        <Icon name="edit" />
+        Editer {p.name}
+      </Header>
+      <Modal.Content>
+        <Form onSubmit={handleSubmit} id="editProduct-form">
           <Form.Field>
-            <label>Categorie de Produit</label>
+            <label>Nom du Produit</label>
+            <input
+              value={editedProduct.name}
+              name="name"
+              type="text"
+              onChange={(e) => changeProduct(e)}
+            />
+          </Form.Field>
+          <Form.Field>
+            <label>Description</label>
+            <textarea
+              value={editedProduct.description}
+              name="description"
+              rows="5"
+              cols="33"
+              onChange={(e) => changeProduct(e)}
+            />
+          </Form.Field>
+          <Form.Field>
+            <label>Région</label>
+            <input
+              value={editedProduct.region}
+              name="region"
+              type="text"
+              onChange={(e) => changeProduct(e)}
+            />
+          </Form.Field>
+          <Form.Field>
+            <label>Prix</label>
+            <input
+              min={1}
+              step={0.1}
+              value={editedProduct.price}
+              name="price"
+              type="number"
+              onChange={(e) => changeProduct(e)}
+            />
+          </Form.Field>
+          <Form.Field>
+            <label>Type de Produit</label>
             {categories.map(
               (cat) =>
-                cat["slug"] === editedProduct.type &&
-                cat.subCategories?.map((subC) => (
+                cat.slug && (
                   <Radio
                     style={{ padding: 5 }}
-                    key={subC.slug}
-                    label={subC.name}
-                    name={subC.slug}
-                    value={subC.slug}
-                    onChange={() => onChangeCategoryRadio(subC.slug)}
-                    checked={editedProduct.category === subC.slug}
+                    key={cat.slug}
+                    label={cat.name}
+                    name={cat.slug}
+                    value={cat.slug}
+                    onChange={() => onChangeTypeRadio(cat.slug)}
+                    checked={editedProduct.type === cat.slug}
                   />
-                ))
-            )}
-          </Form.Field>
-        )}
-        {(editedProduct.category === "rouges" ||
-          editedProduct.category === "premiums") && (
-          <Form.Field>
-            <label>Sous Catégorie de Produit</label>
-            {categories.map(
-              (cat) =>
-                cat["slug"] === editedProduct.type &&
-                cat.subCategories?.map(
-                  (subC) =>
-                    subC["slug"] === editedProduct.category &&
-                    subC.subCat.map((sC) => (
-                      <Radio
-                        style={{ padding: 5 }}
-                        key={sC.slug}
-                        label={sC.name}
-                        name={sC.slug}
-                        value={sC.slug}
-                        onChange={() => onChangeSubCategoryRadio(sC.slug)}
-                        checked={editedProduct.subCategory === sC.slug}
-                      />
-                    ))
                 )
             )}
           </Form.Field>
-        )}
-        <Form.Field>
-          <label>Choix du Patron ?</label>
-          <Radio toggle checked={editedProduct.choice} onChange={() => setEditedProduct({...editedProduct, choice: !editedProduct.choice})} />
-        </Form.Field>
-      </Form>
-    </Modal.Content>
-    <Modal.Actions>
-      <Button color="purple" type="submit" form="editProduct-form" inverted>
-        <Icon name="edit" /> Editer
-      </Button>
-      <Button
-        loading={loading}
-        color="red"
-        type="submit"
-        form="editProduct-form"
-        inverted
-        onClick={() => setOpenEditProductModal(false)}
-      >
-        <Icon name="remove" /> Annuler
-      </Button>
-    </Modal.Actions>
-  </Modal>
+          {(editedProduct.type === "vins" ||
+            editedProduct.type === "alcools") && (
+            <Form.Field>
+              <label>Categorie de Produit</label>
+              {categories.map(
+                (cat) =>
+                  cat["slug"] === editedProduct.type &&
+                  cat.subCategories?.map((subC) => (
+                    <Radio
+                      style={{ padding: 5 }}
+                      key={subC.slug}
+                      label={subC.name}
+                      name={subC.slug}
+                      value={subC.slug}
+                      onChange={() => onChangeCategoryRadio(subC.slug)}
+                      checked={editedProduct.category === subC.slug}
+                    />
+                  ))
+              )}
+            </Form.Field>
+          )}
+          {(editedProduct.category === "rouges" ||
+            editedProduct.category === "premiums") && (
+            <Form.Field>
+              <label>Sous Catégorie de Produit</label>
+              {categories.map(
+                (cat) =>
+                  cat["slug"] === editedProduct.type &&
+                  cat.subCategories?.map(
+                    (subC) =>
+                      subC["slug"] === editedProduct.category &&
+                      subC.subCat.map((sC) => (
+                        <Radio
+                          style={{ padding: 5 }}
+                          key={sC.slug}
+                          label={sC.name}
+                          name={sC.slug}
+                          value={sC.slug}
+                          onChange={() => onChangeSubCategoryRadio(sC.slug)}
+                          checked={editedProduct.subCategory === sC.slug}
+                        />
+                      ))
+                  )
+              )}
+            </Form.Field>
+          )}
+          <Form.Field>
+            <label>Choix du Patron ?</label>
+            <Radio
+              toggle
+              checked={editedProduct.choice}
+              onChange={() =>
+                setEditedProduct({
+                  ...editedProduct,
+                  choice: !editedProduct.choice,
+                })
+              }
+            />
+          </Form.Field>
+        </Form>
+      </Modal.Content>
+      <Modal.Actions>
+        <Button
+          disabled={loading}
+          loading={loading}
+          color="purple"
+          type="submit"
+          form="editProduct-form"
+          inverted
+        >
+          <Icon name="edit" /> Editer
+        </Button>
+        <Button
+          disabled={loading}
+          loading={loading}
+          color="red"
+          type="submit"
+          form="editProduct-form"
+          inverted
+          onClick={() => setOpenEditProductModal(false)}
+        >
+          <Icon name="remove" /> Annuler
+        </Button>
+      </Modal.Actions>
+    </Modal>
   );
 };
 

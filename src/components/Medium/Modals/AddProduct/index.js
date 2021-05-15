@@ -74,14 +74,14 @@ const AddProductModal = ({
     let formData = new FormData();
     formData.append("name", product.name);
     formData.append("description", product.description || "");
-    formData.append("region", product.region || "");
+    formData.append("region", product.region || "");
     formData.append("price", product.price);
     formData.append("type", product.type);
-    formData.append("category", product.category || "");
+    formData.append("category", product.category || "");
     formData.append("subCategory", product.subCategory || "");
     formData.append("choice", product.choice || false);
     formData.append("visible", product.visible || true);
-    formData.append("image", product.image || "");
+    formData.append("image", product.image || "");
     if (token) {
       setLoading(true);
       axios({
@@ -259,6 +259,8 @@ const AddProductModal = ({
               onChange={(e) => setImage(e)}
             />
             <Button
+              disabled={loading}
+              loading={loading}
               type="button"
               onClick={() => inputFile.current.click()}
               color="orange"
@@ -270,10 +272,18 @@ const AddProductModal = ({
         </Form>
       </Modal.Content>
       <Modal.Actions>
-        <Button color="green" type="submit" form="addProduct-form" inverted>
+        <Button
+          disabled={loading}
+          loading={loading}
+          color="green"
+          type="submit"
+          form="addProduct-form"
+          inverted
+        >
           <Icon name="add" /> Ajouter
         </Button>
         <Button
+          disabled={loading}
           loading={loading}
           color="red"
           type="submit"

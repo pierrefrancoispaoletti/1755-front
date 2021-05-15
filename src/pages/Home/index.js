@@ -1,23 +1,137 @@
-import React from "react";
-import { Container, Header } from "semantic-ui-react";
-import "./home.css"
+import {
+  faEdit,
+  faPlus,
+  faThumbsUp,
+  faTrashAlt,
+} from "@fortawesome/pro-duotone-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { Button, Container, Header } from "semantic-ui-react";
+import { $SERVER } from "../../_const/_const";
+import "./home.css";
 
-const Home = () => {
+const Home = ({
+  user,
+  event,
+  setEvent,
+  setOpenAddEventModal,
+  setOpenEditEventModal,
+  setOpenLoginModal,
+}) => {
+  const [loading, setLoading] = useState(false);
+  const token = localStorage.getItem("token-1755");
+  const [like, setLike] = useState(0);
+
+  useEffect(() => {
+    if (event && Object.keys(event).length > 0) setLike(event.like);
+  }, []);
+
+  const handleDeleteEvent = (eventId) => {
+    if (token) {
+      setLoading(true);
+      axios({
+        method: "delete",
+        url: `${$SERVER}/api/events/deleteEvent`,
+        data: {
+          eventId,
+        },
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      })
+        .then((response) => setEvent({}))
+        .catch((error) => console.log(error))
+        .finally(() => setLoading(false));
+    } else {
+      setOpenLoginModal(true);
+    }
+  };
   return (
-    <Container>
-      <Header className="home-header" as="h1">Bienvenue au 1755...</Header>
-
-      <Container text className="home-presentation">
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eum aut odit
-          iure hic laboriosam molestias saepe consequatur possimus at doloremque
-          laudantium recusandae cum earum, tenetur incidunt veritatis fuga dicta
-          numquam qui id officiis sit nemo? Sapiente, numquam ab. Molestiae
-          quidem dolores, alias iste voluptatibus maxime impedit consectetur sed
-          eum natus.
-        </p>
-        <span>Christophe</span>
-      </Container>
+    <Container className="home">
+      {user && (
+        <div className="home-addbutton">
+          {event && Object.keys(event).length === 0 && (
+            <Button
+              loading={loading}
+              disabled={loading}
+              color="green"
+              circular
+              size="medium"
+              onClick={() => setOpenAddEventModal(true)}
+            >
+              <FontAwesomeIcon icon={faPlus} size="2x" />
+            </Button>
+          )}
+          {event && Object.keys(event).length > 0 && (
+            <>
+              <Button
+                loading={loading}
+                disabled={loading}
+                color="purple"
+                circular
+                size="medium"
+                onClick={() => setOpenEditEventModal(true)}
+              >
+                <FontAwesomeIcon icon={faEdit} size="2x" />
+              </Button>
+              <Button
+                loading={loading}
+                disabled={loading}
+                color="red"
+                circular
+                size="medium"
+                onClick={() => handleDeleteEvent(event._id)}
+              >
+                <FontAwesomeIcon icon={faTrashAlt} size="2x" />
+              </Button>
+            </>
+          )}
+        </div>
+      )}
+      {event && Object.keys(event).length > 0 && (
+        <>
+          <Header className="home-header" as="h1">
+            {event.name}
+          </Header>
+          <Container text className="home-presentation">
+            {event.date && (
+              <p>
+                {`Le :
+                ${new Date(event.date).toLocaleDateString("fr-FR", {
+                  weekday: "long",
+                  day: "numeric",
+                  month: "long",
+                })}`}
+              </p>
+            )}
+            <p>{event.description}</p>
+            <div className="home-like-button">
+              <Button
+                icon
+                circular
+                color="facebook"
+                onClick={() => setLike(like + 1)}
+              >
+                <FontAwesomeIcon
+                  size="2x"
+                  icon={faThumbsUp}
+                  style={{
+                    "--fa-secondary-color": "white",
+                    "--fa-secondary-opacity": 1,
+                  }}
+                />
+              </Button>
+              <span>{like}</span>
+            </div>
+          </Container>
+        </>
+      )}
+      {event && Object.keys(event).length === 0 && (
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <img height="300px" src="./assets/images/1755medium.png" alt="" />
+        </div>
+      )}
     </Container>
   );
 };

@@ -1,3 +1,9 @@
+.home-addbutton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .home-header {
   font-family: "Dancing Script", cursive !important;
   text-align: center;
@@ -23,10 +29,14 @@
     color: white !important;
 }
 
-.home-presentation span {
-    font-family: "Dancing Script", cursive !important;
-    font-weight: 700;
-    font-size: 1.8em;
-    display: flex;
-    justify-content: flex-end;
+.home-like-button {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.home-like-button span {
+  border-radius: 1px solid white;
+  background:#2B2B29 ;
+  font-size: 1.5em;
 }

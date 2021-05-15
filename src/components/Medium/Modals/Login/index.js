@@ -79,7 +79,7 @@ const Login = ({
           loading={loading}
           type="submit"
           form="auth-form"
-          disabled={email.length === 0 || password.length === 0}
+          disabled={email.length === 0 || password.length === 0 || loading}
           inverted
         >
           <Icon name="checkmark" /> Connexion

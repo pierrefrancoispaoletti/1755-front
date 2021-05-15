@@ -6,6 +6,7 @@ import { Divider, Message, Transition } from "semantic-ui-react";
 import Categories from "../../pages/Categories";
 import Home from "../../pages/Home";
 import { $SERVER } from "../../_const/_const";
+import AddEventModal from "../Medium/Modals/AddEvent";
 import AddProductModal from "../Medium/Modals/AddProduct";
 import EditProductModal from "../Medium/Modals/EditProduct";
 import ImageModal from "../Medium/Modals/ImageModal";
@@ -13,6 +14,7 @@ import Login from "../Medium/Modals/Login";
 import UpdateImageModal from "../Medium/Modals/UpdateImageModal";
 import CategoriesSidebar from "../Small/CategoriesSidebar";
 import Copyright from "../Small/Copyright";
+import Loader from "../Small/Loader";
 import TopAppBar from "../Small/TopAppBar";
 import "./App.css";
 
@@ -25,9 +27,14 @@ const App = () => {
   const [openEditProductModal, setOpenEditProductModal] = useState(false);
   const [openImageModal, setOpenImageModal] = useState(false);
   const [openUpdateImageModal, setOpenUpdateImageModal] = useState(false);
+  const [openAddEventModal, setOpenAddEventModal] = useState(false);
+  const [openEditEventModal, setOpenEditEventModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState({});
   const [products, setProducts] = useState([]);
   const [appMessage, setAppMessage] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [event, setEvent] = useState({});
+  const [eventLoading, setEventLoading] = useState(false);
 
   useEffect(() => {
     if (Object.keys(appMessage).length !== 0) {
@@ -36,99 +43,149 @@ const App = () => {
       }, 5000);
     }
   }, [appMessage]);
-
   useEffect(() => {
-    axios.get(`${$SERVER}/api/products/allProducts`).then((response) => {
-      if (response) {
-        setProducts(response.data.data);
-      }
-    });
+    setLoading(true);
+    axios
+      .get(`${$SERVER}/api/products/allProducts`)
+      .then((response) => {
+        if (response) {
+          setProducts(response.data.data);
+        }
+      })
+      .catch((error) =>
+        setAppMessage({
+          success: false,
+          message: "Il y a eu un probléme, veuillez recharger la page",
+        })
+      )
+      .finally(() => setLoading(false));
+
+      setEventLoading(true);
+      axios
+      .get(`${$SERVER}/api/events/getEvent`)
+      .then((response) => {
+        if(response) {
+          setEvent(response.data.data)
+        }
+      })
+      .catch((error) => {
+        setAppMessage({
+          success: false,
+          message: "Il y a eu un probléme, veuillez recharger la page",
+        })
+      })
+      .finally(() => setEventLoading(false))
   }, []);
 
   return (
-    <div className="App">
-      <Transition
-        animation="jiggle"
-        duration={500}
-        visible={Object.keys(appMessage).length > 0}
-      >
-        <Message
-          style={{ position: "fixed", top:15, zIndex: "1000", width: "100%" }}
-          hidden={Object.keys(appMessage).length === 0}
-          success={appMessage.success ? true : false}
-          error={!appMessage.success ? true : false}
-        >
-          {appMessage.message}
-        </Message>
-      </Transition>
-      <CategoriesSidebar
-        sidebarVisible={sidebarVisible}
-        setSidebarVisible={setSidebarVisible}
-        setSelectedCategory={setSelectedCategory}
-      >
-        <TopAppBar
-          user={user}
-          setSidebarVisible={setSidebarVisible}
-          setOpenLoginModal={setOpenLoginModal}
-        />
-        <Divider hidden />
-        <Login
-          setUser={setUser}
-          openLoginModal={openLoginModal}
-          setOpenLoginModal={setOpenLoginModal}
-          setAppMessage={setAppMessage}
-        />
-        <Switch>
-          <Route exact path="/">
-            <Home />
-          </Route>
-          <Route path="/categories/:categorie">
-            <AddProductModal
-              setProducts={setProducts}
-              selectedCategory={selectedCategory}
-              setOpenLoginModal={setOpenLoginModal}
-              setAppMessage={setAppMessage}
-              openAddProductModal={openAddProductModal}
-              setOpenAddProductModal={setOpenAddProductModal}
-            />
-            <EditProductModal
-              product={selectedProduct}
-              setOpenEditProductModal={setOpenEditProductModal}
-              setAppMessage={setAppMessage}
-              setOpenLoginModal={setOpenLoginModal}
-              openEditProductModal={openEditProductModal}
-              setProducts={setProducts}
-            />
-            <UpdateImageModal
-              openUpdateImageModal={openUpdateImageModal}
-              setOpenUpdateImageModal={setOpenUpdateImageModal}
-              setProducts={setProducts}
-              product={selectedProduct}
-              setOpenLoginModal={setOpenLoginModal}
-              setAppMessage={setAppMessage}
-            />
-            <ImageModal
-              openImageModal={openImageModal}
-              setOpenImageModal={setOpenImageModal}
-              product={selectedProduct}
-            />
-            <Categories
+    <div className="App" style={{ position: "relative" }}>
+      {loading && <Loader />}
+      {!loading && (
+        <>
+          <Transition
+            animation="jiggle"
+            duration={500}
+            visible={Object.keys(appMessage).length > 0}
+          >
+            <Message
+              style={{
+                position: "fixed",
+                top: 15,
+                zIndex: "1000",
+                width: "100%",
+              }}
+              hidden={Object.keys(appMessage).length === 0}
+              success={appMessage.success ? true : false}
+              error={!appMessage.success ? true : false}
+            >
+              {appMessage.message}
+            </Message>
+          </Transition>
+          <CategoriesSidebar
+            sidebarVisible={sidebarVisible}
+            setSidebarVisible={setSidebarVisible}
+            setSelectedCategory={setSelectedCategory}
+          >
+            <TopAppBar
+              loading={loading}
               user={user}
-              selectedCategory={selectedCategory}
-              products={products}
-              setProducts={setProducts}
+              setSidebarVisible={setSidebarVisible}
               setOpenLoginModal={setOpenLoginModal}
-              setOpenAddProductModal={setOpenAddProductModal}
-              setOpenImageModal={setOpenImageModal}
-              setOpenUpdateImageModal={setOpenUpdateImageModal}
-              setOpenEditProductModal={setOpenEditProductModal}
-              setSelectedProduct={setSelectedProduct}
             />
-          </Route>
-        </Switch>
-        <Divider />
-        <Copyright />
-      </CategoriesSidebar>
+            <Divider hidden />
+            <Login
+              setUser={setUser}
+              openLoginModal={openLoginModal}
+              setOpenLoginModal={setOpenLoginModal}
+              setAppMessage={setAppMessage}
+            />
+            <Switch>
+              <Route exact path="/">
+                <AddEventModal
+                  setEvent={setEvent}
+                  setAppMessage={setAppMessage}
+                  setOpenLoginModal={setOpenLoginModal}
+                  openAddEventModal={openAddEventModal}
+                  setOpenAddEventModal={setOpenAddEventModal}
+                />
+                <Home
+                  user={user}
+                  event={event}
+                  setEvent={setEvent}
+                  setOpenLoginModal={setOpenLoginModal}
+                  setOpenAddEventModal={setOpenAddEventModal}
+                  setOpenEditEventModal={setOpenEditEventModal}
+                />
+              </Route>
+              <Route path="/categories/:categorie">
+                <AddProductModal
+                  setProducts={setProducts}
+                  selectedCategory={selectedCategory}
+                  setOpenLoginModal={setOpenLoginModal}
+                  setAppMessage={setAppMessage}
+                  openAddProductModal={openAddProductModal}
+                  setOpenAddProductModal={setOpenAddProductModal}
+                />
+                <EditProductModal
+                  product={selectedProduct}
+                  setOpenEditProductModal={setOpenEditProductModal}
+                  setAppMessage={setAppMessage}
+                  setOpenLoginModal={setOpenLoginModal}
+                  openEditProductModal={openEditProductModal}
+                  setProducts={setProducts}
+                />
+                <UpdateImageModal
+                  openUpdateImageModal={openUpdateImageModal}
+                  setOpenUpdateImageModal={setOpenUpdateImageModal}
+                  setProducts={setProducts}
+                  product={selectedProduct}
+                  setOpenLoginModal={setOpenLoginModal}
+                  setAppMessage={setAppMessage}
+                />
+                <ImageModal
+                  openImageModal={openImageModal}
+                  setOpenImageModal={setOpenImageModal}
+                  product={selectedProduct}
+                />
+                <Categories
+                  user={user}
+                  selectedCategory={selectedCategory}
+                  products={products}
+                  setProducts={setProducts}
+                  setOpenLoginModal={setOpenLoginModal}
+                  setOpenAddProductModal={setOpenAddProductModal}
+                  setOpenImageModal={setOpenImageModal}
+                  setOpenUpdateImageModal={setOpenUpdateImageModal}
+                  setOpenEditProductModal={setOpenEditProductModal}
+                  setSelectedProduct={setSelectedProduct}
+                />
+              </Route>
+            </Switch>
+            <Divider />
+            <Copyright />
+          </CategoriesSidebar>
+        </>
+      )}
     </div>
   );
 };

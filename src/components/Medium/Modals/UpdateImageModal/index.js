@@ -157,6 +157,8 @@ const UpdateImageModal = ({
               onChange={(e) => setImage(e.target.files[0])}
             />
             <Button
+              disabled={loading}
+              loading={loading}
               type="button"
               onClick={() => updateFile.current.click()}
               color="orange"
