@@ -27,6 +27,16 @@ const Home = ({
     if (event && Object.keys(event).length > 0) setLike(event.like);
   }, []);
 
+  const arrayBufferToBase64 = (buffer) => {
+    let binary = "";
+    const bytes = [].slice.call(new Uint8Array(buffer));
+    bytes.forEach((b) => (binary += String.fromCharCode(b)));
+    return window.btoa(binary);
+  };
+
+  const base64Flag = `data:${event.image?.contentType};base64,`;
+  const imageStr = arrayBufferToBase64(event.image?.data?.data);
+
   const handleDeleteEvent = (eventId) => {
     if (token) {
       setLoading(true);
@@ -65,7 +75,7 @@ const Home = ({
           )}
           {event && Object.keys(event).length > 0 && (
             <>
-              <Button
+              {/* <Button
                 loading={loading}
                 disabled={loading}
                 color="purple"
@@ -74,7 +84,7 @@ const Home = ({
                 onClick={() => setOpenEditEventModal(true)}
               >
                 <FontAwesomeIcon icon={faEdit} size="2x" />
-              </Button>
+              </Button> */}
               <Button
                 loading={loading}
                 disabled={loading}
@@ -95,6 +105,15 @@ const Home = ({
             {event.name}
           </Header>
           <Container text className="home-presentation">
+            {event.image && (
+              <div>
+                <img
+                  style={{ width: "100%" }}
+                  src={base64Flag + imageStr}
+                  alt={event.name}
+                />
+              </div>
+            )}
             {event.date && (
               <p>
                 {`Le :
@@ -106,7 +125,7 @@ const Home = ({
               </p>
             )}
             <p>{event.description}</p>
-            <div className="home-like-button">
+            {/* <div className="home-like-button">
               <Button
                 icon
                 circular
@@ -123,7 +142,7 @@ const Home = ({
                 />
               </Button>
               <span>{like}</span>
-            </div>
+            </div> */}
           </Container>
         </>
       )}
