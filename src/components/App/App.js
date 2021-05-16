@@ -79,7 +79,6 @@ const App = () => {
 
   return (
     <div className="App" style={{ position: "relative" }}>
-      {/* {loading && <Loader />} */}
         <>
           <Transition
             animation="jiggle"

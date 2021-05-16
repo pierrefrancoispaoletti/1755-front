@@ -33,7 +33,7 @@ const Categories = ({
   useEffect(() => {
     setFilteredProducts([])
     setFilteredProducts(
-      products?.filter((p) => p.type === selectedCategory.slug)
+      products?.filter((p) => p.type === category.categorie)
     );
   }, [category]);
 
