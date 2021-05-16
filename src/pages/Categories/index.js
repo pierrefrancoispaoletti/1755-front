@@ -9,6 +9,7 @@ import { Button, Container, Divider, Header } from "semantic-ui-react";
 import AdminCrudButtons from "../../components/Small/AdminCrudButtons";
 import ProductItem from "../../components/Small/ProductItem";
 import ProductsFilteringMenu from "../../components/Small/ProductsFilteringMenu";
+import categories from "../../datas/categories";
 import { $SERVER } from "../../_const/_const";
 import "./categories.css";
 const Categories = ({

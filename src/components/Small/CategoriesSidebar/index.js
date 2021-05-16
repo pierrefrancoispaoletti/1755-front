@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Divider, Grid, Menu, Segment, Sidebar } from "semantic-ui-react";
 import categories from "../../../datas/categories";
 import "./categoriessidebar.css";
 const CategoriesSidebar = ({
+  selectedCategory,
   products,
   setFilteredProducts,
   setSelectedCategory,
@@ -11,11 +12,14 @@ const CategoriesSidebar = ({
   setSidebarVisible,
   children,
 }) => {
-  const handleFilterProducts = (category) => {
-    setFilteredProducts([]);
-    setSelectedCategory(category);
-    setFilteredProducts(products.filter((p) => p.type === category.slug));
-  };
+  useEffect(() => {
+    if (selectedCategory) {
+      setFilteredProducts([]);
+      setFilteredProducts(
+        products.filter((p) => p.type === selectedCategory.slug)
+      );
+    }
+  }, [selectedCategory]);
   return (
     <Grid columns={1}>
       <Grid.Column>
@@ -31,7 +35,7 @@ const CategoriesSidebar = ({
             visible={sidebarVisible}
             width="thin"
           >
-            <Link to={`/`}>
+            <Link to={`/`} onClick={() => setSelectedCategory({})}>
               <Menu.Item className="categories-sidebar-item">
                 <Menu.Header>
                   <img src="./assets/images/1755small.png" alt="" />
@@ -43,8 +47,11 @@ const CategoriesSidebar = ({
               <Link
                 key={category.slug}
                 to={`/categories/${category.slug}`}
+                onClick={() => {
+                  setSelectedCategory(category);
+                }}
               >
-                <Menu.Item className="categories-sidebar-item" onClick={() => handleFilterProducts(category)}>
+                <Menu.Item className="categories-sidebar-item">
                   <Menu.Header>{category.icon}</Menu.Header>
                   <span>{category.name}</span>
                 </Menu.Item>
