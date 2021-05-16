@@ -8,6 +8,7 @@ import {
   Icon,
   Modal,
 } from "semantic-ui-react";
+import Resizer from "react-image-file-resizer";
 import { $SERVER } from "../../../../_const/_const";
 
 const UpdateImageModal = ({
@@ -154,7 +155,20 @@ const UpdateImageModal = ({
               files={image}
               type="file"
               hidden
-              onChange={(e) => setImage(e.target.files[0])}
+              onChange={(e) => {
+                Resizer.imageFileResizer(
+                  e.target.files[0],
+                  500,
+                  500,
+                  "JPEG",
+                  100,
+                  0,
+                  (uri) => {
+                    setImage(uri);
+                  },
+                  "file"
+                );
+              }}
             />
             <Button
               disabled={loading}

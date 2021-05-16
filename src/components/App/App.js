@@ -79,8 +79,7 @@ const App = () => {
 
   return (
     <div className="App" style={{ position: "relative" }}>
-      {loading && <Loader />}
-      {!loading && (
+      {/* {loading && <Loader />} */}
         <>
           <Transition
             animation="jiggle"
@@ -185,7 +184,6 @@ const App = () => {
             <Copyright />
           </CategoriesSidebar>
         </>
-      )}
     </div>
   );
 };

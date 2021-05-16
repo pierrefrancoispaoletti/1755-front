@@ -3,6 +3,7 @@ import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { Button, Form, Header, Icon, Modal, Radio } from "semantic-ui-react";
 import categories from "../../../../datas/categories";
+import Resizer from "react-image-file-resizer";
 import { $SERVER } from "../../../../_const/_const";
 
 const AddProductModal = ({
@@ -39,8 +40,19 @@ const AddProductModal = ({
     setProduct({ ...product, ...updatedValue });
   };
 
-  const setImage = (e) => {
-    setProduct({ ...product, image: e.target.files[0] });
+  const setImage = async (e) => {
+    Resizer.imageFileResizer(
+      e.target.files[0],
+      500,
+      500,
+      "JPEG",
+      100,
+      0,
+      (uri) => {
+        setProduct({ ...product, image: uri });
+      },
+      "file"
+    );
   };
 
   const token = localStorage.getItem("token-1755");

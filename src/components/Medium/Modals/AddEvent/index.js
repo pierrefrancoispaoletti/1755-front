@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useRef, useState } from "react";
 import { Button, Form, Header, Icon, Modal } from "semantic-ui-react";
+import Resizer from "react-image-file-resizer";
 import { $SERVER } from "../../../../_const/_const";
 
 const AddEventModal = ({
@@ -18,9 +19,10 @@ const AddEventModal = ({
     image: "",
   });
 
-  let date = new Date()
+  let date = new Date();
 
   const [loading, setLoading] = useState(false);
+
 
   const changeEvent = (e) => {
     let updatedValue = {};
@@ -28,8 +30,19 @@ const AddEventModal = ({
     setNewEvent({ ...newEvent, ...updatedValue });
   };
 
-  const setImage = (e) => {
-    setNewEvent({ ...newEvent, image: e.target.files[0] });
+  const setImage = async (e) => {
+    Resizer.imageFileResizer(
+      e.target.files[0],
+      500,
+      500,
+      "JPEG",
+      100,
+      0,
+      (uri) => {
+        setNewEvent({ ...newEvent, image: uri });
+      },
+      "file"
+    );
   };
   const inputEventFile = useRef(null);
 
