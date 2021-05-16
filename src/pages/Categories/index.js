@@ -12,8 +12,10 @@ import ProductsFilteringMenu from "../../components/Small/ProductsFilteringMenu"
 import { $SERVER } from "../../_const/_const";
 import "./categories.css";
 const Categories = ({
+  setFilteredProducts,
   selectedCategory,
   products,
+  filteredProducts,
   user,
   setOpenAddProductModal,
   setProducts,
@@ -27,35 +29,19 @@ const Categories = ({
   const { name, subCategories } = selectedCategory;
   const [activeMenu, setActiveMenu] = useState("");
   const [dropdownValue, setDropdownValue] = useState("");
-  const [filteredProducts, setFilteredProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setFilteredProducts([])
     setFilteredProducts(
-      products?.filter((p) => p.type === category.categorie)
-    );
-  }, [category]);
-
-  useEffect(() => {
-    setFilteredProducts([])
-    setFilteredProducts(
-      products?.filter((p) => p.type === category.categorie)
+      products.filter((p) => p.type === selectedCategory.slug)
     );
   }, [products]);
 
   useEffect(() => {
-    setFilteredProducts([])
     setFilteredProducts(products?.filter((p) => p.category === activeMenu));
   }, [activeMenu]);
 
   useEffect(() => {
-    setFilteredProducts([])
-    setFilteredProducts(products?.filter((p) => p.category === activeMenu));
-  }, [products]);
-
-  useEffect(() => {
-    setFilteredProducts([])
     setFilteredProducts(
       products?.filter((p) => p.subCategory === dropdownValue)
     );
@@ -154,6 +140,7 @@ const Categories = ({
       </Header>
       {subCategories && (
         <ProductsFilteringMenu
+          dropdownValue={dropdownValue}
           subCategories={subCategories}
           activeMenu={activeMenu}
           setActiveMenu={setActiveMenu}
@@ -197,6 +184,7 @@ const Categories = ({
       <Divider />
       {subCategories && filteredProducts.length > 3 && (
         <ProductsFilteringMenu
+          dropdownValue={dropdownValue}
           subCategories={subCategories}
           activeMenu={activeMenu}
           setActiveMenu={setActiveMenu}

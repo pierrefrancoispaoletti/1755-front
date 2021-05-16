@@ -34,6 +34,7 @@ const App = () => {
   const [appMessage, setAppMessage] = useState({});
   const [loading, setLoading] = useState(false);
   const [event, setEvent] = useState({});
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const [eventLoading, setEventLoading] = useState(false);
 
   useEffect(() => {
@@ -100,6 +101,8 @@ const App = () => {
             </Message>
           </Transition>
           <CategoriesSidebar
+            setFilteredProducts={setFilteredProducts}
+            products={products}
             sidebarVisible={sidebarVisible}
             setSidebarVisible={setSidebarVisible}
             setSelectedCategory={setSelectedCategory}
@@ -166,6 +169,8 @@ const App = () => {
                   product={selectedProduct}
                 />
                 <Categories
+                  filteredProducts={filteredProducts}
+                  setFilteredProducts={setFilteredProducts}
                   user={user}
                   selectedCategory={selectedCategory}
                   products={products}

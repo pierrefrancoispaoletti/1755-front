@@ -3,13 +3,13 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: #2B2B29;
+  background: #2b2b29;
 }
 
 .categories-header {
-  font-family: 'Dancing Script', cursive !important;
+  font-family: "Dancing Script", cursive !important;
   text-align: center;
-  margin: 8px 8px 12px  !important;
+  margin: 8px 8px 12px !important;
   font-size: 4em !important;
   border-radius: 8px !important;
   border: 1px solid white !important;
@@ -42,9 +42,9 @@
 }
 
 .products {
-    width: 100%;
-    display: flex !important;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  width: 100%;
+  display: flex !important;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
