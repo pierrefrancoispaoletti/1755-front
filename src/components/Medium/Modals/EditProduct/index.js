@@ -29,6 +29,8 @@ const EditProductModal = ({
 
   const [loading, setLoading] = useState(false);
 
+  console.log(editedProduct)
+
   useEffect(() => {
     setEditedProduct({ ...p });
   }, [product]);
@@ -42,28 +44,34 @@ const EditProductModal = ({
   const token = localStorage.getItem("token-1755");
 
   const onChangeTypeRadio = (value) => {
-    let selectedCheckboxes = product.type;
+    let selectedCheckboxes = editedProduct.type;
 
     selectedCheckboxes = value;
 
-    setEditedProduct({ ...product, type: selectedCheckboxes });
+    setEditedProduct({ ...editedProduct, type: selectedCheckboxes });
   };
 
   const onChangeCategoryRadio = (value) => {
-    let selectedCheckboxes = product.category;
+    let selectedCheckboxes = editedProduct.category;
 
     selectedCheckboxes = value;
 
-    setEditedProduct({ ...product, category: selectedCheckboxes });
+    setEditedProduct({ ...editedProduct, category: selectedCheckboxes });
   };
 
   const onChangeSubCategoryRadio = (value) => {
-    let selectedCheckboxes = product.subCategory;
+    let selectedCheckboxes = editedProduct.subCategory;
 
     selectedCheckboxes = value;
 
-    setEditedProduct({ ...product, subCategory: selectedCheckboxes });
+    setEditedProduct({ ...editedProduct, subCategory: selectedCheckboxes });
   };
+
+  useEffect(() => {
+    if (editedProduct.category !== "rouges" || editedProduct.category !== "premiums") {
+      setEditedProduct({ ...editedProduct, subCategory: "" });
+    }
+  }, [editedProduct.category]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -81,13 +89,20 @@ const EditProductModal = ({
         },
       })
         .then((response) => {
-          setProducts(response.data.data);
+          if (response && response.data.status === 200) {
+            setProducts(response.data.data);
+          }
           setAppMessage({
             success: response.data.status === 200 ? true : false,
             message: response.data.message,
           });
         })
-        .catch((error) => console.log(error))
+        .catch((error) => {
+          setAppMessage({
+            success: false,
+            message: "Il y a eu un probleme, veuillez reessayer",
+          });
+        })
         .finally(() => {
           setLoading(false);
           setOpenEditProductModal(false);
@@ -111,7 +126,7 @@ const EditProductModal = ({
       </Header>
       <Modal.Content>
         <Form onSubmit={handleSubmit} id="editProduct-form">
-          <Form.Field>
+          <Form.Field required error={!editedProduct.name}>
             <label>Nom du Produit</label>
             <input
               value={editedProduct.name}
@@ -139,7 +154,7 @@ const EditProductModal = ({
               onChange={(e) => changeProduct(e)}
             />
           </Form.Field>
-          <Form.Field>
+          <Form.Field required error={!editedProduct.price}>
             <label>Prix</label>
             <input
               min={1}
@@ -150,7 +165,7 @@ const EditProductModal = ({
               onChange={(e) => changeProduct(e)}
             />
           </Form.Field>
-          <Form.Field>
+          <Form.Field required error={!editedProduct.type}>
             <label>Type de Produit</label>
             {categories.map(
               (cat) =>
@@ -169,7 +184,7 @@ const EditProductModal = ({
           </Form.Field>
           {(editedProduct.type === "vins" ||
             editedProduct.type === "alcools") && (
-            <Form.Field>
+            <Form.Field required error={!editedProduct.category}>
               <label>Categorie de Produit</label>
               {categories.map(
                 (cat) =>
@@ -190,7 +205,7 @@ const EditProductModal = ({
           )}
           {(editedProduct.category === "rouges" ||
             editedProduct.category === "premiums") && (
-            <Form.Field>
+            <Form.Field required error={!editedProduct.subCategory}>
               <label>Sous Catégorie de Produit</label>
               {categories.map(
                 (cat) =>
@@ -230,7 +245,17 @@ const EditProductModal = ({
       </Modal.Content>
       <Modal.Actions>
         <Button
-          disabled={loading}
+          disabled={
+            loading ||
+            !editedProduct.name ||
+            !editedProduct.price ||
+            !editedProduct.type ||
+            ((editedProduct.type === "vins" || editedProduct.type === "alcools") &&
+              !editedProduct.category) ||
+            ((editedProduct.category === "rouges" ||
+              editedProduct.category === "premiums") &&
+              !editedProduct.subCategory)
+          }
           loading={loading}
           color="purple"
           type="submit"

@@ -81,6 +81,12 @@ const AddProductModal = ({
     setProduct({ ...product, subCategory: selectedCheckboxes });
   };
 
+  useEffect(() => {
+    if (product.category !== "rouges" || product.category !== "premiums") {
+      setProduct({ ...product, subCategory: "" });
+    }
+  }, [product.category]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     let formData = new FormData();
@@ -106,28 +112,35 @@ const AddProductModal = ({
         },
       })
         .then((response) => {
-          setProducts(response.data.data);
+          if (response && response.data.status === 200) {
+            setProducts(response.data.data);
+            setProduct({
+              name: "",
+              region: "",
+              description: "",
+              price: "",
+              type: "",
+              category: "",
+              subCategory: "",
+              choice: false,
+              visible: true,
+              image: "",
+            });
+          }
           setAppMessage({
             success: response.data.status === 200 ? true : false,
             message: response.data.message,
           });
         })
         .then(() => {
-          setProduct({
-            name: "",
-            region: "",
-            description: "",
-            price: "",
-            type: "",
-            category: "",
-            subCategory: "",
-            choice: false,
-            visible: true,
-            image: "",
-          });
           setOpenAddProductModal(false);
         })
-        .catch((error) => console.log(error))
+        .catch((error) =>
+          setAppMessage({
+            success: false,
+            message: "Il y a eu un probleme, veuillez reessayer",
+          })
+        )
         .finally(() => {
           setLoading(false);
         });
@@ -149,7 +162,7 @@ const AddProductModal = ({
       </Header>
       <Modal.Content>
         <Form onSubmit={handleSubmit} id="addProduct-form">
-          <Form.Field>
+          <Form.Field required error={!product.name}>
             <label>Nom du Produit</label>
             <input
               value={product.name}
@@ -177,7 +190,7 @@ const AddProductModal = ({
               onChange={(e) => changeProduct(e)}
             />
           </Form.Field>
-          <Form.Field>
+          <Form.Field required error={!product.price}>
             <label>Prix</label>
             <input
               min={1}
@@ -188,7 +201,7 @@ const AddProductModal = ({
               onChange={(e) => changeProduct(e)}
             />
           </Form.Field>
-          <Form.Field>
+          <Form.Field required error={!product.type}>
             <label>Type de Produit</label>
             {categories.map(
               (cat) =>
@@ -206,7 +219,7 @@ const AddProductModal = ({
             )}
           </Form.Field>
           {(product.type === "vins" || product.type === "alcools") && (
-            <Form.Field>
+            <Form.Field required error={!product.category}>
               <label>Categorie de Produit</label>
               {categories.map(
                 (cat) =>
@@ -227,7 +240,7 @@ const AddProductModal = ({
           )}
           {(product.category === "rouges" ||
             product.category === "premiums") && (
-            <Form.Field>
+            <Form.Field required error={!product.subCategory}>
               <label>Sous Catégorie de Produit</label>
               {categories.map(
                 (cat) =>
@@ -285,7 +298,17 @@ const AddProductModal = ({
       </Modal.Content>
       <Modal.Actions>
         <Button
-          disabled={loading}
+          disabled={
+            loading ||
+            !product.name ||
+            !product.price ||
+            !product.type ||
+            ((product.type === "vins" || product.type === "alcools") &&
+              !product.category) ||
+            ((product.category === "rouges" ||
+              product.category === "premiums") &&
+              !product.subCategory)
+          }
           loading={loading}
           color="green"
           type="submit"

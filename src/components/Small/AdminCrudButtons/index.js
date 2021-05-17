@@ -2,6 +2,7 @@ import React from "react";
 import { Button } from "semantic-ui-react";
 
 const AdminCrudButtons = ({
+  loading,
   visible,
   _id,
   choice,
@@ -11,11 +12,13 @@ const AdminCrudButtons = ({
   handleChangeVisibility,
   setSelectedProduct,
   setOpenEditProductModal,
-  setOpenUpdateImageModal
+  setOpenUpdateImageModal,
 }) => {
   return (
     <div className="adminbuttons">
       <Button
+        disabled={loading}
+        loading={loading}
         circular
         icon="remove"
         size="large"
@@ -23,6 +26,8 @@ const AdminCrudButtons = ({
         onClick={() => handleDeleteProduct(_id)}
       />
       <Button
+        disabled={loading}
+        loading={loading}
         circular
         icon="edit"
         size="large"
@@ -33,18 +38,25 @@ const AdminCrudButtons = ({
         }}
       />
       <Button
+        disabled={loading}
+        loading={loading}
         circular
         icon={visible ? "hide" : "unhide"}
         size="large"
         onClick={() => handleChangeVisibility(product)}
       />
-       <Button
+      <Button
+        disabled={loading}
+        loading={loading}
         circular
         icon="heart"
         size="large"
-        color={choice ? "red": "grey"}
-        onClick={() => handleChangeChoice(product)} />
+        color={choice ? "red" : "grey"}
+        onClick={() => handleChangeChoice(product)}
+      />
       <Button
+        disabled={loading}
+        loading={loading}
         circular
         icon="image"
         size="large"

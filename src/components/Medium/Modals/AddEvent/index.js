@@ -23,7 +23,6 @@ const AddEventModal = ({
 
   const [loading, setLoading] = useState(false);
 
-
   const changeEvent = (e) => {
     let updatedValue = {};
     updatedValue[e.target.name] = e.target.value;
@@ -68,23 +67,30 @@ const AddEventModal = ({
         },
       })
         .then((response) => {
-          setEvent(response.data.data);
+          if (response && response.data.status === 200) {
+            setEvent(response.data.data);
+            setNewEvent({
+              name: "",
+              description: "",
+              date: "",
+              like: 0,
+              image: "",
+            });
+          }
           setAppMessage({
             success: response.data.status === 200 ? true : false,
             message: response.data.message,
           });
         })
         .then(() => {
-          setNewEvent({
-            name: "",
-            description: "",
-            date: "",
-            like: 0,
-            image: "",
-          });
           setOpenAddEventModal(false);
         })
-        .catch((error) => console.log(error))
+        .catch((error) =>
+          setAppMessage({
+            success: false,
+            message: "Il y a eu un probleme, veuillez reessayer",
+          })
+        )
         .finally(() => {
           setLoading(false);
         });
@@ -106,7 +112,7 @@ const AddEventModal = ({
       </Header>
       <Modal.Content>
         <Form onSubmit={handleSubmit} id="addEvent-form">
-          <Form.Field>
+          <Form.Field required error={!newEvent.name}>
             <label>Nom de l'evenement</label>
             <input
               value={newEvent.name}
@@ -160,7 +166,7 @@ const AddEventModal = ({
       </Modal.Content>
       <Modal.Actions>
         <Button
-          disabled={loading}
+          disabled={loading || !newEvent.name}
           loading={loading}
           color="green"
           type="submit"

@@ -109,6 +109,7 @@ const App = () => {
           setSelectedCategory={setSelectedCategory}
         >
           <TopAppBar
+          setSelectedCategory={setSelectedCategory}
             loading={loading}
             user={user}
             setSidebarVisible={setSidebarVisible}

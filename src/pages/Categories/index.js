@@ -30,7 +30,7 @@ const Categories = ({
   const { name, subCategories } = selectedCategory;
   const [activeMenu, setActiveMenu] = useState("");
   const [dropdownValue, setDropdownValue] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setFilteredProducts(
@@ -161,6 +161,7 @@ const Categories = ({
             <>
               {user && (
                 <AdminCrudButtons
+                  loading={loading}
                   {...p}
                   product={p}
                   handleDeleteProduct={handleDeleteProduct}
