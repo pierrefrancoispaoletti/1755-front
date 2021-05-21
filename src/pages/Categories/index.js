@@ -15,6 +15,10 @@ import "./categories.css";
 const Categories = ({
   setFilteredProducts,
   selectedCategory,
+  dropdownValue,
+  activeMenu,
+  setActiveMenu,
+  setDropdownValue,
   products,
   filteredProducts,
   user,
@@ -28,8 +32,6 @@ const Categories = ({
 }) => {
   const category = useParams();
   const { name, subCategories } = selectedCategory;
-  const [activeMenu, setActiveMenu] = useState("");
-  const [dropdownValue, setDropdownValue] = useState("");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -39,13 +41,17 @@ const Categories = ({
   }, [products]);
 
   useEffect(() => {
-    setFilteredProducts(products?.filter((p) => p.category === activeMenu));
+    if (activeMenu) {
+      setFilteredProducts(products?.filter((p) => p.category === activeMenu));
+    }
   }, [activeMenu]);
 
   useEffect(() => {
-    setFilteredProducts(
-      products?.filter((p) => p.subCategory === dropdownValue)
-    );
+    if (dropdownValue) {
+      setFilteredProducts(
+        products?.filter((p) => p.subCategory === dropdownValue)
+      );
+    }
   }, [dropdownValue]);
 
   const token = localStorage.getItem("token-1755");
@@ -151,12 +157,7 @@ const Categories = ({
       <Divider />
       <div className="products">
         {filteredProducts
-          ?.sort(
-            (a, b) =>
-              (a.choice === b.choice ? 0 : a.choice ? -1 : 1) ||
-              a.price - b.price
-          )
-
+          ?.sort((a, b) => a.price - b.price)
           .map((p) => (
             <>
               {user && (

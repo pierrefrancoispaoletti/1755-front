@@ -58,7 +58,7 @@ const ProductItem = ({
           }
         >
           {!visible ? "Caché : " : ""}
-          {name}
+          {name.toUpperCase()}
           {image && (
             <FontAwesomeIcon
               style={{ color: "white", margin: 8 }}
@@ -87,7 +87,7 @@ const ProductItem = ({
           <small>€</small>
         </span>
       </div>
-      {region && <div className="region">{region}</div>}
+      {region && <div className="region">{region.toUpperCase()}</div>}
       {description && (
         <Translator
           cacheProvider={cacheProvider}

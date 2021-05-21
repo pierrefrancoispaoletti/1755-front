@@ -5,6 +5,8 @@ import categories from "../../../datas/categories";
 import "./categoriessidebar.css";
 const CategoriesSidebar = ({
   selectedCategory,
+  setActiveMenu,
+  setDropdownValue,
   products,
   setFilteredProducts,
   setSelectedCategory,
@@ -14,10 +16,20 @@ const CategoriesSidebar = ({
 }) => {
   useEffect(() => {
     if (selectedCategory) {
+      setActiveMenu("");
+      setDropdownValue("");
       setFilteredProducts([]);
       setFilteredProducts(
         products.filter((p) => p.type === selectedCategory.slug)
       );
+    }
+    if (selectedCategory.slug === "vins") {
+      setActiveMenu("rouges");
+      setDropdownValue("corses");
+      setFilteredProducts(products.filter((p) => p.subCategory === "corses"));
+    }
+    if (selectedCategory.slug === "alcools") {
+      setActiveMenu("classiques");
     }
   }, [selectedCategory]);
   return (

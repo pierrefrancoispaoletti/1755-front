@@ -29,8 +29,6 @@ const EditProductModal = ({
 
   const [loading, setLoading] = useState(false);
 
-  console.log(editedProduct)
-
   useEffect(() => {
     setEditedProduct({ ...p });
   }, [product]);

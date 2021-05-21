@@ -21,6 +21,8 @@ import "./App.css";
 const App = () => {
   const [sidebarVisible, setSidebarVisible] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState({});
+  const [activeMenu, setActiveMenu] = useState("");
+  const [dropdownValue, setDropdownValue] = useState("");
   const [user, setUser] = useState("");
   const [openLoginModal, setOpenLoginModal] = useState(false);
   const [openAddProductModal, setOpenAddProductModal] = useState(false);
@@ -101,6 +103,8 @@ const App = () => {
           </Message>
         </Transition>
         <CategoriesSidebar
+        setActiveMenu={setActiveMenu}
+        setDropdownValue={setDropdownValue}
         selectedCategory={selectedCategory}
           setFilteredProducts={setFilteredProducts}
           products={products}
@@ -175,6 +179,10 @@ const App = () => {
                 setFilteredProducts={setFilteredProducts}
                 user={user}
                 selectedCategory={selectedCategory}
+                activeMenu={activeMenu}
+                setActiveMenu={setActiveMenu}
+                dropdownValue={dropdownValue}
+                setDropdownValue={setDropdownValue}
                 products={products}
                 setProducts={setProducts}
                 setOpenLoginModal={setOpenLoginModal}
