@@ -41,6 +41,7 @@ const Categories = ({
   }, [products]);
 
   useEffect(() => {
+    setDropdownValue("")
     if (activeMenu) {
       setFilteredProducts(products?.filter((p) => p.category === activeMenu));
     }
@@ -147,6 +148,7 @@ const Categories = ({
       </Header>
       {subCategories && (
         <ProductsFilteringMenu
+          products={products}
           dropdownValue={dropdownValue}
           subCategories={subCategories}
           activeMenu={activeMenu}

@@ -48,3 +48,24 @@
   justify-content: center;
   align-items: center;
 }
+
+.dropdown-menuitem {
+  display: flex;
+  justify-content: space-between;
+}
+
+.badge {
+  background-color:darkred;
+  margin-left: 5px;
+  color: white;
+  font-weight: bold;
+    border-radius: 100%;
+    padding: 2px 4px;
+}
+
+
+.active {
+  border: 1px solid darkred;
+  background-color: #2b2b29 !important;
+  color: white !important;
+}
