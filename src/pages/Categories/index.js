@@ -189,6 +189,7 @@ const Categories = ({
       <Divider />
       {subCategories && filteredProducts.length > 3 && (
         <ProductsFilteringMenu
+          products={products}
           dropdownValue={dropdownValue}
           subCategories={subCategories}
           activeMenu={activeMenu}
