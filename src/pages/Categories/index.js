@@ -1,11 +1,18 @@
+/* eslint-disable no-unused-expressions */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import { faPlus } from "@fortawesome/pro-duotone-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router";
-import { Button, Container, Divider, Header } from "semantic-ui-react";
+import {
+  Button,
+  Container,
+  Divider,
+  Header,
+  Transition,
+} from "semantic-ui-react";
 import AdminCrudButtons from "../../components/Small/AdminCrudButtons";
 import ProductItem from "../../components/Small/ProductItem";
 import ProductsFilteringMenu from "../../components/Small/ProductsFilteringMenu";
@@ -33,6 +40,19 @@ const Categories = ({
   const category = useParams();
   const { name, subCategories } = selectedCategory;
   const [loading, setLoading] = useState(false);
+
+  const result =
+    (selectedCategory.slug === "vins" || selectedCategory.slug === "alcools") &&
+    selectedCategory?.subCategories[0]?.subCat.find(
+      ({ name, slug }) => slug === dropdownValue
+    );
+  const prevDropdownValueRef = useRef();
+
+  useEffect(() => {
+    prevDropdownValueRef.current = dropdownValue;
+  });
+
+  const prevDropdownValue = prevDropdownValueRef.current;
 
   useEffect(() => {
     setFilteredProducts(
@@ -154,11 +174,18 @@ const Categories = ({
         }
       >
         {activeMenu ? `Les ${activeMenu}` : name}
-        {dropdownValue && (
-          <Header.Subheader className="categories-subheader">
-            {`"${dropdownValue}"`}
-          </Header.Subheader>
-        )}
+        {(category.categorie === "vins" || category.categorie === "alcools") &&
+          !!dropdownValue && (
+            <Transition
+              visible={dropdownValue === prevDropdownValue}
+              animation="fly right"
+              duration={1000}
+            >
+              <Header.Subheader className="categories-subheader">
+                {`${result && result.name}`}
+              </Header.Subheader>
+            </Transition>
+          )}
       </Header>
       <Divider hidden />
       {subCategories && (

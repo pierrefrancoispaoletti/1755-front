@@ -73,11 +73,6 @@ const categories = [
         icon: <FontAwesomeIcon size="4x" icon={faGlassWhiskeyRocks} style={{"--fa-primary-color": "#AF2127", "--fa-secondary-color": "grey"}} />,
         subCategories: [
             {
-                name: "Les Classiques",
-                slug: "classiques",
-                icon: <FontAwesomeIcon size="3x" icon={faGlassWhiskeyRocks} style={{"--fa-primary-color": "#f1f285"}} />,
-            },
-            {
                 name: "Les Premiums",
                 slug: "premiums",
                 icon: <FontAwesomeIcon size="3x" icon={faGlassWhiskeyRocks} style={{"--fa-primary-color": "#f1f285"}} />,
@@ -99,6 +94,11 @@ const categories = [
                         slug:"vodka"
                     },
                 ]
+            },
+            {
+                name: "Les Classiques",
+                slug: "classiques",
+                icon: <FontAwesomeIcon size="3x" icon={faGlassWhiskeyRocks} style={{"--fa-primary-color": "#f1f285"}} />,
             },
         ]
     },
