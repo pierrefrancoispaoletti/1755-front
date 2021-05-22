@@ -69,6 +69,7 @@ const Categories = ({
 
   useEffect(() => {
     if (dropdownValue) {
+      setDropdownValue(dropdownValue)
       setFilteredProducts(
         products?.filter((p) => p.subCategory === dropdownValue)
       );

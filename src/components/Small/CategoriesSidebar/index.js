@@ -29,7 +29,9 @@ const CategoriesSidebar = ({
       setFilteredProducts(products.filter((p) => p.subCategory === "corses"));
     }
     if (selectedCategory.slug === "alcools") {
-      setActiveMenu("classiques");
+      setActiveMenu("premiums");
+      setDropdownValue("rhum")
+      setFilteredProducts(products.filter((p) => p.subCategory === "rhum"));
     }
   }, [selectedCategory]);
   return (
