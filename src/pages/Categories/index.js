@@ -41,7 +41,7 @@ const Categories = ({
   }, [products]);
 
   useEffect(() => {
-    setDropdownValue("")
+    setDropdownValue("");
     if (activeMenu) {
       setFilteredProducts(products?.filter((p) => p.category === activeMenu));
     }
@@ -140,12 +140,27 @@ const Categories = ({
           </Button>
         </div>
       )}
-      <Header className="categories-header" as="h2">
-        {name}
+      <Header
+        className="categories-header"
+        as="h2"
+        style={
+          activeMenu === "rouges"
+            ? { color: "darkred" }
+            : activeMenu === "roses"
+            ? { color: "#fec5d9" }
+            : activeMenu === "blancs"
+            ? { color: "#f1f285" }
+            : { color: "white" }
+        }
+      >
+        {activeMenu ? `Les ${activeMenu}` : name}
+        {dropdownValue && (
+          <Header.Subheader className="categories-subheader">
+            {`"${dropdownValue}"`}
+          </Header.Subheader>
+        )}
       </Header>
-      <Header className="categories-subheader" as="h3">
-        {}
-      </Header>
+      <Divider hidden />
       {subCategories && (
         <ProductsFilteringMenu
           products={products}
@@ -156,7 +171,7 @@ const Categories = ({
           setDropdownValue={setDropdownValue}
         />
       )}
-      <Divider />
+      <Divider hidden />
       <div className="products">
         {filteredProducts
           ?.sort((a, b) => a.price - b.price)
@@ -186,7 +201,7 @@ const Categories = ({
             </>
           ))}
       </div>
-      <Divider />
+      <Divider hidden />
       {subCategories && filteredProducts.length > 3 && (
         <ProductsFilteringMenu
           products={products}

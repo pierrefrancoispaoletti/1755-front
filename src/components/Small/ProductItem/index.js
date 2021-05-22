@@ -71,6 +71,7 @@ const ProductItem = ({
           )}
           {choice ? (
             <FontAwesomeIcon
+                className="bosschoice alvp__icon"
               icon={faHeartCircle}
               style={{
                 "--fa-primary-color": "darkred",
