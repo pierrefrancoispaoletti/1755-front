@@ -63,6 +63,7 @@ const CategoriesSidebar = ({
                 to={`/categories/${category.slug}`}
                 onClick={() => {
                   setSelectedCategory(category);
+                  setSidebarVisible(false);
                 }}
               >
                 <Menu.Item className="categories-sidebar-item">
