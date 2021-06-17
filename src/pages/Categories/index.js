@@ -43,9 +43,12 @@ const Categories = ({
 
   const result =
     (selectedCategory.slug === "vins" || selectedCategory.slug === "alcools") &&
-    selectedCategory?.subCategories[0]?.subCat.find(
+    (selectedCategory?.subCategories[0]?.subCat.find(
       ({ name, slug }) => slug === dropdownValue
-    );
+    ) ||
+      selectedCategory?.subCategories[2]?.subCat.find(
+        ({ name, slug }) => slug === dropdownValue
+      ));
   const prevDropdownValueRef = useRef();
 
   useEffect(() => {
@@ -69,7 +72,7 @@ const Categories = ({
 
   useEffect(() => {
     if (dropdownValue) {
-      setDropdownValue(dropdownValue)
+      setDropdownValue(dropdownValue);
       setFilteredProducts(
         products?.filter((p) => p.subCategory === dropdownValue)
       );

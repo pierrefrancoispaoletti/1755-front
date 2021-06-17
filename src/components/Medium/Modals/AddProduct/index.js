@@ -239,6 +239,7 @@ const AddProductModal = ({
             </Form.Field>
           )}
           {(product.category === "rouges" ||
+          product.category === "blancs" ||
             product.category === "premiums") && (
             <Form.Field required error={!product.subCategory}>
               <label>Sous Catégorie de Produit</label>

@@ -202,6 +202,7 @@ const EditProductModal = ({
             </Form.Field>
           )}
           {(editedProduct.category === "rouges" ||
+          product.category === "blancs" ||
             editedProduct.category === "premiums") && (
             <Form.Field required error={!editedProduct.subCategory}>
               <label>Sous Catégorie de Produit</label>

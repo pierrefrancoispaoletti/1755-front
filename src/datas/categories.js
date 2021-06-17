@@ -91,6 +91,16 @@ const categories = [
             style={{ "--fa-primary-color": "#f1f285" }}
           />
         ),
+        subCat: [
+          {
+            name: "Vins Corses",
+            slug: "corses-blancs",
+          },
+          {
+            name: "Magnums",
+            slug: "magnums-blancs",
+          },
+        ],
       },
       {
         name: "Champagnes",

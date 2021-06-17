@@ -22,7 +22,7 @@ const ProductsFilteringMenu = ({
           {subCategory.subCat ? (
             <div style={{ position: "relative" }}>
               <sup
-                style={{ position: "absolute", top: 9, right: 3, zIndex: 1000 }}
+                style={{ position: "absolute", top: 9, right: 3, zIndex: 10 }}
               >
                 <span className="badge">
                   {products &&
