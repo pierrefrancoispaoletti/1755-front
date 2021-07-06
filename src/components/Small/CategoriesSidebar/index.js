@@ -33,6 +33,9 @@ const CategoriesSidebar = ({
       setDropdownValue("rhum")
       setFilteredProducts(products.filter((p) => p.subCategory === "rhum"));
     }
+    if (selectedCategory.slug === "cuisine") {
+      setActiveMenu("tapas");
+    }
   }, [selectedCategory]);
   return (
     <Grid columns={1}>

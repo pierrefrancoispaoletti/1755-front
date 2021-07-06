@@ -1,6 +1,8 @@
 import {
   faBeer,
+  faCheeseburger,
   faCocktail,
+  faCookieBite,
   faGlassChampagne,
   faGlassCitrus,
   faGlassWhiskeyRocks,
@@ -226,6 +228,30 @@ const categories = [
         }}
       />
     ),
+    subCategories: [
+      {
+        name: "Les Tapas",
+        slug: "tapas",
+        icon: (
+          <FontAwesomeIcon
+            size="3x"
+            icon={faCheeseburger}
+            style={{ "--fa-primary-color": "darkred" }}
+          />
+        ),
+      },
+      {
+        name: "Les Desserts",
+        slug: "dessert",
+        icon: (
+          <FontAwesomeIcon
+            size="3x"
+            icon={faCookieBite}
+            style={{ "--fa-primary-color": "darkred" }}
+          />
+        ),
+      }
+    ]
   },
   {
     name: "La Boutique",

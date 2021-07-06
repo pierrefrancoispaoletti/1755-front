@@ -218,7 +218,7 @@ const AddProductModal = ({
                 )
             )}
           </Form.Field>
-          {(product.type === "vins" || product.type === "alcools") && (
+          {(product.type === "vins" || product.type === "alcools" || product.type === "cuisine") && (
             <Form.Field required error={!product.category}>
               <label>Categorie de Produit</label>
               {categories.map(
@@ -304,10 +304,10 @@ const AddProductModal = ({
             !product.name ||
             !product.price ||
             !product.type ||
-            ((product.type === "vins" || product.type === "alcools") &&
+            ((product.type === "vins" || product.type === "alcools" || product.type === "cuisine") &&
               !product.category) ||
             ((product.category === "rouges" ||
-              product.category === "premiums") &&
+              product.category === "premiums" || product.category === "blancs") &&
               !product.subCategory)
           }
           loading={loading}

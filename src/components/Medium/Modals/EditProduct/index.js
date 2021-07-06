@@ -66,7 +66,10 @@ const EditProductModal = ({
   };
 
   useEffect(() => {
-    if (editedProduct.category !== "rouges" || editedProduct.category !== "premiums") {
+    if (
+      editedProduct.category !== "rouges" ||
+      editedProduct.category !== "premiums"
+    ) {
       setEditedProduct({ ...editedProduct, subCategory: "" });
     }
   }, [editedProduct.category]);
@@ -181,7 +184,8 @@ const EditProductModal = ({
             )}
           </Form.Field>
           {(editedProduct.type === "vins" ||
-            editedProduct.type === "alcools") && (
+            editedProduct.type === "alcools" ||
+            product.type === "cuisine") && (
             <Form.Field required error={!editedProduct.category}>
               <label>Categorie de Produit</label>
               {categories.map(
@@ -202,7 +206,7 @@ const EditProductModal = ({
             </Form.Field>
           )}
           {(editedProduct.category === "rouges" ||
-          product.category === "blancs" ||
+            editedProduct.category === "blancs" ||
             editedProduct.category === "premiums") && (
             <Form.Field required error={!editedProduct.subCategory}>
               <label>Sous Catégorie de Produit</label>
@@ -249,9 +253,12 @@ const EditProductModal = ({
             !editedProduct.name ||
             !editedProduct.price ||
             !editedProduct.type ||
-            ((editedProduct.type === "vins" || editedProduct.type === "alcools") &&
+            ((editedProduct.type === "vins" ||
+              editedProduct.type === "alcools" ||
+              product.type === "cuisine") &&
               !editedProduct.category) ||
             ((editedProduct.category === "rouges" ||
+              editedProduct.category === "blancs" ||
               editedProduct.category === "premiums") &&
               !editedProduct.subCategory)
           }
