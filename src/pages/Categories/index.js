@@ -233,7 +233,7 @@ const Categories = ({
           ))}
       </div>
       <Divider hidden />
-      {subCategories && filteredProducts.length > 3 && (
+      {subCategories && filteredProducts.length > 1 && (
         <ProductsFilteringMenu
           products={products}
           dropdownValue={dropdownValue}

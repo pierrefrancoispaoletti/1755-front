@@ -25,10 +25,30 @@ const Home = ({
   const token = localStorage.getItem("token-1755");
   const [like, setLike] = useState(0);
 
-  useEffect(() => {
-    if (event && Object.keys(event).length > 0) setLike(event.like);
-  }, []);
+  const vote = localStorage.getItem(`1755-event`);
 
+  console.log(vote);
+  useEffect(() => {
+    setLike(event.like);
+    console.log(vote === event._id);
+    console.log(event._id === vote)
+    if (vote && vote !== event._id && event._id) {
+      console.log("am here");
+      localStorage.removeItem(`1755-event`);
+    }
+  }, [event]);
+
+  const handleAddLike = () => {
+    if (!vote) {
+      localStorage.setItem(`1755-event`, event._id);
+      axios({
+        method: "post",
+        url: `${$SERVER}/api/events/updateLikes`,
+        data: { _id: event._id },
+      });
+      setLike(like + 1);
+    }
+  };
   const arrayBufferToBase64 = (buffer) => {
     let binary = "";
     const bytes = [].slice.call(new Uint8Array(buffer));
@@ -127,15 +147,16 @@ const Home = ({
               </p>
             )}
             <p>{event.description}</p>
-            {/* <div className="home-like-button">
+            <div className="home-like-button">
               <Button
+                disabled={vote ? true : false}
                 icon
                 circular
                 color="facebook"
-                onClick={() => setLike(like + 1)}
+                onClick={() => handleAddLike()}
               >
                 <FontAwesomeIcon
-                  size="2x"
+                  size="1x"
                   icon={faThumbsUp}
                   style={{
                     "--fa-secondary-color": "white",
@@ -143,8 +164,18 @@ const Home = ({
                   }}
                 />
               </Button>
-              <span>{like}</span>
-            </div> */}
+              <span
+                style={{
+                  background: "transparent",
+                  color: "white",
+                  borderRadius: 50,
+                  display: "inline-block",
+                  padding: "5px 10px",
+                }}
+              >
+                {like}
+              </span>
+            </div>
           </Container>
         </>
       )}
