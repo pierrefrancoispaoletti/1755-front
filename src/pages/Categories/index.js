@@ -59,7 +59,9 @@ const Categories = ({
 
   useEffect(() => {
     setFilteredProducts(
-      products.filter((p) => p.type === selectedCategory.slug)
+      products.filter(
+        (p) => p.type === selectedCategory.slug && p.category === activeMenu
+      )
     );
   }, [products]);
 
