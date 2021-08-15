@@ -18,3 +18,8 @@ code {
   border: "" !important;
   background: #2b2b29 !important;
 }
+
+.column {
+  padding: 0 !important;
+  margin: 0 !important;
+}

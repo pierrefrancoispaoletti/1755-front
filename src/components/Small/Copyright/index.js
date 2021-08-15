@@ -22,12 +22,14 @@ const Copyright = ({
   return (
     <div className="footer">
       <div>
-        <Header as="h3">
-          Retrouvez nous sur :{" "}
-        </Header>
+        <Header as="h3">Retrouvez nous sur : </Header>
       </div>
       <div className="footer__icons">
-        <a target="_blank" href="https://www.facebook.com/Brasserie-1755-196458368600" rel="noreferrer">
+        <a
+          target="_blank"
+          href="https://www.facebook.com/Brasserie-1755-196458368600"
+          rel="noreferrer"
+        >
           <FontAwesomeIcon
             style={{
               color: "#3B5998",
@@ -39,7 +41,11 @@ const Copyright = ({
             pull="left"
           />
         </a>
-        <a target="_blank" href="https://www.instagram.com/1755baravin/" rel="noreferrer">
+        <a
+          target="_blank"
+          href="https://www.instagram.com/1755baravin/"
+          rel="noreferrer"
+        >
           <FontAwesomeIcon
             style={{ color: "#3F729B", borderRadius: "100%" }}
             size="3x"
@@ -50,9 +56,7 @@ const Copyright = ({
       </div>
       <Divider />
       <div>
-        <Header as="h3">
-          Contactez nous !{" "}
-        </Header>
+        <Header as="h3">Contactez nous ! </Header>
       </div>
       <div className="footer__icons">
         <a href={`mailto:christophemartinetti@baravin1755.com`}>
