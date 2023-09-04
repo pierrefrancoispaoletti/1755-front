@@ -63,7 +63,7 @@ const categories = [
             slug: "cotes-du-rhone",
           },
           {
-            name: "Découverte",
+            name: "Vins d'Italie",
             slug: "decouverte",
           },
           {
@@ -242,7 +242,7 @@ const categories = [
       },
       {
         name: "Les Desserts",
-        slug: "dessert",
+        slug: "desserts",
         icon: (
           <FontAwesomeIcon
             size="3x"
@@ -250,21 +250,21 @@ const categories = [
             style={{ "--fa-primary-color": "darkred" }}
           />
         ),
-      }
-    ]
+      },
+    ],
   },
   {
     name: "La Boutique",
     slug: "boutique",
     icon: (
-        <FontAwesomeIcon
-          size="4x"
-          icon={faShoppingBag}
-          style={{
-            "--fa-primary-color": "#AF2127",
-            "--fa-secondary-color": "grey",
-          }}
-        />
+      <FontAwesomeIcon
+        size="4x"
+        icon={faShoppingBag}
+        style={{
+          "--fa-primary-color": "#AF2127",
+          "--fa-secondary-color": "grey",
+        }}
+      />
     ),
   },
 ];

@@ -44,15 +44,15 @@ const TopAppBar = ({
           rel="noreferrer"
         >
           <Button
-            style={{position: 'relative'}}
+            style={{ position: "relative" }}
             disabled={loading}
             loading={loading}
             icon
             circular
             color="orange"
           >
-            <span className="alvp__icon" style ={{position: "absolute", top:"-14px", right: "8px", display: "inline-block", padding:"3px 4px", background: "red", borderRadius:"50px", fontWeight: "bold"}}>New</span>
-            
+            {/* <span className="alvp__icon" style ={{position: "absolute", top:"-14px", right: "8px", display: "inline-block", padding:"3px 4px", background: "red", borderRadius:"50px", fontWeight: "bold"}}>New</span> */}
+
             <FontAwesomeIcon icon={faBookAlt} size="3x" />
           </Button>
         </a>
