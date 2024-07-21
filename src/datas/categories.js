@@ -1,29 +1,68 @@
 import {
   faBeer,
-  faCheeseburger,
+  faBurger,
   faCocktail,
   faCookieBite,
-  faGlassChampagne,
-  faGlassCitrus,
-  faGlassWhiskeyRocks,
-  faHatChef,
+  faChampagneGlasses,
+  faMartiniGlassCitrus,
+  faGlassWhiskey,
   faShoppingBag,
   faWineBottle,
-} from "@fortawesome/pro-duotone-svg-icons";
+  faUtensils,
+  faBowlFood,
+  faGlassWaterDroplet,
+  faGlasses,
+  faGlassWater,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { isBefore18h } from "./utils";
 
 const categories = [
   {
+    name: "La Cuisine (Midi)",
+    slug: "cuisine-midi",
+    showAlways: isBefore18h(),
+    icon: (
+      <FontAwesomeIcon
+        icon={faUtensils}
+        size='4x'
+        color='white'
+      />
+    ),
+    subCategories: [
+      {
+        name: "Les Plats",
+        slug: "plats-midi",
+        icon: (
+          <FontAwesomeIcon
+            size='3x'
+            icon={faBowlFood}
+            color='white'
+          />
+        ),
+      },
+      {
+        name: "Les Desserts",
+        slug: "desserts-midi",
+        icon: (
+          <FontAwesomeIcon
+            size='3x'
+            icon={faCookieBite}
+            color='white'
+          />
+        ),
+      },
+    ],
+  },
+  {
     name: "Les Vins",
     slug: "vins",
+    showAlways: true,
     icon: (
       <FontAwesomeIcon
         icon={faWineBottle}
-        size="4x"
-        style={{
-          "--fa-primary-color": "#AF2127",
-          "--fa-secondary-color": "grey",
-        }}
+        size='4x'
+        color='white'
       />
     ),
     subCategories: [
@@ -32,9 +71,9 @@ const categories = [
         slug: "rouges",
         icon: (
           <FontAwesomeIcon
-            size="3x"
+            size='3x'
             icon={faWineBottle}
-            style={{ "--fa-primary-color": "darkred" }}
+            color='darkred'
           />
         ),
         subCat: [
@@ -77,9 +116,9 @@ const categories = [
         slug: "roses",
         icon: (
           <FontAwesomeIcon
-            size="3x"
+            size='3x'
             icon={faWineBottle}
-            style={{ "--fa-primary-color": "#fec5d9" }}
+            color='#fec5d9'
           />
         ),
       },
@@ -88,9 +127,9 @@ const categories = [
         slug: "blancs",
         icon: (
           <FontAwesomeIcon
-            size="3x"
+            size='3x'
             icon={faWineBottle}
-            style={{ "--fa-primary-color": "#f1f285" }}
+            color='#f1f285'
           />
         ),
         subCat: [
@@ -109,9 +148,9 @@ const categories = [
         slug: "champagnes",
         icon: (
           <FontAwesomeIcon
-            size="3x"
-            icon={faGlassChampagne}
-            style={{ "--fa-secondary-color": "#f1f285" }}
+            size='3x'
+            icon={faChampagneGlasses}
+            color='white'
           />
         ),
       },
@@ -120,28 +159,24 @@ const categories = [
   {
     name: "Les Bières",
     slug: "bieres",
+    showAlways: true,
     icon: (
       <FontAwesomeIcon
-        size="4x"
+        size='4x'
         icon={faBeer}
-        style={{
-          "--fa-primary-color": "#AF2127",
-          "--fa-secondary-color": "grey",
-        }}
+        color='white'
       />
     ),
   },
   {
     name: "Les Alcools",
     slug: "alcools",
+    showAlways: true,
     icon: (
       <FontAwesomeIcon
-        size="4x"
-        icon={faGlassWhiskeyRocks}
-        style={{
-          "--fa-primary-color": "#AF2127",
-          "--fa-secondary-color": "grey",
-        }}
+        size='4x'
+        icon={faGlassWhiskey}
+        color='white'
       />
     ),
     subCategories: [
@@ -150,9 +185,9 @@ const categories = [
         slug: "premiums",
         icon: (
           <FontAwesomeIcon
-            size="3x"
-            icon={faGlassWhiskeyRocks}
-            style={{ "--fa-primary-color": "#f1f285" }}
+            size='3x'
+            icon={faGlassWhiskey}
+            color='white'
           />
         ),
         subCat: [
@@ -179,9 +214,9 @@ const categories = [
         slug: "classiques",
         icon: (
           <FontAwesomeIcon
-            size="3x"
-            icon={faGlassWhiskeyRocks}
-            style={{ "--fa-primary-color": "#f1f285" }}
+            size='3x'
+            icon={faGlassWhiskey}
+            color='white'
           />
         ),
       },
@@ -190,42 +225,36 @@ const categories = [
   {
     name: "Les Cocktails",
     slug: "cocktails",
+    showAlways: !isBefore18h(),
     icon: (
       <FontAwesomeIcon
-        size="4x"
+        size='4x'
         icon={faCocktail}
-        style={{
-          "--fa-primary-color": "#AF2127",
-          "--fa-secondary-color": "grey",
-        }}
+        color='white'
       />
     ),
   },
   {
     name: "Les Softs",
     slug: "softs",
+    showAlways: true,
     icon: (
       <FontAwesomeIcon
-        size="4x"
-        icon={faGlassCitrus}
-        style={{
-          "--fa-primary-color": "#AF2127",
-          "--fa-secondary-color": "grey",
-        }}
+        size='4x'
+        icon={faGlassWater}
+        color='white'
       />
     ),
   },
   {
     name: "La Cuisine",
     slug: "cuisine",
+    showAlways: !isBefore18h(),
     icon: (
       <FontAwesomeIcon
-        size="4x"
-        icon={faHatChef}
-        style={{
-          "--fa-primary-color": "#AF2127",
-          "--fa-secondary-color": "grey",
-        }}
+        icon={faUtensils}
+        size='4x'
+        color='white'
       />
     ),
     subCategories: [
@@ -234,9 +263,9 @@ const categories = [
         slug: "tapas",
         icon: (
           <FontAwesomeIcon
-            size="3x"
-            icon={faCheeseburger}
-            style={{ "--fa-primary-color": "darkred" }}
+            size='3x'
+            icon={faBurger}
+            color='white'
           />
         ),
       },
@@ -245,9 +274,9 @@ const categories = [
         slug: "desserts",
         icon: (
           <FontAwesomeIcon
-            size="3x"
+            size='3x'
             icon={faCookieBite}
-            style={{ "--fa-primary-color": "darkred" }}
+            color='white'
           />
         ),
       },
@@ -256,14 +285,12 @@ const categories = [
   {
     name: "La Boutique",
     slug: "boutique",
+    showAlways: !isBefore18h(),
     icon: (
       <FontAwesomeIcon
-        size="4x"
+        size='4x'
         icon={faShoppingBag}
-        style={{
-          "--fa-primary-color": "#AF2127",
-          "--fa-secondary-color": "grey",
-        }}
+        color='white'
       />
     ),
   },

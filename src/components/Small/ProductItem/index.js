@@ -1,4 +1,8 @@
-import { faHeartCircle, faSearch } from "@fortawesome/pro-duotone-svg-icons";
+import {
+  faHeart,
+  faHeartCircle,
+  faSearch,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Translator, Translate } from "react-auto-translate";
 import React from "react";
@@ -41,12 +45,12 @@ const ProductItem = ({
 
   return (
     <div
-      className="productitem"
+      className='productitem'
       style={{ display: visible ? "" : user ? "" : "none" }}
     >
-      <div className="productitem-header">
+      <div className='productitem-header'>
         <Header
-          as="h3"
+          as='h3'
           style={
             type === "vins" && category === "rouges"
               ? { color: "darkred" }
@@ -71,32 +75,29 @@ const ProductItem = ({
           )}
           {choice ? (
             <FontAwesomeIcon
-                className="bosschoice alvp__icon"
-              icon={faHeartCircle}
-              style={{
-                "--fa-primary-color": "darkred",
-                "--fa-secondary-color": "transparent",
-              }}
-              size="2x"
+              className='bosschoice alvp__icon'
+              icon={faHeart}
+              color='darkred'
+              size='2x'
             />
           ) : (
             ""
           )}
         </Header>
-        <span className="price">
+        <span className='price'>
           {price.toFixed(2)}
           <small>€</small>
         </span>
       </div>
-      {region && <div className="region">{region}</div>}
+      {region && <div className='region'>{region}</div>}
       {description && (
         <Translator
           cacheProvider={cacheProvider}
-          from="fr"
-          to={userLang.substr(0,2)}
+          from='fr'
+          to={userLang.substr(0, 2)}
           googleApiKey={GOOGLE_API_KEY}
         >
-          <p className="description">
+          <p className='description'>
             <Translate>{description}</Translate>
           </p>
         </Translator>

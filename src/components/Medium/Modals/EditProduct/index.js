@@ -119,20 +119,26 @@ const EditProductModal = ({
       onClose={() => setOpenEditProductModal(false)}
       onOpen={() => setOpenEditProductModal(true)}
       open={openEditProductModal}
-      size="small"
+      size='small'
     >
       <Header icon>
-        <Icon name="edit" />
+        <Icon name='edit' />
         Editer {p.name}
       </Header>
       <Modal.Content>
-        <Form onSubmit={handleSubmit} id="editProduct-form">
-          <Form.Field required error={!editedProduct.name}>
+        <Form
+          onSubmit={handleSubmit}
+          id='editProduct-form'
+        >
+          <Form.Field
+            required
+            error={!editedProduct.name}
+          >
             <label>Nom du Produit</label>
             <input
               value={editedProduct.name}
-              name="name"
-              type="text"
+              name='name'
+              type='text'
               onChange={(e) => changeProduct(e)}
             />
           </Form.Field>
@@ -140,9 +146,9 @@ const EditProductModal = ({
             <label>Description</label>
             <textarea
               value={editedProduct.description}
-              name="description"
-              rows="5"
-              cols="33"
+              name='description'
+              rows='5'
+              cols='33'
               onChange={(e) => changeProduct(e)}
             />
           </Form.Field>
@@ -150,23 +156,29 @@ const EditProductModal = ({
             <label>Région</label>
             <input
               value={editedProduct.region}
-              name="region"
-              type="text"
+              name='region'
+              type='text'
               onChange={(e) => changeProduct(e)}
             />
           </Form.Field>
-          <Form.Field required error={!editedProduct.price}>
+          <Form.Field
+            required
+            error={!editedProduct.price}
+          >
             <label>Prix</label>
             <input
               min={1}
               step={0.1}
               value={editedProduct.price}
-              name="price"
-              type="number"
+              name='price'
+              type='number'
               onChange={(e) => changeProduct(e)}
             />
           </Form.Field>
-          <Form.Field required error={!editedProduct.type}>
+          <Form.Field
+            required
+            error={!editedProduct.type}
+          >
             <label>Type de Produit</label>
             {categories.map(
               (cat) =>
@@ -180,13 +192,17 @@ const EditProductModal = ({
                     onChange={() => onChangeTypeRadio(cat.slug)}
                     checked={editedProduct.type === cat.slug}
                   />
-                )
+                ),
             )}
           </Form.Field>
           {(editedProduct.type === "vins" ||
             editedProduct.type === "alcools" ||
-            product.type === "cuisine") && (
-            <Form.Field required error={!editedProduct.category}>
+            product.type === "cuisine" ||
+            product.type === "cuisine-midi") && (
+            <Form.Field
+              required
+              error={!editedProduct.category}
+            >
               <label>Categorie de Produit</label>
               {categories.map(
                 (cat) =>
@@ -201,14 +217,17 @@ const EditProductModal = ({
                       onChange={() => onChangeCategoryRadio(subC.slug)}
                       checked={editedProduct.category === subC.slug}
                     />
-                  ))
+                  )),
               )}
             </Form.Field>
           )}
           {(editedProduct.category === "rouges" ||
             editedProduct.category === "blancs" ||
             editedProduct.category === "premiums") && (
-            <Form.Field required error={!editedProduct.subCategory}>
+            <Form.Field
+              required
+              error={!editedProduct.subCategory}
+            >
               <label>Sous Catégorie de Produit</label>
               {categories.map(
                 (cat) =>
@@ -226,8 +245,8 @@ const EditProductModal = ({
                           onChange={() => onChangeSubCategoryRadio(sC.slug)}
                           checked={editedProduct.subCategory === sC.slug}
                         />
-                      ))
-                  )
+                      )),
+                  ),
               )}
             </Form.Field>
           )}
@@ -255,7 +274,8 @@ const EditProductModal = ({
             !editedProduct.type ||
             ((editedProduct.type === "vins" ||
               editedProduct.type === "alcools" ||
-              product.type === "cuisine") &&
+              product.type === "cuisine" ||
+              product.type === "cuisine-midi") &&
               !editedProduct.category) ||
             ((editedProduct.category === "rouges" ||
               editedProduct.category === "blancs" ||
@@ -263,23 +283,23 @@ const EditProductModal = ({
               !editedProduct.subCategory)
           }
           loading={loading}
-          color="purple"
-          type="submit"
-          form="editProduct-form"
+          color='purple'
+          type='submit'
+          form='editProduct-form'
           inverted
         >
-          <Icon name="edit" /> Editer
+          <Icon name='edit' /> Editer
         </Button>
         <Button
           disabled={loading}
           loading={loading}
-          color="red"
-          type="submit"
-          form="editProduct-form"
+          color='red'
+          type='submit'
+          form='editProduct-form'
           inverted
           onClick={() => setOpenEditProductModal(false)}
         >
-          <Icon name="remove" /> Annuler
+          <Icon name='remove' /> Annuler
         </Button>
       </Modal.Actions>
     </Modal>

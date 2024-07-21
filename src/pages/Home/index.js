@@ -5,13 +5,14 @@ import {
   faPlus,
   faThumbsUp,
   faTrashAlt,
-} from "@fortawesome/pro-duotone-svg-icons";
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Button, Container, Header } from "semantic-ui-react";
 import { $SERVER } from "../../_const/_const";
 import "./home.css";
+import { isBefore18h } from "../../datas/utils";
 
 const Home = ({
   user,
@@ -31,7 +32,7 @@ const Home = ({
   useEffect(() => {
     setLike(event.like);
     console.log(vote === event._id);
-    console.log(event._id === vote)
+    console.log(event._id === vote);
     if (vote && vote !== event._id && event._id) {
       console.log("am here");
       localStorage.removeItem(`1755-event`);
@@ -80,19 +81,22 @@ const Home = ({
     }
   };
   return (
-    <Container className="home">
+    <Container className='home'>
       {user && (
-        <div className="home-addbutton">
+        <div className='home-addbutton'>
           {event && Object.keys(event).length === 0 && (
             <Button
               loading={loading}
               disabled={loading}
-              color="green"
+              color='green'
               circular
-              size="medium"
+              size='medium'
               onClick={() => setOpenAddEventModal(true)}
             >
-              <FontAwesomeIcon icon={faPlus} size="2x" />
+              <FontAwesomeIcon
+                icon={faPlus}
+                size='2x'
+              />
             </Button>
           )}
           {event && Object.keys(event).length > 0 && (
@@ -110,12 +114,15 @@ const Home = ({
               <Button
                 loading={loading}
                 disabled={loading}
-                color="red"
+                color='red'
                 circular
-                size="medium"
+                size='medium'
                 onClick={() => handleDeleteEvent(event._id)}
               >
-                <FontAwesomeIcon icon={faTrashAlt} size="2x" />
+                <FontAwesomeIcon
+                  icon={faTrashAlt}
+                  size='2x'
+                />
               </Button>
             </>
           )}
@@ -123,10 +130,16 @@ const Home = ({
       )}
       {event && Object.keys(event).length > 0 && (
         <>
-          <Header className="home-header" as="h1">
+          <Header
+            className='home-header'
+            as='h1'
+          >
             {event.name}
           </Header>
-          <Container text className="home-presentation">
+          <Container
+            text
+            className='home-presentation'
+          >
             {event.image && (
               <div>
                 <img
@@ -147,16 +160,16 @@ const Home = ({
               </p>
             )}
             <p>{event.description}</p>
-            <div className="home-like-button">
+            <div className='home-like-button'>
               <Button
                 disabled={vote ? true : false}
                 icon
                 circular
-                color="facebook"
+                color='facebook'
                 onClick={() => handleAddLike()}
               >
                 <FontAwesomeIcon
-                  size="1x"
+                  size='1x'
                   icon={faThumbsUp}
                   style={{
                     "--fa-secondary-color": "white",
@@ -181,7 +194,13 @@ const Home = ({
       )}
       {event && Object.keys(event).length === 0 && (
         <div style={{ display: "flex", justifyContent: "center" }}>
-          <img height="300px" src="./assets/images/1755medium.png" alt="" />
+          <img
+            height='300px'
+            src={`./assets/images/${
+              isBefore18h() ? "aCarciaraNormal.png" : "1755medium.png"
+            }`}
+            alt=''
+          />
         </div>
       )}
     </Container>

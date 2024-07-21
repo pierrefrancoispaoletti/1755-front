@@ -51,7 +51,7 @@ const AddProductModal = ({
       (uri) => {
         setProduct({ ...product, image: uri });
       },
-      "file"
+      "file",
     );
   };
 
@@ -139,7 +139,7 @@ const AddProductModal = ({
           setAppMessage({
             success: false,
             message: "Il y a eu un probleme, veuillez reessayer",
-          })
+          }),
         )
         .finally(() => {
           setLoading(false);
@@ -154,20 +154,26 @@ const AddProductModal = ({
       onClose={() => setOpenAddProductModal(false)}
       onOpen={() => setOpenAddProductModal(true)}
       open={openAddProductModal}
-      size="small"
+      size='small'
     >
       <Header icon>
-        <Icon name="add" />
+        <Icon name='add' />
         Ajouter un Produit
       </Header>
       <Modal.Content>
-        <Form onSubmit={handleSubmit} id="addProduct-form">
-          <Form.Field required error={!product.name}>
+        <Form
+          onSubmit={handleSubmit}
+          id='addProduct-form'
+        >
+          <Form.Field
+            required
+            error={!product.name}
+          >
             <label>Nom du Produit</label>
             <input
               value={product.name}
-              name="name"
-              type="text"
+              name='name'
+              type='text'
               onChange={(e) => changeProduct(e)}
             />
           </Form.Field>
@@ -175,9 +181,9 @@ const AddProductModal = ({
             <label>Description</label>
             <textarea
               value={product.description}
-              name="description"
-              rows="5"
-              cols="33"
+              name='description'
+              rows='5'
+              cols='33'
               onChange={(e) => changeProduct(e)}
             />
           </Form.Field>
@@ -185,23 +191,29 @@ const AddProductModal = ({
             <label>Région</label>
             <input
               value={product.region}
-              name="region"
-              type="text"
+              name='region'
+              type='text'
               onChange={(e) => changeProduct(e)}
             />
           </Form.Field>
-          <Form.Field required error={!product.price}>
+          <Form.Field
+            required
+            error={!product.price}
+          >
             <label>Prix</label>
             <input
               min={1}
               step={0.1}
               value={product.price}
-              name="price"
-              type="number"
+              name='price'
+              type='number'
               onChange={(e) => changeProduct(e)}
             />
           </Form.Field>
-          <Form.Field required error={!product.type}>
+          <Form.Field
+            required
+            error={!product.type}
+          >
             <label>Type de Produit</label>
             {categories.map(
               (cat) =>
@@ -215,11 +227,17 @@ const AddProductModal = ({
                     onChange={() => onChangeTypeRadio(cat.slug)}
                     checked={product.type === cat.slug}
                   />
-                )
+                ),
             )}
           </Form.Field>
-          {(product.type === "vins" || product.type === "alcools" || product.type === "cuisine") && (
-            <Form.Field required error={!product.category}>
+          {(product.type === "vins" ||
+            product.type === "alcools" ||
+            product.type === "cuisine" ||
+            product.type === "cuisine-midi") && (
+            <Form.Field
+              required
+              error={!product.category}
+            >
               <label>Categorie de Produit</label>
               {categories.map(
                 (cat) =>
@@ -234,14 +252,17 @@ const AddProductModal = ({
                       onChange={() => onChangeCategoryRadio(subC.slug)}
                       checked={product.category === subC.slug}
                     />
-                  ))
+                  )),
               )}
             </Form.Field>
           )}
           {(product.category === "rouges" ||
-          product.category === "blancs" ||
+            product.category === "blancs" ||
             product.category === "premiums") && (
-            <Form.Field required error={!product.subCategory}>
+            <Form.Field
+              required
+              error={!product.subCategory}
+            >
               <label>Sous Catégorie de Produit</label>
               {categories.map(
                 (cat) =>
@@ -259,8 +280,8 @@ const AddProductModal = ({
                           onChange={() => onChangeSubCategoryRadio(sC.slug)}
                           checked={product.subCategory === sC.slug}
                         />
-                      ))
-                  )
+                      )),
+                  ),
               )}
             </Form.Field>
           )}
@@ -277,19 +298,19 @@ const AddProductModal = ({
           <Form.Field>
             <input
               ref={inputFile}
-              accept="image/*"
-              id="addImage"
+              accept='image/*'
+              id='addImage'
               files={product.image}
-              type="file"
+              type='file'
               hidden
               onChange={(e) => setImage(e)}
             />
             <Button
               disabled={loading}
               loading={loading}
-              type="button"
+              type='button'
               onClick={() => inputFile.current.click()}
-              color="orange"
+              color='orange'
               inverted
             >
               Ajouter une image
@@ -304,30 +325,34 @@ const AddProductModal = ({
             !product.name ||
             !product.price ||
             !product.type ||
-            ((product.type === "vins" || product.type === "alcools" || product.type === "cuisine") &&
+            ((product.type === "vins" ||
+              product.type === "alcools" ||
+              product.type === "cuisine" ||
+              product.type === "cuisine-midi") &&
               !product.category) ||
             ((product.category === "rouges" ||
-              product.category === "premiums" || product.category === "blancs") &&
+              product.category === "premiums" ||
+              product.category === "blancs") &&
               !product.subCategory)
           }
           loading={loading}
-          color="green"
-          type="submit"
-          form="addProduct-form"
+          color='green'
+          type='submit'
+          form='addProduct-form'
           inverted
         >
-          <Icon name="add" /> Ajouter
+          <Icon name='add' /> Ajouter
         </Button>
         <Button
           disabled={loading}
           loading={loading}
-          color="red"
-          type="submit"
-          form="addProduct-form"
+          color='red'
+          type='submit'
+          form='addProduct-form'
           inverted
           onClick={() => setOpenAddProductModal(false)}
         >
-          <Icon name="remove" /> Annuler
+          <Icon name='remove' /> Annuler
         </Button>
       </Modal.Actions>
     </Modal>
