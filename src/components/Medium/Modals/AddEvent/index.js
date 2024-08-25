@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useRef, useState } from "react";
 import { Button, Form, Header, Icon, Modal } from "semantic-ui-react";
 import Resizer from "react-image-file-resizer";
-import { $SERVER } from "../../../../_const/_const";
+import { $SERVER, COMPRESSION_QUALITY } from "../../../../_const/_const";
 
 const AddEventModal = ({
   setEvent,
@@ -32,15 +32,15 @@ const AddEventModal = ({
   const setImage = async (e) => {
     Resizer.imageFileResizer(
       e.target.files[0],
-      500,
-      500,
+      363,
+      360,
       "JPEG",
-      100,
+      COMPRESSION_QUALITY,
       0,
       (uri) => {
         setNewEvent({ ...newEvent, image: uri });
       },
-      "file"
+      "file",
     );
   };
   const inputEventFile = useRef(null);
@@ -89,7 +89,7 @@ const AddEventModal = ({
           setAppMessage({
             success: false,
             message: "Il y a eu un probleme, veuillez reessayer",
-          })
+          }),
         )
         .finally(() => {
           setLoading(false);
@@ -104,20 +104,26 @@ const AddEventModal = ({
       onClose={() => setOpenAddEventModal(false)}
       onOpen={() => setOpenAddEventModal(true)}
       open={openAddEventModal}
-      size="small"
+      size='small'
     >
       <Header icon>
-        <Icon name="add" />
+        <Icon name='add' />
         Ajouter un Evenement
       </Header>
       <Modal.Content>
-        <Form onSubmit={handleSubmit} id="addEvent-form">
-          <Form.Field required error={!newEvent.name}>
+        <Form
+          onSubmit={handleSubmit}
+          id='addEvent-form'
+        >
+          <Form.Field
+            required
+            error={!newEvent.name}
+          >
             <label>Nom de l'evenement</label>
             <input
               value={newEvent.name}
-              name="name"
-              type="text"
+              name='name'
+              type='text'
               onChange={(e) => changeEvent(e)}
             />
           </Form.Field>
@@ -125,9 +131,9 @@ const AddEventModal = ({
             <label>Description</label>
             <textarea
               value={newEvent.description}
-              name="description"
-              rows="5"
-              cols="33"
+              name='description'
+              rows='5'
+              cols='33'
               onChange={(e) => changeEvent(e)}
             />
           </Form.Field>
@@ -135,8 +141,8 @@ const AddEventModal = ({
             <label>Date de l'evenement</label>
             <input
               value={newEvent.date}
-              name="date"
-              type="date"
+              name='date'
+              type='date'
               min={date.toISOString().split("T")[0]}
               onChange={(e) => changeEvent(e)}
             />
@@ -144,19 +150,19 @@ const AddEventModal = ({
           <Form.Field>
             <input
               ref={inputEventFile}
-              accept="image/*"
-              id="addEventImage"
+              accept='image/*'
+              id='addEventImage'
               files={newEvent.image}
-              type="file"
+              type='file'
               hidden
               onChange={(e) => setImage(e)}
             />
             <Button
               disabled={loading}
               loading={loading}
-              type="button"
+              type='button'
               onClick={() => inputEventFile.current.click()}
-              color="orange"
+              color='orange'
               inverted
             >
               Ajouter une image
@@ -168,23 +174,23 @@ const AddEventModal = ({
         <Button
           disabled={loading || !newEvent.name}
           loading={loading}
-          color="green"
-          type="submit"
-          form="addEvent-form"
+          color='green'
+          type='submit'
+          form='addEvent-form'
           inverted
         >
-          <Icon name="add" /> Ajouter
+          <Icon name='add' /> Ajouter
         </Button>
         <Button
           disabled={loading}
           loading={loading}
-          color="red"
-          type="submit"
-          form="addEvent-form"
+          color='red'
+          type='submit'
+          form='addEvent-form'
           inverted
           onClick={() => setOpenAddEventModal(false)}
         >
-          <Icon name="remove" /> Annuler
+          <Icon name='remove' /> Annuler
         </Button>
       </Modal.Actions>
     </Modal>

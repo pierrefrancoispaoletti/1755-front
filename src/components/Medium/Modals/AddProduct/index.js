@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Button, Form, Header, Icon, Modal, Radio } from "semantic-ui-react";
 import categories from "../../../../datas/categories";
 import Resizer from "react-image-file-resizer";
-import { $SERVER } from "../../../../_const/_const";
+import { $SERVER, COMPRESSION_QUALITY } from "../../../../_const/_const";
 
 const AddProductModal = ({
   selectedCategory,
@@ -43,10 +43,10 @@ const AddProductModal = ({
   const setImage = async (e) => {
     Resizer.imageFileResizer(
       e.target.files[0],
-      500,
-      500,
+      363,
+      360,
       "JPEG",
-      100,
+      COMPRESSION_QUALITY,
       0,
       (uri) => {
         setProduct({ ...product, image: uri });

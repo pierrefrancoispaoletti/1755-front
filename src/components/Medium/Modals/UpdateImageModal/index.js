@@ -9,7 +9,7 @@ import {
   Modal,
 } from "semantic-ui-react";
 import Resizer from "react-image-file-resizer";
-import { $SERVER } from "../../../../_const/_const";
+import { $SERVER, COMPRESSION_QUALITY } from "../../../../_const/_const";
 
 const UpdateImageModal = ({
   openUpdateImageModal,
@@ -132,13 +132,13 @@ const UpdateImageModal = ({
       onClose={() => setOpenUpdateImageModal(false)}
     >
       <Header icon>
-        <Icon name="image" />
+        <Icon name='image' />
         Editer l'image
       </Header>
       {(productImage || image) && (
         <Container>
           <img
-            className="showimage"
+            className='showimage'
             style={{ width: "100%", height: "100%" }}
             src={base64Flag + imageStr}
             alt={name}
@@ -146,36 +146,39 @@ const UpdateImageModal = ({
         </Container>
       )}
       <Modal.Content>
-        <Form onSubmit={handleSubmitImage} id="editImage-form">
+        <Form
+          onSubmit={handleSubmitImage}
+          id='editImage-form'
+        >
           <Form.Field>
             <input
               ref={updateFile}
-              accept="image/*"
-              id="addImage"
+              accept='image/*'
+              id='addImage'
               files={image}
-              type="file"
+              type='file'
               hidden
               onChange={(e) => {
                 Resizer.imageFileResizer(
                   e.target.files[0],
-                  500,
-                  500,
+                  363,
+                  360,
                   "JPEG",
-                  100,
+                  COMPRESSION_QUALITY,
                   0,
                   (uri) => {
                     setImage(uri);
                   },
-                  "file"
+                  "file",
                 );
               }}
             />
             <Button
               disabled={loading}
               loading={loading}
-              type="button"
+              type='button'
               onClick={() => updateFile.current.click()}
-              color="orange"
+              color='orange'
               inverted
             >
               Modifier l'image
@@ -188,37 +191,37 @@ const UpdateImageModal = ({
           <Button
             loading={loading}
             disabled={loading}
-            color="green"
-            type="submit"
-            form="editImage-form"
+            color='green'
+            type='submit'
+            form='editImage-form'
             inverted
           >
-            <Icon name="add" /> Envoyer l'image pour {name}
+            <Icon name='add' /> Envoyer l'image pour {name}
           </Button>
         )}
         {productImage && (
           <Button
             loading={loading}
             disabled={loading}
-            type="button"
-            color="red"
-            form="editImage-form"
+            type='button'
+            color='red'
+            form='editImage-form'
             inverted
             onClick={handleDeleteImage}
           >
-            <Icon name="delete" /> Supprimer l'image pour {name}
+            <Icon name='delete' /> Supprimer l'image pour {name}
           </Button>
         )}
         <Button
           loading={loading}
           disabled={loading}
-          color="red"
-          type="submit"
-          form="editImage-form"
+          color='red'
+          type='submit'
+          form='editImage-form'
           inverted
           onClick={() => setOpenUpdateImageModal(false)}
         >
-          <Icon name="remove" /> Annuler
+          <Icon name='remove' /> Annuler
         </Button>
       </Modal.Actions>
     </Modal>

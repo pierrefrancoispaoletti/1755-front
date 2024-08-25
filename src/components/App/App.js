@@ -68,19 +68,28 @@ const App = () => {
   }, [appMessage]);
   useEffect(() => {
     setLoading(true);
-    axios
-      .get(`${$SERVER}/api/products/allProducts`)
+    fetch(`${$SERVER}/api/products/allProducts`)
       .then((response) => {
-        if (response) {
-          setProducts(response.data.data);
-        }
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder("utf-8");
+        let productsData = "";
+
+        reader.read().then(function processText({ done, value }) {
+          if (done) {
+            setProducts(JSON.parse(productsData).data);
+            return;
+          }
+          productsData += decoder.decode(value, { stream: true });
+          return reader.read().then(processText);
+        });
       })
-      .catch((error) =>
+      .catch((error) => {
+        console.error("Erreur lors de la récupération des produits:", error);
         setAppMessage({
           success: false,
           message: "Il y a eu un probléme, veuillez recharger la page",
-        }),
-      )
+        });
+      })
       .finally(() => setLoading(false));
 
     setEventLoading(true);
