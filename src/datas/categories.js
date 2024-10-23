@@ -94,7 +94,7 @@ const categories = [
             slug: "bordeaux",
           },
           {
-            name: "Bourgognes",
+            name: "Vins d'exception (quantités limitées)",
             slug: "bourgognes",
           },
           {
