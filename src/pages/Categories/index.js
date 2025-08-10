@@ -44,10 +44,13 @@ const Categories = ({
   const result =
     (selectedCategory.slug === "vins" || selectedCategory.slug === "alcools") &&
     (selectedCategory?.subCategories[0]?.subCat.find(
-      ({ name, slug }) => slug === dropdownValue,
+      ({ name, slug }) => slug === dropdownValue
     ) ||
-      selectedCategory?.subCategories[2]?.subCat.find(
-        ({ name, slug }) => slug === dropdownValue,
+      selectedCategory?.subCategories[1]?.subCat.find(
+        ({ name, slug }) => slug === dropdownValue
+      ) ||
+      selectedCategory?.subCategories[3]?.subCat.find(
+        ({ name, slug }) => slug === dropdownValue
       ));
   const prevDropdownValueRef = useRef();
 
@@ -60,8 +63,8 @@ const Categories = ({
   useEffect(() => {
     setFilteredProducts(
       products.filter(
-        (p) => p.type === selectedCategory.slug && p.category === activeMenu,
-      ),
+        (p) => p.type === selectedCategory.slug && p.category === activeMenu
+      )
     );
   }, [products]);
 
@@ -76,7 +79,7 @@ const Categories = ({
     if (dropdownValue) {
       setDropdownValue(dropdownValue);
       setFilteredProducts(
-        products?.filter((p) => p.subCategory === dropdownValue),
+        products?.filter((p) => p.subCategory === dropdownValue)
       );
     }
   }, [dropdownValue]);
@@ -153,31 +156,28 @@ const Categories = ({
   };
 
   return (
-    <Container className='categories'>
+    <Container className="categories">
       {user && (
         <div>
           <Button
-            color='green'
+            color="green"
             circular
-            size='medium'
+            size="medium"
             onClick={() => setOpenAddProductModal(true)}
           >
-            <FontAwesomeIcon
-              icon={faPlus}
-              size='2x'
-            />
+            <FontAwesomeIcon icon={faPlus} size="2x" />
           </Button>
         </div>
       )}
       <Header
-        className='categories-header'
-        as='h2'
+        className="categories-header"
+        as="h2"
         style={
-          activeMenu === "rouges"
+          activeMenu.includes("rouge") || dropdownValue?.includes("rouge")
             ? { color: "darkred" }
-            : activeMenu === "roses"
+            : activeMenu.includes("rose") || dropdownValue?.includes("rose")
             ? { color: "#fec5d9" }
-            : activeMenu === "blancs"
+            : activeMenu.includes("blanc") || dropdownValue?.includes("blanc")
             ? { color: "#f1f285" }
             : { color: "white" }
         }
@@ -187,10 +187,10 @@ const Categories = ({
           !!dropdownValue && (
             <Transition
               visible={dropdownValue === prevDropdownValue}
-              animation='fly right'
+              animation="fly right"
               duration={1000}
             >
-              <Header.Subheader className='categories-subheader'>
+              <Header.Subheader className="categories-subheader">
                 {`${result && result.name}`}
               </Header.Subheader>
             </Transition>
@@ -208,7 +208,7 @@ const Categories = ({
         />
       )}
       <Divider hidden />
-      <div className='products'>
+      <div className="products">
         {filteredProducts
           ?.sort((a, b) => a.price - b.price)
           .map((p) => (

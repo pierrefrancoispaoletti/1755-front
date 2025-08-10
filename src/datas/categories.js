@@ -4,14 +4,12 @@ import {
   faCocktail,
   faCookieBite,
   faChampagneGlasses,
-  faMartiniGlassCitrus,
   faGlassWhiskey,
+  faCrown,
   faShoppingBag,
   faWineBottle,
   faUtensils,
   faBowlFood,
-  faGlassWaterDroplet,
-  faGlasses,
   faGlassWater,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -22,35 +20,17 @@ const categories = [
     name: "La Cuisine (Midi)",
     slug: "cuisine-midi",
     showAlways: isBefore18h(),
-    icon: (
-      <FontAwesomeIcon
-        icon={faUtensils}
-        size='4x'
-        color='white'
-      />
-    ),
+    icon: <FontAwesomeIcon icon={faUtensils} size="4x" color="white" />,
     subCategories: [
       {
         name: "Les Plats",
         slug: "plats-midi",
-        icon: (
-          <FontAwesomeIcon
-            size='3x'
-            icon={faBowlFood}
-            color='white'
-          />
-        ),
+        icon: <FontAwesomeIcon size="3x" icon={faBowlFood} color="white" />,
       },
       {
         name: "Les Desserts",
         slug: "desserts-midi",
-        icon: (
-          <FontAwesomeIcon
-            size='3x'
-            icon={faCookieBite}
-            color='white'
-          />
-        ),
+        icon: <FontAwesomeIcon size="3x" icon={faCookieBite} color="white" />,
       },
     ],
   },
@@ -58,24 +38,12 @@ const categories = [
     name: "Les Vins",
     slug: "vins",
     showAlways: true,
-    icon: (
-      <FontAwesomeIcon
-        icon={faWineBottle}
-        size='4x'
-        color='white'
-      />
-    ),
+    icon: <FontAwesomeIcon icon={faWineBottle} size="4x" color="white" />,
     subCategories: [
       {
         name: "Vins Rouges",
         slug: "rouges",
-        icon: (
-          <FontAwesomeIcon
-            size='3x'
-            icon={faWineBottle}
-            color='darkred'
-          />
-        ),
+        icon: <FontAwesomeIcon size="3x" icon={faWineBottle} color="darkred" />,
         subCat: [
           {
             name: "Vins Corses",
@@ -94,10 +62,6 @@ const categories = [
             slug: "bordeaux",
           },
           {
-            name: "Vins d'exception (quantités limitées)",
-            slug: "bourgognes",
-          },
-          {
             name: "Côtes-du-rhône",
             slug: "cotes-du-rhone",
           },
@@ -112,26 +76,58 @@ const categories = [
         ],
       },
       {
+        name: "Vins d'exception",
+        slug: "vins d'Exception",
+        icon: (
+          <span
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              position: "relative",
+            }}
+          >
+            <FontAwesomeIcon
+              size="1x"
+              icon={faCrown}
+              color="gold"
+              style={{
+                position: "absolute",
+                top: "-8px",
+                zIndex: 1,
+                transform: "translateX(-50%)",
+                left: "50%",
+              }}
+            />
+            <FontAwesomeIcon
+              size="3x"
+              icon={faWineBottle}
+              color="darkred"
+              style={{ zIndex: 0 }}
+            />
+          </span>
+        ),
+        subCat: [
+          {
+            name: "Rouges",
+            slug: "rouge-exception",
+          },
+          {
+            name: "Blancs",
+            slug: "blanc-exception",
+          },
+        ],
+      },
+      {
         name: "Vins Rosés",
         slug: "roses",
-        icon: (
-          <FontAwesomeIcon
-            size='3x'
-            icon={faWineBottle}
-            color='#fec5d9'
-          />
-        ),
+        icon: <FontAwesomeIcon size="3x" icon={faWineBottle} color="#fec5d9" />,
       },
       {
         name: "Vins Blancs",
         slug: "blancs",
-        icon: (
-          <FontAwesomeIcon
-            size='3x'
-            icon={faWineBottle}
-            color='#f1f285'
-          />
-        ),
+        icon: <FontAwesomeIcon size="3x" icon={faWineBottle} color="#f1f285" />,
         subCat: [
           {
             name: "Vins Corses",
@@ -147,11 +143,7 @@ const categories = [
         name: "Champagnes",
         slug: "champagnes",
         icon: (
-          <FontAwesomeIcon
-            size='3x'
-            icon={faChampagneGlasses}
-            color='white'
-          />
+          <FontAwesomeIcon size="3x" icon={faChampagneGlasses} color="white" />
         ),
       },
     ],
@@ -160,36 +152,18 @@ const categories = [
     name: "Les Bières",
     slug: "bieres",
     showAlways: true,
-    icon: (
-      <FontAwesomeIcon
-        size='4x'
-        icon={faBeer}
-        color='white'
-      />
-    ),
+    icon: <FontAwesomeIcon size="4x" icon={faBeer} color="white" />,
   },
   {
     name: "Les Alcools",
     slug: "alcools",
     showAlways: true,
-    icon: (
-      <FontAwesomeIcon
-        size='4x'
-        icon={faGlassWhiskey}
-        color='white'
-      />
-    ),
+    icon: <FontAwesomeIcon size="4x" icon={faGlassWhiskey} color="white" />,
     subCategories: [
       {
         name: "Les Premiums",
         slug: "premiums",
-        icon: (
-          <FontAwesomeIcon
-            size='3x'
-            icon={faGlassWhiskey}
-            color='white'
-          />
-        ),
+        icon: <FontAwesomeIcon size="3x" icon={faGlassWhiskey} color="white" />,
         subCat: [
           {
             name: "Rhum",
@@ -212,13 +186,7 @@ const categories = [
       {
         name: "Les Classiques",
         slug: "classiques",
-        icon: (
-          <FontAwesomeIcon
-            size='3x'
-            icon={faGlassWhiskey}
-            color='white'
-          />
-        ),
+        icon: <FontAwesomeIcon size="3x" icon={faGlassWhiskey} color="white" />,
       },
     ],
   },
@@ -226,59 +194,29 @@ const categories = [
     name: "Les Cocktails",
     slug: "cocktails",
     showAlways: !isBefore18h(),
-    icon: (
-      <FontAwesomeIcon
-        size='4x'
-        icon={faCocktail}
-        color='white'
-      />
-    ),
+    icon: <FontAwesomeIcon size="4x" icon={faCocktail} color="white" />,
   },
   {
     name: "Les Softs",
     slug: "softs",
     showAlways: true,
-    icon: (
-      <FontAwesomeIcon
-        size='4x'
-        icon={faGlassWater}
-        color='white'
-      />
-    ),
+    icon: <FontAwesomeIcon size="4x" icon={faGlassWater} color="white" />,
   },
   {
     name: "La Cuisine",
     slug: "cuisine",
     showAlways: !isBefore18h(),
-    icon: (
-      <FontAwesomeIcon
-        icon={faUtensils}
-        size='4x'
-        color='white'
-      />
-    ),
+    icon: <FontAwesomeIcon icon={faUtensils} size="4x" color="white" />,
     subCategories: [
       {
         name: "Les Tapas",
         slug: "tapas",
-        icon: (
-          <FontAwesomeIcon
-            size='3x'
-            icon={faBurger}
-            color='white'
-          />
-        ),
+        icon: <FontAwesomeIcon size="3x" icon={faBurger} color="white" />,
       },
       {
         name: "Les Desserts",
         slug: "desserts",
-        icon: (
-          <FontAwesomeIcon
-            size='3x'
-            icon={faCookieBite}
-            color='white'
-          />
-        ),
+        icon: <FontAwesomeIcon size="3x" icon={faCookieBite} color="white" />,
       },
     ],
   },
@@ -286,13 +224,7 @@ const categories = [
     name: "La Boutique",
     slug: "boutique",
     showAlways: !isBefore18h(),
-    icon: (
-      <FontAwesomeIcon
-        size='4x'
-        icon={faShoppingBag}
-        color='white'
-      />
-    ),
+    icon: <FontAwesomeIcon size="4x" icon={faShoppingBag} color="white" />,
   },
 ];
 
