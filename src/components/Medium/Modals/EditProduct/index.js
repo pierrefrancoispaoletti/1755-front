@@ -261,6 +261,7 @@ const EditProductModal = ({
               product.type === "cuisine-midi") &&
               !editedProduct.category) ||
             ((editedProduct.category === "rouges" ||
+              editedProduct.category === "vins d'Exception" ||
               editedProduct.category === "blancs" ||
               editedProduct.category === "premiums") &&
               !editedProduct.subCategory)
