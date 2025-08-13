@@ -43,13 +43,13 @@ const Categories = ({
 
   const result =
     (selectedCategory.slug === "vins" || selectedCategory.slug === "alcools") &&
-    (selectedCategory?.subCategories[0]?.subCat.find(
+    (selectedCategory?.subCategories[0]?.subCat?.find(
       ({ name, slug }) => slug === dropdownValue
     ) ||
-      selectedCategory?.subCategories[1]?.subCat.find(
+      selectedCategory?.subCategories[1]?.subCat?.find(
         ({ name, slug }) => slug === dropdownValue
       ) ||
-      selectedCategory?.subCategories[3]?.subCat.find(
+      selectedCategory?.subCategories[3]?.subCat?.find(
         ({ name, slug }) => slug === dropdownValue
       ));
   const prevDropdownValueRef = useRef();
