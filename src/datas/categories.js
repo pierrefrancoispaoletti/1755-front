@@ -73,6 +73,10 @@ const categories = [
             name: "Vins du Monde",
             slug: "monde",
           },
+          {
+            name: "Decouverte",
+            slug: "decouverte2",
+          },
         ],
       },
       {
