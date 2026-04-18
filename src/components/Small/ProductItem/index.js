@@ -1,21 +1,17 @@
 import { faHeart, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Translator, Translate } from "react-auto-translate";
 import React from "react";
 import { Header } from "semantic-ui-react";
 import "./productitem.css";
-import { GOOGLE_API_KEY } from "../../../_const/_const";
 
 const ProductItem = ({
   product,
-  _id,
   name,
   type,
   region,
   description,
   price,
   category,
-  subCategory,
   choice,
   visible,
   image,
@@ -23,22 +19,6 @@ const ProductItem = ({
   setOpenImageModal,
   setSelectedProduct,
 }) => {
-  const userLang = navigator.language || navigator.userLanguage;
-
-  const cacheProvider = {
-    get: (language, key) =>
-      ((JSON.parse(localStorage.getItem("translations")) || {})[key] || {})[
-        language
-      ],
-    set: (language, key, value) => {
-      const existing = JSON.parse(localStorage.getItem("translations")) || {
-        [key]: {},
-      };
-      existing[key] = { ...existing[key], [language]: value };
-      localStorage.setItem("translations", JSON.stringify(existing));
-    },
-  };
-
   return (
     <div
       className="productitem"
@@ -86,18 +66,7 @@ const ProductItem = ({
         </span>
       </div>
       {region && <div className="region">{region}</div>}
-      {description && (
-        <Translator
-          cacheProvider={cacheProvider}
-          from="fr"
-          to={userLang.substr(0, 2)}
-          googleApiKey={GOOGLE_API_KEY}
-        >
-          <p className="description">
-            <Translate>{description}</Translate>
-          </p>
-        </Translator>
-      )}
+      {description && <p className="description">{description}</p>}
     </div>
   );
 };

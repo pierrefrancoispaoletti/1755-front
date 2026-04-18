@@ -14,6 +14,7 @@ import {
   Transition,
 } from "semantic-ui-react";
 import AdminCrudButtons from "../../components/Small/AdminCrudButtons";
+import Loader from "../../components/Small/Loader";
 import ProductItem from "../../components/Small/ProductItem";
 import ProductsFilteringMenu from "../../components/Small/ProductsFilteringMenu";
 import categories from "../../datas/categories";
@@ -22,15 +23,14 @@ import "./categories.css";
 const Categories = ({
   setFilteredProducts,
   selectedCategory,
+  setSelectedCategory,
   dropdownValue,
   activeMenu,
   setActiveMenu,
   setDropdownValue,
-  products,
   filteredProducts,
   user,
   setOpenAddProductModal,
-  setProducts,
   setOpenLoginModal,
   setSelectedProduct,
   setOpenEditProductModal,
@@ -40,6 +40,16 @@ const Categories = ({
   const category = useParams();
   const { name, subCategories } = selectedCategory;
   const [loading, setLoading] = useState(false);
+  const [products, setProducts] = useState([]);
+  const cacheRef = useRef({});
+
+  useEffect(() => {
+    const slug = category?.categorie;
+    if (!slug) return;
+    if (selectedCategory?.slug === slug) return;
+    const match = categories.find((c) => c.slug === slug);
+    if (match) setSelectedCategory(match);
+  }, [category?.categorie]);
 
   const result =
     (selectedCategory.slug === "vins" || selectedCategory.slug === "alcools") &&
@@ -61,12 +71,39 @@ const Categories = ({
   const prevDropdownValue = prevDropdownValueRef.current;
 
   useEffect(() => {
-    setFilteredProducts(
-      products.filter(
-        (p) => p.type === selectedCategory.slug && p.category === activeMenu
-      )
-    );
-  }, [products]);
+    const type = selectedCategory?.slug;
+    if (!type) return;
+    const lang = (navigator.language || "fr").toLowerCase().slice(0, 2);
+    const cacheKey = `${type}_${lang}`;
+
+    if (cacheRef.current[cacheKey]) {
+      setProducts(cacheRef.current[cacheKey]);
+      return;
+    }
+
+    setLoading(true);
+    axios
+      .get(`${$SERVER}/api/products`, { params: { type, lang } })
+      .then((res) => {
+        const data = res.data.data || [];
+        cacheRef.current[cacheKey] = data;
+        setProducts(data);
+      })
+      .catch((err) => console.error("fetch products error", err))
+      .finally(() => setLoading(false));
+  }, [selectedCategory]);
+
+  useEffect(() => {
+    if (!products.length) {
+      setFilteredProducts([]);
+      return;
+    }
+    if (activeMenu) {
+      setFilteredProducts(products.filter((p) => p.category === activeMenu));
+    } else {
+      setFilteredProducts(products);
+    }
+  }, [products, activeMenu]);
 
   useEffect(() => {
     setDropdownValue("");
@@ -99,7 +136,16 @@ const Categories = ({
           Authorization: "Bearer " + token,
         },
       })
-        .then((response) => setProducts(response.data.data))
+        .then((response) => {
+          const filtered = response.data.data.filter(
+            (p) => p.type === selectedCategory.slug
+          );
+          setProducts(filtered);
+          const cacheKey = `${selectedCategory.slug}_${(
+            navigator.language || "fr"
+          ).toLowerCase().slice(0, 2)}`;
+          cacheRef.current[cacheKey] = filtered;
+        })
         .catch((error) => console.log(error))
         .finally(() => setLoading(false));
     } else {
@@ -123,7 +169,16 @@ const Categories = ({
           Authorization: "Bearer " + token,
         },
       })
-        .then((response) => setProducts(response.data.data))
+        .then((response) => {
+          const filtered = response.data.data.filter(
+            (p) => p.type === selectedCategory.slug
+          );
+          setProducts(filtered);
+          const cacheKey = `${selectedCategory.slug}_${(
+            navigator.language || "fr"
+          ).toLowerCase().slice(0, 2)}`;
+          cacheRef.current[cacheKey] = filtered;
+        })
         .catch((error) => console.log(error))
         .finally(() => setLoading(false));
     } else {
@@ -147,7 +202,16 @@ const Categories = ({
           Authorization: "Bearer " + token,
         },
       })
-        .then((response) => setProducts(response.data.data))
+        .then((response) => {
+          const filtered = response.data.data.filter(
+            (p) => p.type === selectedCategory.slug
+          );
+          setProducts(filtered);
+          const cacheKey = `${selectedCategory.slug}_${(
+            navigator.language || "fr"
+          ).toLowerCase().slice(0, 2)}`;
+          cacheRef.current[cacheKey] = filtered;
+        })
         .catch((error) => console.log(error))
         .finally(() => setLoading(false));
     } else {
@@ -208,8 +272,20 @@ const Categories = ({
         />
       )}
       <Divider hidden />
+      {loading && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 5000,
+          }}
+        >
+          <Loader />
+        </div>
+      )}
       <div className="products">
-        {filteredProducts
+        {!loading &&
+          filteredProducts
           ?.sort((a, b) => a.price - b.price)
           .map((p) => (
             <>
