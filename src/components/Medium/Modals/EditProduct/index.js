@@ -67,11 +67,14 @@ const EditProductModal = ({
   };
 
   useEffect(() => {
-    if (
-      editedProduct.category !== "rouges" ||
-      editedProduct.category !== "premiums"
-    ) {
-      setEditedProduct({ ...editedProduct, subCategory: "" });
+    const categoriesWithSubCat = [
+      "rouges",
+      "blancs",
+      "premiums",
+      "vins d'Exception",
+    ];
+    if (!categoriesWithSubCat.includes(editedProduct.category)) {
+      setEditedProduct((prev) => ({ ...prev, subCategory: "" }));
     }
   }, [editedProduct.category]);
 
