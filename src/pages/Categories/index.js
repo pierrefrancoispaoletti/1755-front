@@ -14,6 +14,7 @@ import {
   Transition,
 } from "semantic-ui-react";
 import AdminCrudButtons from "../../components/Small/AdminCrudButtons";
+import Loader from "../../components/Small/Loader";
 import ProductItem from "../../components/Small/ProductItem";
 import ProductsFilteringMenu from "../../components/Small/ProductsFilteringMenu";
 import categories from "../../datas/categories";
@@ -262,8 +263,10 @@ const Categories = ({
         />
       )}
       <Divider hidden />
+      {loading && <Loader />}
       <div className="products">
-        {filteredProducts
+        {!loading &&
+          filteredProducts
           ?.sort((a, b) => a.price - b.price)
           .map((p) => (
             <>
