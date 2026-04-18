@@ -23,3 +23,8 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 node_modules
+
+# Playwright / Claude Code test artifacts
+.playwright-mcp/
+/plan*.png
+/prod-*.png
