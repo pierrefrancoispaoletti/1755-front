@@ -2,7 +2,7 @@ import React from "react";
 import { ICON_MAP } from "../design-system/iconMap";
 
 // Transforme l'arbre renvoyé par /api/categories?tree=1 au format historique
-// consommé par CategoriesSidebar, Categories, AddProduct, EditProduct.
+// consommé par Categories, AddProduct, EditProduct.
 //
 // Entrée (API):
 //   [{ _id, name, slug, icon: "Wine", iconColor: "#8B0000",

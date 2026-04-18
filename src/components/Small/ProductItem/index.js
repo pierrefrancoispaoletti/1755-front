@@ -42,7 +42,7 @@ const ProductItem = ({
     setOpenImageModal(true);
   };
 
-  const regionLine = [region, product.year].filter(Boolean).join(" · ");
+  const regionLine = region || "";
 
   const Wrapper = choice ? "article" : "div";
   const rootClass = choice ? "pi pi--choice" : "pi";
