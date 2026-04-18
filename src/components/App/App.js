@@ -8,7 +8,6 @@ import Home from "../../pages/Home";
 import { $SERVER } from "../../_const/_const";
 import ImageModal from "../Medium/Modals/ImageModal";
 import Login from "../Medium/Modals/Login";
-import CategoriesSidebar from "../Small/CategoriesSidebar";
 import Copyright from "../Small/Copyright";
 import Loader from "../Small/Loader";
 import TopAppBar from "../Small/TopAppBar";
@@ -23,7 +22,6 @@ import AdminThemes from "../../pages/Admin/Themes";
 import "../../design-system";
 
 const App = () => {
-  const [sidebarVisible, setSidebarVisible] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState({});
   const [activeMenu, setActiveMenu] = useState("");
   const [dropdownValue, setDropdownValue] = useState("");
@@ -121,18 +119,7 @@ const App = () => {
             {appMessage.message}
           </Message>
         </Transition>
-        <CategoriesSidebar
-          user={user}
-          setActiveMenu={setActiveMenu}
-          setDropdownValue={setDropdownValue}
-          selectedCategory={selectedCategory}
-          setFilteredProducts={setFilteredProducts}
-          products={products}
-          sidebarVisible={sidebarVisible}
-          setSidebarVisible={setSidebarVisible}
-          setSelectedCategory={setSelectedCategory}
-        >
-          <TopAppBar />
+        <TopAppBar />
           <Divider hidden />
           <Login
             setUser={setUser}
@@ -252,7 +239,6 @@ const App = () => {
           </Switch>
           <Divider />
           <Copyright />
-        </CategoriesSidebar>
         <BottomAppBar user={user} setOpenLoginModal={setOpenLoginModal} />
       </>
     </div>
