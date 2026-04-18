@@ -1,42 +1,140 @@
-.home-addbutton {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.home {
+  max-width: 640px;
+  margin: 0 auto;
+  padding-bottom: calc(80px + var(--ds-safe-bottom, 0px));
 }
 
-.home-header {
-  font-family: "Dancing Script", cursive !important;
+/* Hero */
+.home-hero {
   text-align: center;
-  margin: 8px 8px 12px !important;
-  font-size: 3em !important;
-  border-radius: 8px !important;
-  border: 1px solid white !important;
-  padding: 8px !important;
-  font-style: italic;
-  background: grey;
-  color: white !important;
+  padding-bottom: var(--ds-space-5, 20px);
 }
 
-
-.home-presentation {
-    margin: 14px 8px  !important;
-    font-size: 1.3em !important;
-    border-radius: 8px !important;
-    border: 1px solid white !important;
-    padding: 8px !important;
-    font-style: italic;
-    background: grey;
-    color: white !important;
-}
-
-.home-like-button {
+.home-hero-band {
+  height: 160px;
+  background: linear-gradient(180deg, var(--ds-bg-elevated, #241820), var(--ds-bg-deep, #0E0A10));
   display: flex;
-  justify-content: flex-end;
   align-items: center;
+  justify-content: center;
+  margin-bottom: var(--ds-space-3, 12px);
 }
 
-.home-like-button span {
-  border-radius: 1px solid white;
-  background:#2B2B29 ;
-  font-size: 1.5em;
+.home-hero-logo {
+  height: 90px;
+  width: auto;
+  object-fit: contain;
+}
+
+.home-hero-title {
+  font-family: var(--ds-font-serif, "DM Serif Display", Georgia, serif);
+  font-size: var(--ds-size-display, 28px);
+  color: var(--ds-accent-gold, #D4A24C);
+  margin: 0 0 var(--ds-space-1, 4px);
+}
+
+.home-hero-sub {
+  color: var(--ds-text-muted, #9A8B90);
+  font-size: var(--ds-size-small, 13px);
+  margin: 0;
+}
+
+/* Event card */
+.home-event {
+  margin: var(--ds-space-5, 20px) var(--ds-space-4, 16px);
+  background: var(--ds-bg-surface, #1B1118);
+  border: 1px solid var(--ds-border-subtle, #2C1E25);
+  border-radius: var(--ds-radius-md, 16px);
+  box-shadow: var(--ds-shadow-card, 0 4px 12px rgba(0,0,0,0.35));
+  overflow: hidden;
+}
+
+.home-event-image {
+  height: 140px;
+  background-size: cover;
+  background-position: center;
+  background-color: var(--ds-bg-elevated, #241820);
+}
+
+.home-event-body {
+  padding: var(--ds-space-4, 16px);
+}
+
+.home-event-label {
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: var(--ds-size-tiny, 11px);
+  color: var(--ds-text-muted, #9A8B90);
+  margin-bottom: var(--ds-space-2, 8px);
+}
+
+.home-event-name {
+  font-family: var(--ds-font-serif, "DM Serif Display", Georgia, serif);
+  font-size: var(--ds-size-h1, 22px);
+  color: var(--ds-text-primary, #F5EFE8);
+  margin: 0 0 var(--ds-space-1, 4px);
+}
+
+.home-event-date {
+  color: var(--ds-text-muted, #9A8B90);
+  font-size: var(--ds-size-small, 13px);
+  margin: 0 0 var(--ds-space-2, 8px);
+}
+
+.home-event-desc {
+  color: var(--ds-text-primary, #F5EFE8);
+  font-size: var(--ds-size-body, 15px);
+  line-height: 1.45;
+  margin: 0 0 var(--ds-space-3, 12px);
+}
+
+.home-event-like .ds-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-2, 8px);
+}
+
+/* Featured shortcuts */
+.home-featured {
+  margin: var(--ds-space-5, 20px) var(--ds-space-4, 16px);
+}
+
+.home-featured-label {
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: var(--ds-size-tiny, 11px);
+  color: var(--ds-text-muted, #9A8B90);
+  margin-bottom: var(--ds-space-3, 12px);
+}
+
+.home-featured-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--ds-space-2, 8px);
+}
+
+.home-featured-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ds-space-2, 8px);
+  padding: var(--ds-space-3, 12px);
+  background: var(--ds-bg-surface, #1B1118);
+  border: 1px solid var(--ds-border-subtle, #2C1E25);
+  border-radius: var(--ds-radius-md, 16px);
+  color: var(--ds-text-primary, #F5EFE8);
+  text-decoration: none;
+  min-height: 80px;
+  transition: background 120ms ease;
+}
+
+.home-featured-tile:active {
+  background: var(--ds-bg-elevated, #241820);
+}
+
+.home-featured-name {
+  font-size: var(--ds-size-small, 13px);
+  text-align: center;
 }

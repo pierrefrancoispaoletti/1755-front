@@ -1,129 +1,122 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable no-unused-vars */
-import { faThumbsUp } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Button, Container, Header } from "semantic-ui-react";
+import axios from "axios";
+import { Link } from "react-router-dom";
+import { Heart } from "lucide-react";
+import { Button, ICON_MAP } from "../../design-system";
+import { useCategoriesTree } from "../../services/useCategoriesTree";
 import { $SERVER } from "../../_const/_const";
 import "./home.css";
-import { isBefore18h } from "../../datas/utils";
+
+const formatEventDate = (d) => {
+  if (!d) return "";
+  try {
+    return new Date(d).toLocaleDateString("fr-FR", {
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+    });
+  } catch { return ""; }
+};
+
+const arrayBufferToBase64 = (buffer) => {
+  let binary = "";
+  const bytes = [].slice.call(new Uint8Array(buffer));
+  bytes.forEach((b) => (binary += String.fromCharCode(b)));
+  return window.btoa(binary);
+};
 
 const Home = ({ event }) => {
+  const tree = useCategoriesTree();
+  const featured = (tree || [])
+    .filter((c) => c && c.visible !== false)
+    .sort((a, b) => (a.order || 0) - (b.order || 0))
+    .slice(0, 3);
+
+  const hasEvent = event && Object.keys(event).length > 0;
+  const vote = typeof window !== "undefined" ? localStorage.getItem("1755-event") : null;
   const [like, setLike] = useState(0);
 
-  const vote = localStorage.getItem(`1755-event`);
-
-  console.log(vote);
   useEffect(() => {
-    setLike(event.like);
-    console.log(vote === event._id);
-    console.log(event._id === vote);
-    if (vote && vote !== event._id && event._id) {
-      console.log("am here");
-      localStorage.removeItem(`1755-event`);
+    if (hasEvent) setLike(event.like || 0);
+    if (vote && event?._id && vote !== event._id) {
+      localStorage.removeItem("1755-event");
     }
-  }, [event]);
+  }, [event, hasEvent, vote]);
 
-  const handleAddLike = () => {
-    if (!vote) {
-      localStorage.setItem(`1755-event`, event._id);
-      axios({
-        method: "post",
-        url: `${$SERVER}/api/events/updateLikes`,
-        data: { _id: event._id },
-      });
-      setLike(like + 1);
-    }
-  };
-  const arrayBufferToBase64 = (buffer) => {
-    let binary = "";
-    const bytes = [].slice.call(new Uint8Array(buffer));
-    bytes.forEach((b) => (binary += String.fromCharCode(b)));
-    return window.btoa(binary);
+  const handleLike = () => {
+    if (vote || !event?._id) return;
+    localStorage.setItem("1755-event", event._id);
+    axios.post(`${$SERVER}/api/events/updateLikes`, { _id: event._id });
+    setLike((n) => n + 1);
   };
 
-  const base64Flag = `data:${event.image?.contentType};base64,`;
-  const imageStr = arrayBufferToBase64(event.image?.data?.data);
+  let eventImageSrc = null;
+  if (hasEvent && event.image?.data?.data) {
+    eventImageSrc = `data:${event.image.contentType};base64,${arrayBufferToBase64(event.image.data.data)}`;
+  }
 
   return (
-    <Container className='home'>
-      {event && Object.keys(event).length > 0 && (
-        <>
-          <Header
-            className='home-header'
-            as='h1'
-          >
-            {event.name}
-          </Header>
-          <Container
-            text
-            className='home-presentation'
-          >
-            {event.image && (
-              <div>
-                <img
-                  style={{ width: "100%" }}
-                  src={base64Flag + imageStr}
-                  alt={event.name}
-                />
-              </div>
-            )}
-            {event.date && (
-              <p>
-                {`Le :
-                ${new Date(event.date).toLocaleDateString("fr-FR", {
-                  weekday: "long",
-                  day: "numeric",
-                  month: "long",
-                })}`}
-              </p>
-            )}
-            <p>{event.description}</p>
-            <div className='home-like-button'>
-              <Button
-                disabled={vote ? true : false}
-                icon
-                circular
-                color='facebook'
-                onClick={() => handleAddLike()}
-              >
-                <FontAwesomeIcon
-                  size='1x'
-                  icon={faThumbsUp}
-                  style={{
-                    "--fa-secondary-color": "white",
-                    "--fa-secondary-opacity": 1,
-                  }}
-                />
-              </Button>
-              <span
-                style={{
-                  background: "transparent",
-                  color: "white",
-                  borderRadius: 50,
-                  display: "inline-block",
-                  padding: "5px 10px",
-                }}
-              >
-                {like}
-              </span>
-            </div>
-          </Container>
-        </>
-      )}
-      {event && Object.keys(event).length === 0 && (
-        <div style={{ display: "flex", justifyContent: "center" }}>
+    <main className="home ds-root">
+      <section className="home-hero">
+        <div className="home-hero-band">
           <img
-            height='300px'
-            src={`./assets/images/${
-              isBefore18h() ? "aCarciaraNormal.png" : "1755medium.png"
-            }`}
-            alt=''
+            src="./assets/images/1755medium.png"
+            alt="Logo Baravin 1755"
+            className="home-hero-logo"
           />
         </div>
+        <h1 className="home-hero-title">Baravin 1755</h1>
+        <p className="home-hero-sub">Bar à vin — Ajaccio</p>
+      </section>
+
+      {hasEvent && (
+        <article className="home-event">
+          {eventImageSrc && (
+            <div className="home-event-image" style={{ backgroundImage: `url(${eventImageSrc})` }} />
+          )}
+          <div className="home-event-body">
+            <span className="home-event-label">À l'affiche</span>
+            <h2 className="home-event-name">{event.name}</h2>
+            {event.date && <p className="home-event-date">{formatEventDate(event.date)}</p>}
+            {event.description && <p className="home-event-desc">{event.description}</p>}
+            <div className="home-event-like">
+              <Button
+                variant="primary"
+                disabled={!!vote}
+                onClick={handleLike}
+                aria-label="J'aime cet événement"
+              >
+                <Heart size={16} fill={vote ? "currentColor" : "none"} />
+                <span>{like}</span>
+              </Button>
+            </div>
+          </div>
+        </article>
       )}
-    </Container>
+
+      {featured.length > 0 && (
+        <section className="home-featured">
+          <span className="home-featured-label">Explorer la carte</span>
+          <div className="home-featured-grid">
+            {featured.map((c) => {
+              const Icon = ICON_MAP[c.icon] || null;
+              return (
+                <Link key={c.slug} to={`/categories/${c.slug}`} className="home-featured-tile">
+                  {Icon && (
+                    <Icon
+                      size={24}
+                      strokeWidth={1.75}
+                      style={{ color: c.iconColor || "var(--ds-accent-gold, #D4A24C)" }}
+                    />
+                  )}
+                  <span className="home-featured-name">{c.name}</span>
+                </Link>
+              );
+            })}
+          </div>
+        </section>
+      )}
+    </main>
   );
 };
 
