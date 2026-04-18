@@ -6,5 +6,5 @@ body {
 }
 
 .App {
-  background: #2B2B29;
+  background: var(--ds-bg-deep, #0E0A10);
 }
