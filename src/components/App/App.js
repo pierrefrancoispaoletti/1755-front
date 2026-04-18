@@ -67,6 +67,11 @@ const App = () => {
     }
   }, [appMessage]);
   useEffect(() => {
+    if (!user) {
+      setProducts([]);
+      setLoading(false);
+      return;
+    }
     setLoading(true);
     fetch(`${$SERVER}/api/products/allProducts`)
       .then((response) => {
@@ -91,7 +96,9 @@ const App = () => {
         });
       })
       .finally(() => setLoading(false));
+  }, [user]);
 
+  useEffect(() => {
     setEventLoading(true);
     axios
       .get(`${$SERVER}/api/events/getEvent`)
