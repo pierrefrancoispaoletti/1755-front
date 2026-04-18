@@ -18,6 +18,11 @@ import Loader from "../Small/Loader";
 import TopAppBar from "../Small/TopAppBar";
 import "./App.css";
 import { isBefore18h } from "../../datas/utils";
+import BottomAppBar from "../Small/BottomAppBar";
+import RequireAuth from "../Small/RequireAuth";
+import AdminHome from "../../pages/Admin/Home";
+import AdminPlaceholder from "../../pages/Admin/Placeholder";
+import "../../design-system";
 
 const App = () => {
   const [sidebarVisible, setSidebarVisible] = useState(false);
@@ -286,10 +291,36 @@ const App = () => {
                 d’Apple, contactez-nous.
               </Container>
             </Route>
+            <Route exact path="/admin">
+              <RequireAuth user={user}>
+                <AdminHome user={user} setUser={setUser} />
+              </RequireAuth>
+            </Route>
+            <Route path="/admin/products">
+              <RequireAuth user={user}>
+                <AdminPlaceholder title="Produits" description="Gestion du catalogue produits." />
+              </RequireAuth>
+            </Route>
+            <Route path="/admin/categories">
+              <RequireAuth user={user}>
+                <AdminPlaceholder title="Catégories" description="Arborescence des catégories." />
+              </RequireAuth>
+            </Route>
+            <Route path="/admin/events">
+              <RequireAuth user={user}>
+                <AdminPlaceholder title="Events" description="Événements programmés." />
+              </RequireAuth>
+            </Route>
+            <Route path="/admin/themes">
+              <RequireAuth user={user}>
+                <AdminPlaceholder title="Thèmes" description="Thèmes visuels." />
+              </RequireAuth>
+            </Route>
           </Switch>
           <Divider />
           <Copyright />
         </CategoriesSidebar>
+        <BottomAppBar user={user} setOpenLoginModal={setOpenLoginModal} />
       </>
     </div>
   );
