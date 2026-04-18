@@ -47,6 +47,7 @@ const Categories = ({
   useEffect(() => {
     const type = selectedCategory?.slug;
     if (!type) return;
+    if (type !== params?.categorie) return;
     const lang = (navigator.language || "fr").toLowerCase().slice(0, 2);
     const cacheKey = `${type}_${lang}`;
 
