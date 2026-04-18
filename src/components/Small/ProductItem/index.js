@@ -1,69 +1,73 @@
-import { faHeart, faSearch } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
-import { Header } from "semantic-ui-react";
 import "./productitem.css";
+
+const WINE_FILET = {
+  rouges: "#6B1A2C",
+  roses: "#8a5560",
+  blancs: "#9a7a32",
+};
+
+const arrayBufferToBase64 = (buffer) => {
+  let binary = "";
+  const bytes = [].slice.call(new Uint8Array(buffer));
+  bytes.forEach((b) => (binary += String.fromCharCode(b)));
+  return window.btoa(binary);
+};
+
+const formatPrice = (p) => {
+  if (typeof p !== "number") return "";
+  return `${p.toFixed(2).replace(".", ",")}€`;
+};
 
 const ProductItem = ({
   product,
-  name,
-  type,
-  region,
-  description,
-  price,
-  category,
-  choice,
-  visible,
-  image,
   setOpenImageModal,
   setSelectedProduct,
 }) => {
-  if (!visible) return null;
+  if (!product || !product.visible) return null;
+
+  const { name, type, region, description, price, category, choice, image } = product;
+
+  const filetColor = type === "vins" ? WINE_FILET[category] : null;
+
+  let imageSrc = null;
+  if (image?.data?.data) {
+    imageSrc = `data:${image.contentType};base64,${arrayBufferToBase64(image.data.data)}`;
+  }
+
+  const openImage = (e) => {
+    e.stopPropagation();
+    if (!imageSrc) return;
+    setSelectedProduct(product);
+    setOpenImageModal(true);
+  };
+
+  const regionLine = [region, product.year].filter(Boolean).join(" · ");
+
+  const Wrapper = choice ? "article" : "div";
+  const rootClass = choice ? "pi pi--choice" : "pi";
+
   return (
-    <div className="productitem">
-      <div className="productitem-header">
-        <Header
-          as="h3"
-          style={
-            type === "vins" && category === "rouges"
-              ? { color: "darkred" }
-              : type === "vins" && category === "roses"
-              ? { color: "#fec5d9" }
-              : type === "vins" && category === "blancs"
-              ? { color: "#f1f285" }
-              : { color: "" }
-          }
+    <Wrapper className={rootClass}>
+      {filetColor && <span className="pi-filet" style={{ background: filetColor }} />}
+      {choice && <span className="pi-choice-badge">★ COUP DE CŒUR</span>}
+      {imageSrc && (
+        <button
+          type="button"
+          className="pi-thumb"
+          onClick={openImage}
+          aria-label={`Voir la photo de ${name}`}
         >
-          {name}
-          {image && (
-            <FontAwesomeIcon
-              style={{ color: "white", margin: 8 }}
-              icon={faSearch}
-              onClick={() => {
-                setSelectedProduct(product);
-                setOpenImageModal(true);
-              }}
-            />
-          )}
-          {choice ? (
-            <FontAwesomeIcon
-              className="bosschoice alvp__icon"
-              icon={faHeart}
-              color="darkred"
-              size="2x"
-            />
-          ) : (
-            ""
-          )}
-        </Header>
-        <span className="price">
-          {price.toFixed(2)}
-          <small>€</small>
-        </span>
+          <img src={imageSrc} alt={name} />
+        </button>
+      )}
+      <div className="pi-body">
+        <div className="pi-name">{name}</div>
+        {regionLine && <div className="pi-region">{regionLine}</div>}
+        {description && <p className="pi-desc">{description}</p>}
       </div>
-      {region && <div className="region">{region}</div>}
-      {description && <p className="description">{description}</p>}
-    </div>
+      <div className="pi-price">{formatPrice(price)}</div>
+    </Wrapper>
   );
 };
 
