@@ -9,7 +9,9 @@ const Themes = ({ setAppMessage }) => {
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await axios.get(`${$SERVER}/api/themes`);
+        const { data } = await axios.get(`${$SERVER}/api/themes/allThemes`, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
+        });
         setThemes(Array.isArray(data?.data) ? data.data : []);
       } catch (e) {
         setAppMessage && setAppMessage({ negative: true, header: "Erreur", content: e.message });
