@@ -17,6 +17,10 @@ Les pages publiques sont déjà passées en **lecture seule** (plan 3 public ter
 - Nettoyage des assets et utilitaires devenus inutiles (`isBefore18h`, `COLOR_*`, `aCarciaraNormal.png`, `1755small.png`).
 - Aucune régression de logique : fetch produits, cache, `productsVersion`, auth, event like, filtres sous-catégories restent fonctionnels.
 
+## Contraintes de merge
+
+**Aucun merge sur `main`** — ni côté front (`1755-front`) ni côté back (`1755-back`). Tout le travail reste sur la branche `feat/admin-bottom-bar-categories` jusqu'à feu vert explicite du client. Pas de `git merge`, pas de PR vers main, pas de `git push origin main`. Les déploiements (`npm run deploy` front, `git push` back) sont bloqués tant que la branche n'est pas validée.
+
 ## Non-objectifs
 
 - Pas de refactor data/fetch côté back.
