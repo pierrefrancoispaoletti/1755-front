@@ -24,6 +24,7 @@ import AdminHome from "../../pages/Admin/Home";
 import AdminPlaceholder from "../../pages/Admin/Placeholder";
 import AdminCategories from "../../pages/Admin/Categories";
 import AdminProducts from "../../pages/Admin/Products";
+import AdminEvents from "../../pages/Admin/Events";
 import "../../design-system";
 
 const App = () => {
@@ -321,7 +322,7 @@ const App = () => {
             </Route>
             <Route path="/admin/events">
               <RequireAuth user={user}>
-                <AdminPlaceholder title="Events" description="Événements programmés." />
+                <AdminEvents setAppMessage={setAppMessage} setOpenLoginModal={setOpenLoginModal} />
               </RequireAuth>
             </Route>
             <Route path="/admin/themes">
