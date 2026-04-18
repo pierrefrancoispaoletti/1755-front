@@ -22,6 +22,7 @@ import BottomAppBar from "../Small/BottomAppBar";
 import RequireAuth from "../Small/RequireAuth";
 import AdminHome from "../../pages/Admin/Home";
 import AdminPlaceholder from "../../pages/Admin/Placeholder";
+import AdminCategories from "../../pages/Admin/Categories";
 import "../../design-system";
 
 const App = () => {
@@ -301,9 +302,14 @@ const App = () => {
                 <AdminPlaceholder title="Produits" description="Gestion du catalogue produits." />
               </RequireAuth>
             </Route>
-            <Route path="/admin/categories">
+            <Route exact path="/admin/categories">
               <RequireAuth user={user}>
-                <AdminPlaceholder title="Catégories" description="Arborescence des catégories." />
+                <AdminCategories />
+              </RequireAuth>
+            </Route>
+            <Route exact path="/admin/categories/:parentId">
+              <RequireAuth user={user}>
+                <AdminCategories />
               </RequireAuth>
             </Route>
             <Route path="/admin/events">
