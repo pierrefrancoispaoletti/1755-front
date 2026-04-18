@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { Heart } from "lucide-react";
 import { Button, ICON_MAP } from "../../design-system";
 import { useCategoriesTree } from "../../services/useCategoriesTree";
+import Copyright from "../../components/Small/Copyright";
 import { $SERVER } from "../../_const/_const";
 import "./home.css";
 
@@ -116,6 +117,8 @@ const Home = ({ event }) => {
           </div>
         </section>
       )}
+
+      <Copyright />
     </main>
   );
 };

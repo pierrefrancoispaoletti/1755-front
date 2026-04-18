@@ -9,7 +9,6 @@ import Home from "../../pages/Home";
 import { $SERVER } from "../../_const/_const";
 import ImageLightbox from "../Medium/Modals/ImageLightbox";
 import Login from "../Medium/Modals/Login";
-import Copyright from "../Small/Copyright";
 import Loader from "../Small/Loader";
 import TopAppBar from "../Small/TopAppBar";
 import "./App.css";
@@ -241,8 +240,6 @@ const App = () => {
               </RequireAuth>
             </Route>
           </Switch>
-          <Divider />
-          <Copyright />
         <BottomAppBar user={user} setOpenLoginModal={setOpenLoginModal} />
       </>
     </div>
