@@ -272,7 +272,17 @@ const Categories = ({
         />
       )}
       <Divider hidden />
-      {loading && <Loader />}
+      {loading && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 5000,
+          }}
+        >
+          <Loader />
+        </div>
+      )}
       <div className="products">
         {!loading &&
           filteredProducts
