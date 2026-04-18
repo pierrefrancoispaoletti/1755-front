@@ -1,0 +1,52 @@
+.ds-iconpicker__search {
+  width: 100%;
+  padding: var(--ds-space-3);
+  border-radius: var(--ds-radius-sm);
+  border: 1px solid var(--ds-border-subtle);
+  background: var(--ds-bg-elevated);
+  color: var(--ds-text-primary);
+  font-size: var(--ds-size-body);
+  margin-bottom: var(--ds-space-3);
+}
+.ds-iconpicker__grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--ds-space-2);
+}
+.ds-iconpicker__cell {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ds-bg-elevated);
+  border-radius: var(--ds-radius-sm);
+  cursor: pointer;
+  border: 2px solid transparent;
+  color: var(--ds-text-primary);
+  transition: border-color 100ms ease;
+}
+.ds-iconpicker__cell svg { width: 26px; height: 26px; }
+.ds-iconpicker__cell--selected { border-color: var(--ds-accent-gold); }
+.ds-iconpicker__colors {
+  display: flex;
+  gap: var(--ds-space-2);
+  flex-wrap: wrap;
+  margin-top: var(--ds-space-4);
+}
+.ds-iconpicker__swatch {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid var(--ds-border-subtle);
+}
+.ds-iconpicker__swatch--selected { border-color: var(--ds-accent-gold); border-width: 3px; }
+.ds-iconpicker__custom-color {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--ds-border-subtle);
+  border-radius: 50%;
+  cursor: pointer;
+  background: transparent;
+}
