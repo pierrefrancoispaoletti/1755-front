@@ -219,8 +219,6 @@ const App = () => {
                 setActiveMenu={setActiveMenu}
                 dropdownValue={dropdownValue}
                 setDropdownValue={setDropdownValue}
-                products={products}
-                setProducts={setProducts}
                 setOpenLoginModal={setOpenLoginModal}
                 setOpenAddProductModal={setOpenAddProductModal}
                 setOpenImageModal={setOpenImageModal}
