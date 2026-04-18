@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { Route, Switch } from "react-router";
 import { Container, Divider, Message, Transition } from "semantic-ui-react";
 import Categories from "../../pages/Categories";
+import CategoriesLanding from "../../pages/CategoriesLanding";
 import Home from "../../pages/Home";
 import { $SERVER } from "../../_const/_const";
 import ImageModal from "../Medium/Modals/ImageModal";
@@ -133,6 +134,9 @@ const App = () => {
               path='/'
             >
               <Home event={event} />
+            </Route>
+            <Route exact path='/categories'>
+              <CategoriesLanding />
             </Route>
             <Route path='/categories/:categorie'>
               <ImageModal
