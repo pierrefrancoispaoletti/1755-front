@@ -132,13 +132,7 @@ const App = () => {
           setSidebarVisible={setSidebarVisible}
           setSelectedCategory={setSelectedCategory}
         >
-          <TopAppBar
-            setSelectedCategory={setSelectedCategory}
-            loading={loading}
-            user={user}
-            setSidebarVisible={setSidebarVisible}
-            setOpenLoginModal={setOpenLoginModal}
-          />
+          <TopAppBar />
           <Divider hidden />
           <Login
             setUser={setUser}
