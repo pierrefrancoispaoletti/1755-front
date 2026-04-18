@@ -6,12 +6,8 @@ import { Container, Divider, Message, Transition } from "semantic-ui-react";
 import Categories from "../../pages/Categories";
 import Home from "../../pages/Home";
 import { $SERVER, COLOR_1755, COLOR_ACARCIARA } from "../../_const/_const";
-import AddEventModal from "../Medium/Modals/AddEvent";
-import AddProductModal from "../Medium/Modals/AddProduct";
-import EditProductModal from "../Medium/Modals/EditProduct";
 import ImageModal from "../Medium/Modals/ImageModal";
 import Login from "../Medium/Modals/Login";
-import UpdateImageModal from "../Medium/Modals/UpdateImageModal";
 import CategoriesSidebar from "../Small/CategoriesSidebar";
 import Copyright from "../Small/Copyright";
 import Loader from "../Small/Loader";
@@ -21,7 +17,6 @@ import { isBefore18h } from "../../datas/utils";
 import BottomAppBar from "../Small/BottomAppBar";
 import RequireAuth from "../Small/RequireAuth";
 import AdminHome from "../../pages/Admin/Home";
-import AdminPlaceholder from "../../pages/Admin/Placeholder";
 import AdminCategories from "../../pages/Admin/Categories";
 import AdminProducts from "../../pages/Admin/Products";
 import AdminEvents from "../../pages/Admin/Events";
@@ -35,12 +30,7 @@ const App = () => {
   const [dropdownValue, setDropdownValue] = useState("");
   const [user, setUser] = useState("");
   const [openLoginModal, setOpenLoginModal] = useState(false);
-  const [openAddProductModal, setOpenAddProductModal] = useState(false);
-  const [openEditProductModal, setOpenEditProductModal] = useState(false);
   const [openImageModal, setOpenImageModal] = useState(false);
-  const [openUpdateImageModal, setOpenUpdateImageModal] = useState(false);
-  const [openAddEventModal, setOpenAddEventModal] = useState(false);
-  const [openEditEventModal, setOpenEditEventModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState({});
   const [products, setProducts] = useState([]);
   const [appMessage, setAppMessage] = useState({});
@@ -181,50 +171,9 @@ const App = () => {
               exact
               path='/'
             >
-              <AddEventModal
-                setEvent={setEvent}
-                setAppMessage={setAppMessage}
-                setOpenLoginModal={setOpenLoginModal}
-                openAddEventModal={openAddEventModal}
-                setOpenAddEventModal={setOpenAddEventModal}
-              />
-              <Home
-                user={user}
-                event={event}
-                setEvent={setEvent}
-                setOpenLoginModal={setOpenLoginModal}
-                setOpenAddEventModal={setOpenAddEventModal}
-                setOpenEditEventModal={setOpenEditEventModal}
-              />
+              <Home event={event} />
             </Route>
             <Route path='/categories/:categorie'>
-              <AddProductModal
-                setProducts={setProducts}
-                setProductsVersion={setProductsVersion}
-                selectedCategory={selectedCategory}
-                setOpenLoginModal={setOpenLoginModal}
-                setAppMessage={setAppMessage}
-                openAddProductModal={openAddProductModal}
-                setOpenAddProductModal={setOpenAddProductModal}
-              />
-              <EditProductModal
-                product={selectedProduct}
-                setOpenEditProductModal={setOpenEditProductModal}
-                setAppMessage={setAppMessage}
-                setOpenLoginModal={setOpenLoginModal}
-                openEditProductModal={openEditProductModal}
-                setProducts={setProducts}
-                setProductsVersion={setProductsVersion}
-              />
-              <UpdateImageModal
-                openUpdateImageModal={openUpdateImageModal}
-                setOpenUpdateImageModal={setOpenUpdateImageModal}
-                setProducts={setProducts}
-                setProductsVersion={setProductsVersion}
-                product={selectedProduct}
-                setOpenLoginModal={setOpenLoginModal}
-                setAppMessage={setAppMessage}
-              />
               <ImageModal
                 openImageModal={openImageModal}
                 setOpenImageModal={setOpenImageModal}
@@ -234,18 +183,13 @@ const App = () => {
                 filteredProducts={filteredProducts}
                 setFilteredProducts={setFilteredProducts}
                 productsVersion={productsVersion}
-                user={user}
                 selectedCategory={selectedCategory}
                 setSelectedCategory={setSelectedCategory}
                 activeMenu={activeMenu}
                 setActiveMenu={setActiveMenu}
                 dropdownValue={dropdownValue}
                 setDropdownValue={setDropdownValue}
-                setOpenLoginModal={setOpenLoginModal}
-                setOpenAddProductModal={setOpenAddProductModal}
                 setOpenImageModal={setOpenImageModal}
-                setOpenUpdateImageModal={setOpenUpdateImageModal}
-                setOpenEditProductModal={setOpenEditProductModal}
                 setSelectedProduct={setSelectedProduct}
               />
             </Route>

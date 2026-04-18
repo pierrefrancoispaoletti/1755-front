@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Divider, Grid, Menu, Segment, Sidebar } from "semantic-ui-react";
-import categories from "../../../datas/categories";
+import { useCategories } from "../../../services/useCategories";
 import "./categoriessidebar.css";
 import { isBefore18h } from "../../../datas/utils";
 import { COLOR_1755, COLOR_ACARCIARA } from "../../../_const/_const";
@@ -18,6 +18,7 @@ const CategoriesSidebar = ({
   setSidebarVisible,
   children,
 }) => {
+  const categories = useCategories();
   useEffect(() => {
     if (selectedCategory) {
       setActiveMenu("");

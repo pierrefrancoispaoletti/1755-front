@@ -15,15 +15,12 @@ const ProductItem = ({
   choice,
   visible,
   image,
-  user,
   setOpenImageModal,
   setSelectedProduct,
 }) => {
+  if (!visible) return null;
   return (
-    <div
-      className="productitem"
-      style={{ display: visible ? "" : user ? "" : "none" }}
-    >
+    <div className="productitem">
       <div className="productitem-header">
         <Header
           as="h3"
@@ -37,7 +34,6 @@ const ProductItem = ({
               : { color: "" }
           }
         >
-          {!visible ? "Caché : " : ""}
           {name}
           {image && (
             <FontAwesomeIcon

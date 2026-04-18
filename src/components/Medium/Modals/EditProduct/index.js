@@ -2,7 +2,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Button, Form, Header, Icon, Modal, Radio } from "semantic-ui-react";
-import categories from "../../../../datas/categories";
+import { useCategories } from "../../../../services/useCategories";
 import { $SERVER } from "../../../../_const/_const";
 
 const EditProductModal = ({
@@ -14,6 +14,7 @@ const EditProductModal = ({
   setProducts,
   setProductsVersion,
 }) => {
+  const categories = useCategories();
   const { image, ...p } = product;
 
   const [editedProduct, setEditedProduct] = useState({

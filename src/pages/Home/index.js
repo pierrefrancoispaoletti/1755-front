@@ -1,11 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
-import {
-  faEdit,
-  faPlus,
-  faThumbsUp,
-  faTrashAlt,
-} from "@fortawesome/free-solid-svg-icons";
+import { faThumbsUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -14,16 +9,7 @@ import { $SERVER } from "../../_const/_const";
 import "./home.css";
 import { isBefore18h } from "../../datas/utils";
 
-const Home = ({
-  user,
-  event,
-  setEvent,
-  setOpenAddEventModal,
-  setOpenEditEventModal,
-  setOpenLoginModal,
-}) => {
-  const [loading, setLoading] = useState(false);
-  const token = localStorage.getItem("token-1755");
+const Home = ({ event }) => {
   const [like, setLike] = useState(0);
 
   const vote = localStorage.getItem(`1755-event`);
@@ -60,74 +46,8 @@ const Home = ({
   const base64Flag = `data:${event.image?.contentType};base64,`;
   const imageStr = arrayBufferToBase64(event.image?.data?.data);
 
-  const handleDeleteEvent = (eventId) => {
-    if (token) {
-      setLoading(true);
-      axios({
-        method: "delete",
-        url: `${$SERVER}/api/events/deleteEvent`,
-        data: {
-          eventId,
-        },
-        headers: {
-          Authorization: "Bearer " + token,
-        },
-      })
-        .then((response) => setEvent({}))
-        .catch((error) => console.log(error))
-        .finally(() => setLoading(false));
-    } else {
-      setOpenLoginModal(true);
-    }
-  };
   return (
     <Container className='home'>
-      {user && (
-        <div className='home-addbutton'>
-          {event && Object.keys(event).length === 0 && (
-            <Button
-              loading={loading}
-              disabled={loading}
-              color='green'
-              circular
-              size='medium'
-              onClick={() => setOpenAddEventModal(true)}
-            >
-              <FontAwesomeIcon
-                icon={faPlus}
-                size='2x'
-              />
-            </Button>
-          )}
-          {event && Object.keys(event).length > 0 && (
-            <>
-              {/* <Button
-                loading={loading}
-                disabled={loading}
-                color="purple"
-                circular
-                size="medium"
-                onClick={() => setOpenEditEventModal(true)}
-              >
-                <FontAwesomeIcon icon={faEdit} size="2x" />
-              </Button> */}
-              <Button
-                loading={loading}
-                disabled={loading}
-                color='red'
-                circular
-                size='medium'
-                onClick={() => handleDeleteEvent(event._id)}
-              >
-                <FontAwesomeIcon
-                  icon={faTrashAlt}
-                  size='2x'
-                />
-              </Button>
-            </>
-          )}
-        </div>
-      )}
       {event && Object.keys(event).length > 0 && (
         <>
           <Header

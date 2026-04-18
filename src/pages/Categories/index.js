@@ -1,23 +1,19 @@
 /* eslint-disable no-unused-expressions */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router";
 import {
-  Button,
   Container,
   Divider,
   Header,
   Transition,
 } from "semantic-ui-react";
-import AdminCrudButtons from "../../components/Small/AdminCrudButtons";
 import Loader from "../../components/Small/Loader";
 import ProductItem from "../../components/Small/ProductItem";
 import ProductsFilteringMenu from "../../components/Small/ProductsFilteringMenu";
-import categories from "../../datas/categories";
+import { useCategories } from "../../services/useCategories";
 import { $SERVER } from "../../_const/_const";
 import "./categories.css";
 const Categories = ({
@@ -39,6 +35,7 @@ const Categories = ({
   setOpenUpdateImageModal,
 }) => {
   const category = useParams();
+  const categories = useCategories();
   const { name, subCategories } = selectedCategory;
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
@@ -49,9 +46,10 @@ const Categories = ({
     const slug = category?.categorie;
     if (!slug) return;
     if (selectedCategory?.slug === slug) return;
+    if (!categories.length) return;
     const match = categories.find((c) => c.slug === slug);
     if (match) setSelectedCategory(match);
-  }, [category?.categorie]);
+  }, [category?.categorie, categories]);
 
   const result =
     (selectedCategory.slug === "vins" || selectedCategory.slug === "alcools") &&
@@ -226,18 +224,6 @@ const Categories = ({
 
   return (
     <Container className="categories">
-      {user && (
-        <div>
-          <Button
-            color="green"
-            circular
-            size="medium"
-            onClick={() => setOpenAddProductModal(true)}
-          >
-            <FontAwesomeIcon icon={faPlus} size="2x" />
-          </Button>
-        </div>
-      )}
       <Header
         className="categories-header"
         as="h2"
@@ -293,29 +279,13 @@ const Categories = ({
           filteredProducts
           ?.sort((a, b) => a.price - b.price)
           .map((p) => (
-            <>
-              {user && (
-                <AdminCrudButtons
-                  loading={loading}
-                  {...p}
-                  product={p}
-                  handleDeleteProduct={handleDeleteProduct}
-                  handleChangeVisibility={handleChangeVisibility}
-                  handleChangeChoice={handleChangeChoice}
-                  setSelectedProduct={setSelectedProduct}
-                  setOpenEditProductModal={setOpenEditProductModal}
-                  setOpenUpdateImageModal={setOpenUpdateImageModal}
-                />
-              )}
-              <ProductItem
-                key={p._id}
-                product={p}
-                {...p}
-                user={user}
-                setOpenImageModal={setOpenImageModal}
-                setSelectedProduct={setSelectedProduct}
-              />
-            </>
+            <ProductItem
+              key={p._id}
+              product={p}
+              {...p}
+              setOpenImageModal={setOpenImageModal}
+              setSelectedProduct={setSelectedProduct}
+            />
           ))}
       </div>
       <Divider hidden />

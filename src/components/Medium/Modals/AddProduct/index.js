@@ -2,7 +2,7 @@
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { Button, Form, Header, Icon, Modal, Radio } from "semantic-ui-react";
-import categories from "../../../../datas/categories";
+import { useCategories } from "../../../../services/useCategories";
 import Resizer from "react-image-file-resizer";
 import { $SERVER, COMPRESSION_QUALITY } from "../../../../_const/_const";
 
@@ -15,6 +15,7 @@ const AddProductModal = ({
   setProducts,
   setProductsVersion,
 }) => {
+  const categories = useCategories();
   const [product, setProduct] = useState({
     name: "",
     region: "",
