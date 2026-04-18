@@ -25,6 +25,7 @@ import AdminPlaceholder from "../../pages/Admin/Placeholder";
 import AdminCategories from "../../pages/Admin/Categories";
 import AdminProducts from "../../pages/Admin/Products";
 import AdminEvents from "../../pages/Admin/Events";
+import AdminThemes from "../../pages/Admin/Themes";
 import "../../design-system";
 
 const App = () => {
@@ -327,7 +328,7 @@ const App = () => {
             </Route>
             <Route path="/admin/themes">
               <RequireAuth user={user}>
-                <AdminPlaceholder title="Thèmes" description="Thèmes visuels." />
+                <AdminThemes setAppMessage={setAppMessage} />
               </RequireAuth>
             </Route>
           </Switch>
