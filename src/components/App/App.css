@@ -1,14 +1,16 @@
-html, body {
+html {
   background: #0E0A10;
-  min-height: 100%;
 }
 
 body {
+  background: #0E0A10;
   color: #F5EFE8;
   margin: 0;
+  min-height: 100vh;
   -webkit-font-smoothing: antialiased;
 }
 
 .App {
   background: var(--ds-bg-deep, #0E0A10);
+  min-height: 100vh;
 }
