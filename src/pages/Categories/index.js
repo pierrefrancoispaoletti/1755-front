@@ -29,6 +29,7 @@ const Categories = ({
   setActiveMenu,
   setDropdownValue,
   filteredProducts,
+  productsVersion,
   user,
   setOpenAddProductModal,
   setOpenLoginModal,
@@ -42,6 +43,7 @@ const Categories = ({
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
   const cacheRef = useRef({});
+  const lastVersionRef = useRef(productsVersion);
 
   useEffect(() => {
     const slug = category?.categorie;
@@ -76,7 +78,10 @@ const Categories = ({
     const lang = (navigator.language || "fr").toLowerCase().slice(0, 2);
     const cacheKey = `${type}_${lang}`;
 
-    if (cacheRef.current[cacheKey]) {
+    if (productsVersion !== lastVersionRef.current) {
+      cacheRef.current = {};
+      lastVersionRef.current = productsVersion;
+    } else if (cacheRef.current[cacheKey]) {
       setProducts(cacheRef.current[cacheKey]);
       return;
     }
@@ -91,7 +96,7 @@ const Categories = ({
       })
       .catch((err) => console.error("fetch products error", err))
       .finally(() => setLoading(false));
-  }, [selectedCategory]);
+  }, [selectedCategory, productsVersion]);
 
   useEffect(() => {
     if (!products.length) {

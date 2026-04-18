@@ -16,6 +16,7 @@ const UpdateImageModal = ({
   setOpenUpdateImageModal,
   product,
   setProducts,
+  setProductsVersion,
   setOpenLoginModal,
   setAppMessage,
 }) => {
@@ -61,6 +62,7 @@ const UpdateImageModal = ({
         .then((response) => {
           if (response && response.data.status === 200) {
             setProducts(response.data.data);
+            setProductsVersion?.((v) => v + 1);
             setAppMessage({
               success: response.data.status === 200 ? true : false,
               message: response.data.message,
@@ -101,6 +103,7 @@ const UpdateImageModal = ({
       })
         .then((response) => {
           setProducts(response.data.data);
+          setProductsVersion?.((v) => v + 1);
           setAppMessage({
             success: response.data.status === 200 ? true : false,
             message: "Image supprimée avec succés",

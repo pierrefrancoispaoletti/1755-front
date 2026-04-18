@@ -39,6 +39,7 @@ const App = () => {
   const [event, setEvent] = useState({});
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [eventLoading, setEventLoading] = useState(false);
+  const [productsVersion, setProductsVersion] = useState(0);
 
   useEffect(() => {
     const backgroundColor = isBefore18h() ? COLOR_ACARCIARA : COLOR_1755;
@@ -190,6 +191,7 @@ const App = () => {
             <Route path='/categories/:categorie'>
               <AddProductModal
                 setProducts={setProducts}
+                setProductsVersion={setProductsVersion}
                 selectedCategory={selectedCategory}
                 setOpenLoginModal={setOpenLoginModal}
                 setAppMessage={setAppMessage}
@@ -203,11 +205,13 @@ const App = () => {
                 setOpenLoginModal={setOpenLoginModal}
                 openEditProductModal={openEditProductModal}
                 setProducts={setProducts}
+                setProductsVersion={setProductsVersion}
               />
               <UpdateImageModal
                 openUpdateImageModal={openUpdateImageModal}
                 setOpenUpdateImageModal={setOpenUpdateImageModal}
                 setProducts={setProducts}
+                setProductsVersion={setProductsVersion}
                 product={selectedProduct}
                 setOpenLoginModal={setOpenLoginModal}
                 setAppMessage={setAppMessage}
@@ -220,6 +224,7 @@ const App = () => {
               <Categories
                 filteredProducts={filteredProducts}
                 setFilteredProducts={setFilteredProducts}
+                productsVersion={productsVersion}
                 user={user}
                 selectedCategory={selectedCategory}
                 setSelectedCategory={setSelectedCategory}

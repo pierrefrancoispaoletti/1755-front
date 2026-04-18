@@ -13,6 +13,7 @@ const AddProductModal = ({
   setOpenAddProductModal,
   setOpenLoginModal,
   setProducts,
+  setProductsVersion,
 }) => {
   const [product, setProduct] = useState({
     name: "",
@@ -114,6 +115,7 @@ const AddProductModal = ({
         .then((response) => {
           if (response && response.data.status === 200) {
             setProducts(response.data.data);
+            setProductsVersion?.((v) => v + 1);
             setProduct({
               name: "",
               region: "",

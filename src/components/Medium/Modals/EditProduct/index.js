@@ -12,6 +12,7 @@ const EditProductModal = ({
   setOpenLoginModal,
   setAppMessage,
   setProducts,
+  setProductsVersion,
 }) => {
   const { image, ...p } = product;
 
@@ -92,6 +93,7 @@ const EditProductModal = ({
         .then((response) => {
           if (response && response.data.status === 200) {
             setProducts(response.data.data);
+            setProductsVersion?.((v) => v + 1);
           }
           setAppMessage({
             success: response.data.status === 200 ? true : false,
