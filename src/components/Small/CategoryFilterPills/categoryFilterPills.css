@@ -1,0 +1,90 @@
+.cfp {
+  margin-bottom: var(--ds-space-4, 16px);
+}
+
+.cfp-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-space-2, 8px);
+  margin-bottom: var(--ds-space-2, 8px);
+}
+
+.cfp-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-1, 4px);
+  padding: 6px 12px;
+  border-radius: var(--ds-radius-pill, 999px);
+  background: var(--ds-bg-surface, #1B1118);
+  border: 1px solid var(--ds-border-subtle, #2C1E25);
+  color: var(--ds-text-primary, #F5EFE8);
+  font-family: var(--ds-font-sans, "Inter", system-ui, sans-serif);
+  font-size: var(--ds-size-small, 13px);
+  cursor: pointer;
+}
+
+.cfp-pill--active {
+  background: var(--ds-accent-wine, #6B1A2C);
+  border-color: var(--ds-accent-wine, #6B1A2C);
+  color: var(--ds-text-primary, #F5EFE8);
+}
+
+.cfp-badge {
+  background: rgba(255, 255, 255, 0.08);
+  padding: 1px 6px;
+  border-radius: var(--ds-radius-pill, 999px);
+  font-size: var(--ds-size-tiny, 11px);
+}
+
+.cfp-pill--active .cfp-badge {
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.cfp-label {
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: var(--ds-size-tiny, 11px);
+  color: var(--ds-text-muted, #9A8B90);
+  margin: 0 0 var(--ds-space-1, 4px) var(--ds-space-3, 12px);
+}
+
+.cfp-subrow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-space-1, 4px);
+  padding-left: var(--ds-space-2, 8px);
+  border-left: 2px solid var(--ds-accent-wine, #6B1A2C);
+  margin: 0 0 var(--ds-space-3, 12px) var(--ds-space-1, 4px);
+}
+
+.cfp-subpill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-1, 4px);
+  padding: 5px 10px;
+  border-radius: var(--ds-radius-pill, 999px);
+  background: transparent;
+  border: 1px solid var(--ds-border-subtle, #2C1E25);
+  color: var(--ds-text-muted, #9A8B90);
+  font-family: var(--ds-font-sans, "Inter", system-ui, sans-serif);
+  font-size: var(--ds-size-tiny, 11px);
+  cursor: pointer;
+}
+
+.cfp-subpill--active {
+  background: var(--ds-accent-gold, #D4A24C);
+  border-color: var(--ds-accent-gold, #D4A24C);
+  color: var(--ds-bg-deep, #0E0A10);
+}
+
+.cfp-subbadge {
+  background: rgba(255, 255, 255, 0.06);
+  padding: 1px 5px;
+  border-radius: var(--ds-radius-pill, 999px);
+  font-size: var(--ds-size-tiny, 11px);
+}
+
+.cfp-subpill--active .cfp-subbadge {
+  background: rgba(0, 0, 0, 0.15);
+  color: var(--ds-bg-deep, #0E0A10);
+}
