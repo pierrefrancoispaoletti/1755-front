@@ -1,0 +1,28 @@
+.admin-page {
+  min-height: 100vh;
+  background: var(--ds-bg-deep);
+  color: var(--ds-text-primary);
+  padding: var(--ds-space-6) var(--ds-space-4) calc(80px + var(--ds-safe-bottom));
+  font-family: var(--ds-font-sans);
+}
+.admin-page h1 {
+  font-family: var(--ds-font-serif);
+  font-size: var(--ds-size-display);
+  margin: 0 0 var(--ds-space-2);
+}
+.admin-page p.subtitle {
+  color: var(--ds-text-muted);
+  font-size: var(--ds-size-body);
+  margin: 0 0 var(--ds-space-6);
+}
+.admin-placeholder {
+  border: 1px dashed var(--ds-border-subtle);
+  border-radius: var(--ds-radius-md);
+  padding: var(--ds-space-6);
+  text-align: center;
+  color: var(--ds-text-muted);
+  margin-top: var(--ds-space-4);
+}
+.admin-logout {
+  margin-top: var(--ds-space-6);
+}
