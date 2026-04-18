@@ -36,7 +36,12 @@ const Categories = ({
     if (selectedCategory?.slug === s) return;
     if (!categories.length) return;
     const match = categories.find((c) => c.slug === s);
-    if (match) setSelectedCategory(match);
+    if (match) {
+      setSelectedCategory(match);
+      setActiveMenu("");
+      setDropdownValue("");
+      setProducts([]);
+    }
   }, [params?.categorie, categories]);
 
   useEffect(() => {
