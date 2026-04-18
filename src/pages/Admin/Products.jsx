@@ -49,11 +49,12 @@ const Products = ({ user, setAppMessage, setOpenLoginModal, productsVersion, set
     });
   }, [products, query, filterCat]);
 
-  const changeVisibility = async (p) => {
+  const togglePatch = async (p, patch) => {
     try {
+      const { image, _id, ...rest } = p;
       await axios.post(
         `${$SERVER}/api/products/updateProduct`,
-        { ...p, visible: !p.visible },
+        { productId: _id, update: { ...rest, ...patch } },
         { headers: { Authorization: `Bearer ${localStorage.getItem("token-1755")}` } }
       );
       setProductsVersion((v) => v + 1);
@@ -62,25 +63,15 @@ const Products = ({ user, setAppMessage, setOpenLoginModal, productsVersion, set
     }
   };
 
-  const changeChoice = async (p) => {
-    try {
-      await axios.post(
-        `${$SERVER}/api/products/updateProduct`,
-        { ...p, choice: !p.choice },
-        { headers: { Authorization: `Bearer ${localStorage.getItem("token-1755")}` } }
-      );
-      setProductsVersion((v) => v + 1);
-    } catch (e) {
-      setAppMessage && setAppMessage({ negative: true, header: "Erreur", content: e.message });
-    }
-  };
+  const changeVisibility = (p) => togglePatch(p, { visible: !p.visible });
+  const changeChoice = (p) => togglePatch(p, { choice: !p.choice });
 
   const handleDelete = async (p) => {
     if (!window.confirm(`Supprimer "${p.name}" ?`)) return;
     try {
       await axios.delete(`${$SERVER}/api/products/deleteProduct`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token-1755")}` },
-        data: { _id: p._id },
+        data: { productId: p._id },
       });
       setProductsVersion((v) => v + 1);
     } catch (e) {
