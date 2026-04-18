@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import ReactDOM from "react-dom";
 import "./Sheet.css";
 
 const Sheet = ({ open, onClose, title, children, footer }) => {
@@ -10,7 +11,9 @@ const Sheet = ({ open, onClose, title, children, footer }) => {
   }, [open]);
 
   if (!open) return null;
-  return (
+  // Portal mount sur document.body pour échapper à tout parent avec transform
+  // (Semantic UI Sidebar.Pushable casse position: fixed sinon).
+  return ReactDOM.createPortal(
     <div className="ds-root ds-sheet__overlay" onClick={onClose}>
       <div className="ds-sheet" onClick={(e) => e.stopPropagation()}>
         <div className="ds-sheet__handle" />
@@ -18,7 +21,8 @@ const Sheet = ({ open, onClose, title, children, footer }) => {
         <div className="ds-sheet__body">{children}</div>
         {footer && <div className="ds-sheet__footer">{footer}</div>}
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
 
