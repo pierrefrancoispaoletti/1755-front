@@ -7,7 +7,7 @@ import Categories from "../../pages/Categories";
 import CategoriesLanding from "../../pages/CategoriesLanding";
 import Home from "../../pages/Home";
 import { $SERVER } from "../../_const/_const";
-import ImageModal from "../Medium/Modals/ImageModal";
+import ImageLightbox from "../Medium/Modals/ImageLightbox";
 import Login from "../Medium/Modals/Login";
 import Copyright from "../Small/Copyright";
 import Loader from "../Small/Loader";
@@ -139,7 +139,7 @@ const App = () => {
               <CategoriesLanding />
             </Route>
             <Route path='/categories/:categorie'>
-              <ImageModal
+              <ImageLightbox
                 openImageModal={openImageModal}
                 setOpenImageModal={setOpenImageModal}
                 product={selectedProduct}
