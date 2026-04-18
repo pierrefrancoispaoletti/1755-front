@@ -235,6 +235,12 @@ Convention projet : pas de tests automatisés. Vérifications manuelles :
 | Suppression de `src/datas/categories.js` casse des imports résiduels | Grep avant suppression, corriger usages, tester. |
 | Déploiement `npm run deploy` | Workflow existant inchangé ; après deploy, toujours `git push origin main` (convention projet). |
 
+## Contraintes transverses
+
+- **Traductions : aucune régression.** Le flow actuel reste intact : le back renvoie les descriptions produit déjà localisées via `GET /api/products?type=X&lang=Y` (basé sur `navigator.language.slice(0,2)` côté front). Aucune modification de ce pipeline dans ce spec.
+- **Catégories = français uniquement** (comme l'existant statique). Le modèle `Category` stocke un `name` mono-langue. Si un jour on veut localiser les catégories, ce sera un spec dédié — pas dans celui-ci.
+- **Branches dédiées** : tout développement se fait sur une branche dédiée côté front (`1755-front`) ET côté back (`1755-back`), jamais directement sur `main`.
+
 ## Hors scope (specs ultérieurs)
 
 - Refonte visuelle des écrans publics (Home, Categories, ProductItem) — spec dédié qui appliquera le design system.
