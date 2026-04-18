@@ -1,21 +1,14 @@
-/* eslint-disable no-unused-expressions */
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable no-unused-vars */
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router";
-import {
-  Container,
-  Divider,
-  Header,
-  Transition,
-} from "semantic-ui-react";
 import Loader from "../../components/Small/Loader";
 import ProductItem from "../../components/Small/ProductItem";
-import ProductsFilteringMenu from "../../components/Small/ProductsFilteringMenu";
+import CategoryFilterPills from "../../components/Small/CategoryFilterPills";
 import { useCategories } from "../../services/useCategories";
 import { $SERVER } from "../../_const/_const";
 import "./categories.css";
+
 const Categories = ({
   setFilteredProducts,
   selectedCategory,
@@ -26,49 +19,25 @@ const Categories = ({
   setDropdownValue,
   filteredProducts,
   productsVersion,
-  user,
-  setOpenAddProductModal,
-  setOpenLoginModal,
   setSelectedProduct,
-  setOpenEditProductModal,
   setOpenImageModal,
-  setOpenUpdateImageModal,
 }) => {
-  const category = useParams();
+  const params = useParams();
   const categories = useCategories();
-  const { name, subCategories } = selectedCategory;
+  const { name, subCategories, slug } = selectedCategory;
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
   const cacheRef = useRef({});
   const lastVersionRef = useRef(productsVersion);
 
   useEffect(() => {
-    const slug = category?.categorie;
-    if (!slug) return;
-    if (selectedCategory?.slug === slug) return;
+    const s = params?.categorie;
+    if (!s) return;
+    if (selectedCategory?.slug === s) return;
     if (!categories.length) return;
-    const match = categories.find((c) => c.slug === slug);
+    const match = categories.find((c) => c.slug === s);
     if (match) setSelectedCategory(match);
-  }, [category?.categorie, categories]);
-
-  const result =
-    (selectedCategory.slug === "vins" || selectedCategory.slug === "alcools") &&
-    (selectedCategory?.subCategories[0]?.subCat?.find(
-      ({ name, slug }) => slug === dropdownValue
-    ) ||
-      selectedCategory?.subCategories[1]?.subCat?.find(
-        ({ name, slug }) => slug === dropdownValue
-      ) ||
-      selectedCategory?.subCategories[3]?.subCat?.find(
-        ({ name, slug }) => slug === dropdownValue
-      ));
-  const prevDropdownValueRef = useRef();
-
-  useEffect(() => {
-    prevDropdownValueRef.current = dropdownValue;
-  });
-
-  const prevDropdownValue = prevDropdownValueRef.current;
+  }, [params?.categorie, categories]);
 
   useEffect(() => {
     const type = selectedCategory?.slug;
@@ -97,209 +66,65 @@ const Categories = ({
   }, [selectedCategory, productsVersion]);
 
   useEffect(() => {
-    if (!products.length) {
-      setFilteredProducts([]);
-      return;
-    }
-    if (activeMenu) {
+    if (!products.length) { setFilteredProducts([]); return; }
+    if (dropdownValue) {
+      setFilteredProducts(products.filter((p) => p.subCategory === dropdownValue));
+    } else if (activeMenu) {
       setFilteredProducts(products.filter((p) => p.category === activeMenu));
     } else {
       setFilteredProducts(products);
     }
-  }, [products, activeMenu]);
+  }, [products, activeMenu, dropdownValue]);
 
-  useEffect(() => {
-    setDropdownValue("");
-    if (activeMenu) {
-      setFilteredProducts(products?.filter((p) => p.category === activeMenu));
-    }
-  }, [activeMenu]);
+  const headerTitle = (() => {
+    const parent = subCategories?.find((s) => s.slug === activeMenu);
+    if (parent) return `${name} — ${parent.name}`;
+    return name || "";
+  })();
 
-  useEffect(() => {
-    if (dropdownValue) {
-      setDropdownValue(dropdownValue);
-      setFilteredProducts(
-        products?.filter((p) => p.subCategory === dropdownValue)
-      );
-    }
-  }, [dropdownValue]);
-
-  const token = localStorage.getItem("token-1755");
-
-  const handleDeleteProduct = (productId) => {
-    if (token) {
-      setLoading(true);
-      axios({
-        method: "delete",
-        url: `${$SERVER}/api/products/deleteProduct`,
-        data: {
-          productId,
-        },
-        headers: {
-          Authorization: "Bearer " + token,
-        },
-      })
-        .then((response) => {
-          const filtered = response.data.data.filter(
-            (p) => p.type === selectedCategory.slug
-          );
-          setProducts(filtered);
-          const cacheKey = `${selectedCategory.slug}_${(
-            navigator.language || "fr"
-          ).toLowerCase().slice(0, 2)}`;
-          cacheRef.current[cacheKey] = filtered;
-        })
-        .catch((error) => console.log(error))
-        .finally(() => setLoading(false));
-    } else {
-      setOpenLoginModal(true);
-    }
-  };
-
-  const handleChangeVisibility = (product) => {
-    let { image, ...newProduct } = product;
-    newProduct.visible = !product.visible;
-    if (token) {
-      setLoading(true);
-      axios({
-        method: "post",
-        url: `${$SERVER}/api/products/updateProduct`,
-        data: {
-          update: newProduct,
-          productId: product._id,
-        },
-        headers: {
-          Authorization: "Bearer " + token,
-        },
-      })
-        .then((response) => {
-          const filtered = response.data.data.filter(
-            (p) => p.type === selectedCategory.slug
-          );
-          setProducts(filtered);
-          const cacheKey = `${selectedCategory.slug}_${(
-            navigator.language || "fr"
-          ).toLowerCase().slice(0, 2)}`;
-          cacheRef.current[cacheKey] = filtered;
-        })
-        .catch((error) => console.log(error))
-        .finally(() => setLoading(false));
-    } else {
-      setOpenLoginModal(true);
-    }
-  };
-
-  const handleChangeChoice = (product) => {
-    let { image, ...newProduct } = product;
-    newProduct.choice = !product.choice;
-    if (token) {
-      setLoading(true);
-      axios({
-        method: "post",
-        url: `${$SERVER}/api/products/updateProduct`,
-        data: {
-          update: newProduct,
-          productId: product._id,
-        },
-        headers: {
-          Authorization: "Bearer " + token,
-        },
-      })
-        .then((response) => {
-          const filtered = response.data.data.filter(
-            (p) => p.type === selectedCategory.slug
-          );
-          setProducts(filtered);
-          const cacheKey = `${selectedCategory.slug}_${(
-            navigator.language || "fr"
-          ).toLowerCase().slice(0, 2)}`;
-          cacheRef.current[cacheKey] = filtered;
-        })
-        .catch((error) => console.log(error))
-        .finally(() => setLoading(false));
-    } else {
-      setOpenLoginModal(true);
-    }
-  };
+  const visibleProducts = (filteredProducts || [])
+    .filter((p) => p.visible)
+    .sort((a, b) => {
+      if (!!a.choice !== !!b.choice) return a.choice ? -1 : 1;
+      return (a.price || 0) - (b.price || 0);
+    });
 
   return (
-    <Container className="categories">
-      <Header
-        className="categories-header"
-        as="h2"
-        style={
-          activeMenu.includes("rouge") || dropdownValue?.includes("rouge")
-            ? { color: "darkred" }
-            : activeMenu.includes("rose") || dropdownValue?.includes("rose")
-            ? { color: "#fec5d9" }
-            : activeMenu.includes("blanc") || dropdownValue?.includes("blanc")
-            ? { color: "#f1f285" }
-            : { color: "white" }
-        }
-      >
-        {activeMenu ? `Les ${activeMenu}` : name}
-        {(category.categorie === "vins" || category.categorie === "alcools") &&
-          !!dropdownValue && (
-            <Transition
-              visible={dropdownValue === prevDropdownValue}
-              animation="fly right"
-              duration={1000}
-            >
-              <Header.Subheader className="categories-subheader">
-                {`${result && result.name}`}
-              </Header.Subheader>
-            </Transition>
-          )}
-      </Header>
-      <Divider hidden />
-      {subCategories && (
-        <ProductsFilteringMenu
-          products={products}
-          dropdownValue={dropdownValue}
-          subCategories={subCategories}
-          activeMenu={activeMenu}
-          setActiveMenu={setActiveMenu}
-          setDropdownValue={setDropdownValue}
-        />
-      )}
-      <Divider hidden />
+    <main className="categories ds-root">
+      <h1 className="categories-title">{headerTitle}</h1>
+
+      <CategoryFilterPills
+        subCategories={subCategories || []}
+        products={products}
+        activeMenu={activeMenu}
+        setActiveMenu={setActiveMenu}
+        dropdownValue={dropdownValue}
+        setDropdownValue={setDropdownValue}
+        typeSlug={slug}
+      />
+
       {loading && (
-        <div
-          style={{
-            position: "fixed",
-            inset: 0,
-            zIndex: 5000,
-          }}
-        >
+        <div className="categories-loader">
           <Loader />
         </div>
       )}
-      <div className="products">
+
+      {!loading && visibleProducts.length === 0 && (
+        <p className="categories-empty">Aucun produit disponible pour cette sélection.</p>
+      )}
+
+      <div className="categories-products">
         {!loading &&
-          filteredProducts
-          ?.sort((a, b) => a.price - b.price)
-          .map((p) => (
+          visibleProducts.map((p) => (
             <ProductItem
               key={p._id}
               product={p}
-              {...p}
               setOpenImageModal={setOpenImageModal}
               setSelectedProduct={setSelectedProduct}
             />
           ))}
       </div>
-      <Divider hidden />
-      {subCategories && filteredProducts.length > 1 && (
-        <ProductsFilteringMenu
-          products={products}
-          dropdownValue={dropdownValue}
-          subCategories={subCategories}
-          activeMenu={activeMenu}
-          setActiveMenu={setActiveMenu}
-          setDropdownValue={setDropdownValue}
-        />
-      )}
-    </Container>
+    </main>
   );
 };
 
