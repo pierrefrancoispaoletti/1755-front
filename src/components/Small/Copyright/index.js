@@ -1,120 +1,49 @@
-import { faFacebook, faInstagram } from "@fortawesome/free-brands-svg-icons";
-import {
-  faEnvelope,
-  faHeart,
-  faPhone,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
-import { Divider, Header } from "semantic-ui-react";
-
+import { Facebook, Instagram, Mail, Phone, Heart } from "lucide-react";
 import "./copyright.css";
-const Copyright = ({
-  facebookUrl,
-  instagramUrl,
-  email,
-  phoneNumber,
-  backgroundColor,
-  productBackgroundColor,
-  textColor,
-  titleColor,
-}) => {
+
+const FB_URL = "https://www.facebook.com/Brasserie-1755-196458368600";
+const IG_URL = "https://www.instagram.com/1755baravin/";
+const MAIL = "christophemartinetti@baravin1755.com";
+const TEL = "0609542757";
+
+const Copyright = () => {
+  const year = new Date().getFullYear();
   return (
-    <div className='footer'>
-      <div>
-        <Header as='h3'>Retrouvez nous sur : </Header>
+    <footer className="footer ds-root">
+      <div className="footer-group">
+        <span className="footer-label">Suivez-nous</span>
+        <div className="footer-icons">
+          <a href={FB_URL} target="_blank" rel="noreferrer" aria-label="Facebook">
+            <Facebook size={24} strokeWidth={1.75} />
+          </a>
+          <a href={IG_URL} target="_blank" rel="noreferrer" aria-label="Instagram">
+            <Instagram size={24} strokeWidth={1.75} />
+          </a>
+        </div>
       </div>
-      <div className='footer__icons'>
-        <a
-          target='_blank'
-          href='https://www.facebook.com/Brasserie-1755-196458368600'
-          rel='noreferrer'
-        >
-          <FontAwesomeIcon
-            style={{
-              color: "#3B5998",
-              background: "white",
-              borderRadius: "100%",
-            }}
-            size='3x'
-            icon={faFacebook}
-            pull='left'
-          />
-        </a>
-        <a
-          target='_blank'
-          href='https://www.instagram.com/1755baravin/'
-          rel='noreferrer'
-        >
-          <FontAwesomeIcon
-            style={{ color: "#3F729B", borderRadius: "100%" }}
-            size='3x'
-            icon={faInstagram}
-            pull='right'
-          />
-        </a>
+
+      <div className="footer-group">
+        <span className="footer-label">Contact</span>
+        <div className="footer-icons">
+          <a href={`mailto:${MAIL}`} aria-label="E-mail">
+            <Mail size={24} strokeWidth={1.75} />
+          </a>
+          <a href={`tel:${TEL}`} aria-label="Téléphone">
+            <Phone size={24} strokeWidth={1.75} />
+          </a>
+        </div>
       </div>
-      <Divider />
-      <div>
-        <Header as='h3'>Contactez nous ! </Header>
-      </div>
-      <div className='footer__icons'>
-        <a href={`mailto:christophemartinetti@baravin1755.com`}>
-          <FontAwesomeIcon
-            style={{
-              "--fa-primary-color": "black",
-              "--fa-secondary-color": "white",
-              "--fa-secondary-opacity": 0.8,
-            }}
-            size='3x'
-            icon={faEnvelope}
-            pull='left'
-          />
+
+      <div className="footer-rule" />
+
+      <p className="footer-copy">© Baravin 1755 · {year}</p>
+      <p className="footer-alvp">
+        <a href="mailto:pef@alvp-developments.com">
+          Made with <Heart size={12} fill="currentColor" className="footer-heart" /> by ALVP-Developments Ajaccio
         </a>
-        <a href={`tel:0609542757`}>
-          <FontAwesomeIcon
-            style={{
-              "--fa-primary-color": "firebrick",
-              "--fa-secondary-color": "black",
-              "--fa-primary-opacity": 1,
-              "--fa-secondary-opacity": 1,
-            }}
-            size='3x'
-            icon={faPhone}
-            pull='right'
-          />
-        </a>
-      </div>
-      <Divider />
-      <div
-        className='footer__copyright'
-        style={{ color: "white" }}
-      >
-        {"Copyright © "}
-        <a
-          style={{ color: "white" }}
-          href='https://baravin1755.com'
-        >
-          <span>Le 1755 &nbsp;</span>
-        </a>
-        <span>{` ${new Date().getFullYear()}. `}</span>
-      </div>
-      <div className='footer__alvp'>
-        <a
-          style={{ color: "white", fontSize: "1em" }}
-          href='mailto:pef@alvp-developments.com'
-        >
-          Made with
-          <FontAwesomeIcon
-            className='alvp__icon'
-            color='darkred'
-            icon={faHeart}
-            size='2x'
-          />
-          by ALVP-Developments Ajaccio
-        </a>
-      </div>
-    </div>
+      </p>
+    </footer>
   );
 };
 

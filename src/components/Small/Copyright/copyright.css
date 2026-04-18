@@ -1,47 +1,81 @@
-.footer__copyright {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: auto;
-  padding: 10px;
-  font-family: "Josefin Sans", sans-serif !important;
-  font-size: 1.3em;
-}
-
 .footer {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: var(--ds-space-4, 16px);
+  padding: var(--ds-space-6, 24px) var(--ds-space-4, 16px);
+  color: var(--ds-text-muted, #9A8B90);
+  font-family: var(--ds-font-sans, "Inter", system-ui, sans-serif);
 }
 
-.footer__alvp {
-  border-radius: 8px;
-  padding: 2px 5px;
-  font-family: "Josefin Sans", sans-serif !important;
+.footer-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--ds-space-2, 8px);
 }
 
-.footer h3 {
-  font-family: "Dancing Script", cursive !important;
-  text-align: center !important;
-  letter-spacing: 0.2em;
-  font-size: 1.8em !important;
-  color: white !important;
+.footer-label {
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: var(--ds-size-tiny, 11px);
+  color: var(--ds-text-muted, #9A8B90);
 }
 
-.alvp__icon {
-  animation: heartPulse 2s infinite linear;
+.footer-icons {
+  display: inline-flex;
+  gap: var(--ds-space-4, 16px);
 }
 
-@keyframes heartPulse {
-  0% {
-    transform: scale(1);
-  }
+.footer-icons a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: var(--ds-text-muted, #9A8B90);
+  text-decoration: none;
+  transition: color 120ms ease, background 120ms ease;
+}
 
-  50% {
-    transform: scale(1.3);
-  }
+.footer-icons a:hover,
+.footer-icons a:focus-visible {
+  color: var(--ds-accent-gold, #D4A24C);
+  background: rgba(212, 162, 76, 0.08);
+}
 
-  100% {
-    transform: scale(1);
-  }
+.footer-rule {
+  width: 40%;
+  height: 1px;
+  background: var(--ds-border-subtle, #2C1E25);
+}
+
+.footer-copy {
+  margin: 0;
+  font-size: var(--ds-size-tiny, 11px);
+  color: var(--ds-text-muted, #9A8B90);
+}
+
+.footer-alvp {
+  margin: 0;
+  font-size: var(--ds-size-tiny, 11px);
+  color: var(--ds-text-disabled, #5C4F54);
+}
+
+.footer-alvp a {
+  color: inherit;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.footer-alvp a:hover {
+  color: var(--ds-text-muted, #9A8B90);
+}
+
+.footer-heart {
+  color: var(--ds-accent-wine, #6B1A2C);
+  vertical-align: middle;
 }
