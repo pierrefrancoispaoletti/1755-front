@@ -1,0 +1,5 @@
+.ds-appbar-root {
+  /* wrapper positionné pour scope .ds-root (inherit depuis body className) */
+}
+/* Padding bottom sur le contenu principal pour ne pas être caché par la bar */
+body.has-bottom-appbar { padding-bottom: calc(64px + var(--ds-safe-bottom, 0px)); }
