@@ -5,7 +5,7 @@ import { Route, Switch } from "react-router";
 import { Container, Divider, Message, Transition } from "semantic-ui-react";
 import Categories from "../../pages/Categories";
 import Home from "../../pages/Home";
-import { $SERVER, COLOR_1755, COLOR_ACARCIARA } from "../../_const/_const";
+import { $SERVER } from "../../_const/_const";
 import ImageModal from "../Medium/Modals/ImageModal";
 import Login from "../Medium/Modals/Login";
 import CategoriesSidebar from "../Small/CategoriesSidebar";
@@ -13,7 +13,6 @@ import Copyright from "../Small/Copyright";
 import Loader from "../Small/Loader";
 import TopAppBar from "../Small/TopAppBar";
 import "./App.css";
-import { isBefore18h } from "../../datas/utils";
 import BottomAppBar from "../Small/BottomAppBar";
 import RequireAuth from "../Small/RequireAuth";
 import AdminHome from "../../pages/Admin/Home";
@@ -39,25 +38,6 @@ const App = () => {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [eventLoading, setEventLoading] = useState(false);
   const [productsVersion, setProductsVersion] = useState(0);
-
-  useEffect(() => {
-    const backgroundColor = isBefore18h() ? COLOR_ACARCIARA : COLOR_1755;
-    document.body.style.background = backgroundColor;
-
-    const elementsToUpdate = [
-      ".ui.segment",
-      ".App",
-      ".loader",
-      ".categories",
-      ".topappbar",
-    ];
-
-    elementsToUpdate.forEach((selector) => {
-      document.querySelectorAll(selector).forEach((element) => {
-        element.style.backgroundColor = backgroundColor;
-      });
-    });
-  });
 
   useEffect(() => {
     if (Object.keys(appMessage).length !== 0) {
@@ -118,7 +98,7 @@ const App = () => {
 
   return (
     <div
-      className='App'
+      className='App ds-root'
       style={{ position: "relative" }}
     >
       <>
