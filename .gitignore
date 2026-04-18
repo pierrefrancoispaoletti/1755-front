@@ -28,3 +28,4 @@ node_modules
 .playwright-mcp/
 /plan*.png
 /prod-*.png
+.superpowers/
