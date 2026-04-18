@@ -23,6 +23,7 @@ import RequireAuth from "../Small/RequireAuth";
 import AdminHome from "../../pages/Admin/Home";
 import AdminPlaceholder from "../../pages/Admin/Placeholder";
 import AdminCategories from "../../pages/Admin/Categories";
+import AdminProducts from "../../pages/Admin/Products";
 import "../../design-system";
 
 const App = () => {
@@ -299,7 +300,13 @@ const App = () => {
             </Route>
             <Route path="/admin/products">
               <RequireAuth user={user}>
-                <AdminPlaceholder title="Produits" description="Gestion du catalogue produits." />
+                <AdminProducts
+                  user={user}
+                  setAppMessage={setAppMessage}
+                  setOpenLoginModal={setOpenLoginModal}
+                  productsVersion={productsVersion}
+                  setProductsVersion={setProductsVersion}
+                />
               </RequireAuth>
             </Route>
             <Route exact path="/admin/categories">
