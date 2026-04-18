@@ -81,6 +81,7 @@
   border: 1px solid rgba(212, 162, 76, 0.35);
   border-radius: var(--ds-radius-md, 16px);
   padding: var(--ds-space-4, 16px);
+  padding-top: calc(var(--ds-space-4, 16px) + var(--ds-space-4, 16px));
   margin: var(--ds-space-2, 8px) 0;
 }
 
@@ -90,10 +91,12 @@
 
 .pi-choice-badge {
   position: absolute;
-  top: 8px;
-  right: 12px;
+  top: var(--ds-space-3, 12px);
+  left: var(--ds-space-4, 16px);
+  right: var(--ds-space-4, 16px);
   font-size: var(--ds-size-tiny, 11px);
   letter-spacing: 0.1em;
   color: var(--ds-accent-gold, #D4A24C);
   text-transform: uppercase;
+  text-align: left;
 }
