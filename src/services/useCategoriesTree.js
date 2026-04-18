@@ -26,6 +26,12 @@ async function loadOnce() {
   return pending;
 }
 
+export function invalidateCategoriesTreeCache() {
+  cache = null;
+  pending = null;
+  loadOnce();
+}
+
 export function useCategoriesTree() {
   const [tree, setTree] = useState(cache || []);
   useEffect(() => {
