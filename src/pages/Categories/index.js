@@ -23,6 +23,7 @@ import "./categories.css";
 const Categories = ({
   setFilteredProducts,
   selectedCategory,
+  setSelectedCategory,
   dropdownValue,
   activeMenu,
   setActiveMenu,
@@ -41,6 +42,14 @@ const Categories = ({
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
   const cacheRef = useRef({});
+
+  useEffect(() => {
+    const slug = category?.categorie;
+    if (!slug) return;
+    if (selectedCategory?.slug === slug) return;
+    const match = categories.find((c) => c.slug === slug);
+    if (match) setSelectedCategory(match);
+  }, [category?.categorie]);
 
   const result =
     (selectedCategory.slug === "vins" || selectedCategory.slug === "alcools") &&

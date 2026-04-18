@@ -222,6 +222,7 @@ const App = () => {
                 setFilteredProducts={setFilteredProducts}
                 user={user}
                 selectedCategory={selectedCategory}
+                setSelectedCategory={setSelectedCategory}
                 activeMenu={activeMenu}
                 setActiveMenu={setActiveMenu}
                 dropdownValue={dropdownValue}
