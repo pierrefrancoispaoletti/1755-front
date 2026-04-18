@@ -10,7 +10,7 @@ const Themes = ({ setAppMessage }) => {
     (async () => {
       try {
         const { data } = await axios.get(`${$SERVER}/api/themes/allThemes`, {
-          headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
+          headers: { Authorization: `Bearer ${localStorage.getItem("token-1755")}` },
         });
         setThemes(Array.isArray(data?.data) ? data.data : []);
       } catch (e) {

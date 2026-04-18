@@ -4,7 +4,7 @@ import { $SERVER } from "../_const/_const";
 const base = `${$SERVER}/api/categories`;
 
 function authHeaders() {
-  const token = localStorage.getItem("jwt");
+  const token = localStorage.getItem("token-1755");
   return token ? { Authorization: `Bearer ${token}` } : {};
 }
 

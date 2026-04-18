@@ -4,7 +4,7 @@ import "./admin.css";
 
 const AdminHome = ({ user, setUser }) => {
   const handleLogout = () => {
-    localStorage.removeItem("jwt");
+    localStorage.removeItem("token-1755");
     setUser("");
   };
   return (

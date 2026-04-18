@@ -26,7 +26,7 @@ const Products = ({ user, setAppMessage, setOpenLoginModal, productsVersion, set
       try {
         const [{ data }, flat] = await Promise.all([
           axios.get(`${$SERVER}/api/products/allProducts`, {
-            headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
+            headers: { Authorization: `Bearer ${localStorage.getItem("token-1755")}` },
           }),
           fetchCategoriesFlat(),
         ]);
@@ -54,7 +54,7 @@ const Products = ({ user, setAppMessage, setOpenLoginModal, productsVersion, set
       await axios.post(
         `${$SERVER}/api/products/updateProduct`,
         { ...p, visible: !p.visible },
-        { headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` } }
+        { headers: { Authorization: `Bearer ${localStorage.getItem("token-1755")}` } }
       );
       setProductsVersion((v) => v + 1);
     } catch (e) {
@@ -67,7 +67,7 @@ const Products = ({ user, setAppMessage, setOpenLoginModal, productsVersion, set
       await axios.post(
         `${$SERVER}/api/products/updateProduct`,
         { ...p, choice: !p.choice },
-        { headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` } }
+        { headers: { Authorization: `Bearer ${localStorage.getItem("token-1755")}` } }
       );
       setProductsVersion((v) => v + 1);
     } catch (e) {
@@ -79,7 +79,7 @@ const Products = ({ user, setAppMessage, setOpenLoginModal, productsVersion, set
     if (!window.confirm(`Supprimer "${p.name}" ?`)) return;
     try {
       await axios.delete(`${$SERVER}/api/products/deleteProduct`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
+        headers: { Authorization: `Bearer ${localStorage.getItem("token-1755")}` },
         data: { _id: p._id },
       });
       setProductsVersion((v) => v + 1);
