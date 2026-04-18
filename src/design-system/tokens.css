@@ -1,0 +1,54 @@
+.ds-root {
+  /* Couleurs — palette sombre inspirée "Decant" */
+  --ds-bg-deep: #0E0A10;
+  --ds-bg-surface: #1B1118;
+  --ds-bg-elevated: #241820;
+  --ds-accent-wine: #6B1A2C;
+  --ds-accent-wine-hover: #8a2139;
+  --ds-accent-gold: #D4A24C;
+  --ds-text-primary: #F5EFE8;
+  --ds-text-muted: #9A8B90;
+  --ds-text-disabled: #5C4F54;
+  --ds-border-subtle: #2C1E25;
+  --ds-danger: #C0392B;
+  --ds-success: #3A7D44;
+
+  /* Typo */
+  --ds-font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --ds-font-serif: "DM Serif Display", Georgia, serif;
+  --ds-size-display: 28px;
+  --ds-size-h1: 22px;
+  --ds-size-h2: 18px;
+  --ds-size-body: 15px;
+  --ds-size-small: 13px;
+  --ds-size-tiny: 11px;
+
+  /* Grille 4 px */
+  --ds-space-1: 4px;
+  --ds-space-2: 8px;
+  --ds-space-3: 12px;
+  --ds-space-4: 16px;
+  --ds-space-5: 20px;
+  --ds-space-6: 24px;
+  --ds-space-8: 32px;
+
+  /* Radii */
+  --ds-radius-sm: 8px;
+  --ds-radius-md: 16px;
+  --ds-radius-pill: 999px;
+
+  /* Shadows */
+  --ds-shadow-card: 0 4px 12px rgba(0, 0, 0, 0.35);
+  --ds-shadow-glow: 0 0 16px rgba(212, 162, 76, 0.25);
+
+  /* Z-index */
+  --ds-z-appbar: 100;
+  --ds-z-sheet: 200;
+  --ds-z-modal: 300;
+
+  /* Safe area iOS */
+  --ds-safe-bottom: env(safe-area-inset-bottom, 0px);
+
+  font-family: var(--ds-font-sans);
+  color: var(--ds-text-primary);
+}
