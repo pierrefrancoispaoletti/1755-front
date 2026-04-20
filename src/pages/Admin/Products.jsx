@@ -83,8 +83,12 @@ const Products = ({ user, setAppMessage, setOpenLoginModal, productsVersion, set
 
   return (
     <div className="ds-root admin-page">
-      <h1 style={{ margin: 0 }}>Produits</h1>
-      <p className="subtitle">{filtered.length} produit(s) — {products.length} au total</p>
+      <div className="admin-prod__header">
+        <h1>Produits</h1>
+      </div>
+      <div className="admin-prod__crumb">
+        {filtered.length} produit(s) — {products.length} au total
+      </div>
 
       <div className="admin-prod__toolbar">
         <input
@@ -100,13 +104,16 @@ const Products = ({ user, setAppMessage, setOpenLoginModal, productsVersion, set
         </select>
       </div>
 
-      <div style={{ marginBottom: 16 }}>
+      <div className="admin-prod__add">
         <Button variant="primary" block onClick={() => setOpenAdd(true)}>
           <ICON_MAP.Plus /> Ajouter un produit
         </Button>
       </div>
 
-      {loading && <div style={{ color: "var(--ds-text-muted)" }}>Chargement…</div>}
+      {loading && <div className="admin-prod__empty">Chargement…</div>}
+      {!loading && filtered.length === 0 && (
+        <div className="admin-prod__empty">Aucun produit.</div>
+      )}
 
       {filtered.map((p) => (
         <div key={p._id}>
@@ -116,21 +123,45 @@ const Products = ({ user, setAppMessage, setOpenLoginModal, productsVersion, set
             hidden={!p.visible}
           />
           <div className="admin-prod__actions">
-            <Button variant="ghost" onClick={() => { setSelected(p); setOpenEdit(true); }}>
-              <ICON_MAP.Edit /> Éditer
-            </Button>
-            <Button variant="ghost" onClick={() => { setSelected(p); setOpenImg(true); }}>
-              <ICON_MAP.Image /> Image
-            </Button>
-            <Button variant="ghost" onClick={() => changeVisibility(p)}>
-              {p.visible ? <ICON_MAP.EyeOff /> : <ICON_MAP.Eye />} Visibilité
-            </Button>
-            <Button variant="ghost" onClick={() => changeChoice(p)}>
-              <ICON_MAP.Heart style={{ color: p.choice ? "#C0392B" : undefined }} /> Choix
-            </Button>
-            <Button variant="danger" onClick={() => handleDelete(p)}>
-              <ICON_MAP.Trash />
-            </Button>
+            <button
+              type="button"
+              className="admin-prod__action-btn"
+              onClick={() => { setSelected(p); setOpenEdit(true); }}
+            >
+              <ICON_MAP.Edit size={14} /> Éditer
+            </button>
+            <button
+              type="button"
+              className="admin-prod__action-btn"
+              onClick={() => { setSelected(p); setOpenImg(true); }}
+            >
+              <ICON_MAP.Image size={14} /> Image
+            </button>
+            <button
+              type="button"
+              className={`admin-prod__action-btn${!p.visible ? " admin-prod__action-btn--active" : ""}`}
+              onClick={() => changeVisibility(p)}
+              aria-pressed={!p.visible}
+            >
+              {p.visible ? <ICON_MAP.EyeOff size={14} /> : <ICON_MAP.Eye size={14} />}
+              {p.visible ? "Masquer" : "Afficher"}
+            </button>
+            <button
+              type="button"
+              className={`admin-prod__action-btn${p.choice ? " admin-prod__action-btn--active" : ""}`}
+              onClick={() => changeChoice(p)}
+              aria-pressed={!!p.choice}
+            >
+              <ICON_MAP.Heart size={14} /> Coup de cœur
+            </button>
+            <button
+              type="button"
+              className="admin-prod__action-btn admin-prod__action-btn--danger"
+              onClick={() => handleDelete(p)}
+              aria-label="Supprimer"
+            >
+              <ICON_MAP.Trash size={14} /> Supprimer
+            </button>
           </div>
         </div>
       ))}
