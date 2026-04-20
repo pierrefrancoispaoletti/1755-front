@@ -18,13 +18,17 @@ import AdminCategories from "../../pages/Admin/Categories";
 import AdminProducts from "../../pages/Admin/Products";
 import AdminEvents from "../../pages/Admin/Events";
 import AdminThemes from "../../pages/Admin/Themes";
+import { readStoredSession } from "../../services/auth";
 import "../../design-system";
 
 const App = () => {
   const [selectedCategory, setSelectedCategory] = useState({});
   const [activeMenu, setActiveMenu] = useState("");
   const [dropdownValue, setDropdownValue] = useState("");
-  const [user, setUser] = useState("");
+  const [user, setUser] = useState(() => {
+    const session = readStoredSession();
+    return session?.role || "";
+  });
   const [openLoginModal, setOpenLoginModal] = useState(false);
   const [openImageModal, setOpenImageModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState({});
