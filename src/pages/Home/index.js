@@ -17,7 +17,9 @@ const formatEventDate = (d) => {
       day: "numeric",
       month: "long",
     });
-  } catch { return ""; }
+  } catch {
+    return "";
+  }
 };
 
 const Home = ({ event }) => {
@@ -28,7 +30,8 @@ const Home = ({ event }) => {
     .slice(0, 3);
 
   const hasEvent = event && Object.keys(event).length > 0;
-  const vote = typeof window !== "undefined" ? localStorage.getItem("1755-event") : null;
+  const vote =
+    typeof window !== "undefined" ? localStorage.getItem("1755-event") : null;
   const [like, setLike] = useState(0);
 
   useEffect(() => {
@@ -57,20 +60,27 @@ const Home = ({ event }) => {
             className="home-hero-logo"
           />
         </div>
-        <h1 className="home-hero-title">Baravin 1755</h1>
-        <p className="home-hero-sub">Bar à vin — Ajaccio</p>
+        <h1 className="home-hero-title">Bar à vin 1755</h1>
+        <p className="home-hero-sub">Bar à vin - Ajaccio</p>
       </section>
 
       {hasEvent && (
         <article className="home-event">
           {eventImageSrc && (
-            <div className="home-event-image" style={{ backgroundImage: `url(${eventImageSrc})` }} />
+            <div
+              className="home-event-image"
+              style={{ backgroundImage: `url(${eventImageSrc})` }}
+            />
           )}
           <div className="home-event-body">
             <span className="home-event-label">À l'affiche</span>
             <h2 className="home-event-name">{event.name}</h2>
-            {event.date && <p className="home-event-date">{formatEventDate(event.date)}</p>}
-            {event.description && <p className="home-event-desc">{event.description}</p>}
+            {event.date && (
+              <p className="home-event-date">{formatEventDate(event.date)}</p>
+            )}
+            {event.description && (
+              <p className="home-event-desc">{event.description}</p>
+            )}
             <div className="home-event-like">
               <Button
                 variant="primary"
@@ -93,12 +103,18 @@ const Home = ({ event }) => {
             {featured.map((c) => {
               const Icon = ICON_MAP[c.icon] || null;
               return (
-                <Link key={c.slug} to={`/categories/${c.slug}`} className="home-featured-tile">
+                <Link
+                  key={c.slug}
+                  to={`/categories/${c.slug}`}
+                  className="home-featured-tile"
+                >
                   {Icon && (
                     <Icon
                       size={24}
                       strokeWidth={1.75}
-                      style={{ color: c.iconColor || "var(--ds-accent-gold, #D4A24C)" }}
+                      style={{
+                        color: c.iconColor || "var(--ds-accent-gold, #D4A24C)",
+                      }}
                     />
                   )}
                   <span className="home-featured-name">{c.name}</span>

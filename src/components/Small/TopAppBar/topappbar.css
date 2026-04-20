@@ -7,8 +7,8 @@
   align-items: center;
   padding: 0 var(--ds-space-4, 16px);
   padding-top: env(safe-area-inset-top, 0px);
-  background: var(--ds-bg-surface, #1B1118);
-  border-bottom: 1px solid var(--ds-border-subtle, #2C1E25);
+  background: var(--ds-bg-surface, #1b1118);
+  border-bottom: 1px solid var(--ds-border-subtle, #2c1e25);
 }
 
 .topappbar-brand {
@@ -22,11 +22,12 @@
 .topappbar-logo {
   display: block;
   object-fit: contain;
+  border-radius: 90%;
 }
 
 .topappbar-name {
   font-family: var(--ds-font-serif, "DM Serif Display", Georgia, serif);
   font-size: var(--ds-size-h2, 18px);
-  color: var(--ds-accent-gold, #D4A24C);
+  color: var(--ds-accent-gold, #d4a24c);
   line-height: 1;
 }

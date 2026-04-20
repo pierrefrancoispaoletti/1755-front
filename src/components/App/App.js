@@ -95,13 +95,10 @@ const App = () => {
   }, []);
 
   return (
-    <div
-      className='App ds-root'
-      style={{ position: "relative" }}
-    >
+    <div className="App ds-root" style={{ position: "relative" }}>
       <>
         <Transition
-          animation='jiggle'
+          animation="jiggle"
           duration={500}
           visible={Object.keys(appMessage).length > 0}
         >
@@ -120,126 +117,123 @@ const App = () => {
           </Message>
         </Transition>
         <TopAppBar />
-          <Divider hidden />
-          <Login
-            setUser={setUser}
-            openLoginModal={openLoginModal}
-            setOpenLoginModal={setOpenLoginModal}
-            setAppMessage={setAppMessage}
-          />
-          <Switch>
-            <Route
-              exact
-              path='/'
+        <Divider hidden />
+        <Login
+          setUser={setUser}
+          openLoginModal={openLoginModal}
+          setOpenLoginModal={setOpenLoginModal}
+          setAppMessage={setAppMessage}
+        />
+        <Switch>
+          <Route exact path="/">
+            <Home event={event} />
+          </Route>
+          <Route exact path="/categories">
+            <CategoriesLanding />
+          </Route>
+          <Route path="/categories/:categorie">
+            <ImageLightbox
+              openImageModal={openImageModal}
+              setOpenImageModal={setOpenImageModal}
+              product={selectedProduct}
+            />
+            <Categories
+              filteredProducts={filteredProducts}
+              setFilteredProducts={setFilteredProducts}
+              productsVersion={productsVersion}
+              selectedCategory={selectedCategory}
+              setSelectedCategory={setSelectedCategory}
+              activeMenu={activeMenu}
+              setActiveMenu={setActiveMenu}
+              dropdownValue={dropdownValue}
+              setDropdownValue={setDropdownValue}
+              setOpenImageModal={setOpenImageModal}
+              setSelectedProduct={setSelectedProduct}
+            />
+          </Route>
+          <Route path="/confidentialite-de-lapp">
+            <Container
+              style={{
+                color: "white",
+                fontSize: "1.5em",
+                textAlign: "center",
+                lineHeight: "1.5em",
+              }}
             >
-              <Home event={event} />
-            </Route>
-            <Route exact path='/categories'>
-              <CategoriesLanding />
-            </Route>
-            <Route path='/categories/:categorie'>
-              <ImageLightbox
-                openImageModal={openImageModal}
-                setOpenImageModal={setOpenImageModal}
-                product={selectedProduct}
-              />
-              <Categories
-                filteredProducts={filteredProducts}
-                setFilteredProducts={setFilteredProducts}
+              <h2>Engagement de confidentialité</h2>
+              La protection de vos données est importante pour le Baravin1755 Le
+              présent engagement de confidentialité s’applique à la façon dont
+              nous collectons, utilisons, divulguons, transférons et conservons
+              vos données. Veuillez prendre le temps de vous familiariser avec
+              nos pratiques en matière de protection des données à caractère
+              personnel et contactez-nous si vous avez des questions.
+              <h2>Collecte et utilisation des données à caractère personnel</h2>
+              Les données personnelles (ou « informations personnelles ») sont
+              des données qui peuvent être utilisées pour identifier de manière
+              unique ou contacter une seule personne.
+              <h2>
+                Collecte et utilisation des données à caractère non- Divulgation
+                à des tiers
+              </h2>
+              Aucune donnée n’est divulguée a des tiers.
+              <h2>Protection des données à caractère personnels</h2>
+              Le Baravin1755 prend des précautions – y compris des mesures
+              administratives, techniques et physiques – pour protéger vos
+              données personnelles contre la perte, le vol et la mauvaise
+              utilisation, ainsi que l’accès, la divulgation, l’altération et la
+              destruction non autorisés.
+              <h2>
+                Intégrité et conservation des données à caractère personnel
+              </h2>
+              Vos données ne sont pas conservées, dés que votre réservation est
+              traitée (que vous recevez le mail de confirmation), vos données
+              sont effacées de nos serveurs de façon programmatique.
+              <h2>Questions sur la confidentialité</h2>
+              Si vous avez des questions ou des inquiétudes concernant le
+              traitement de vos données ou l’Engagement de confidentialité
+              d’Apple, contactez-nous.
+            </Container>
+          </Route>
+          <Route exact path="/admin">
+            <RequireAuth user={user}>
+              <AdminHome user={user} setUser={setUser} />
+            </RequireAuth>
+          </Route>
+          <Route path="/admin/products">
+            <RequireAuth user={user}>
+              <AdminProducts
+                user={user}
+                setAppMessage={setAppMessage}
+                setOpenLoginModal={setOpenLoginModal}
                 productsVersion={productsVersion}
-                selectedCategory={selectedCategory}
-                setSelectedCategory={setSelectedCategory}
-                activeMenu={activeMenu}
-                setActiveMenu={setActiveMenu}
-                dropdownValue={dropdownValue}
-                setDropdownValue={setDropdownValue}
-                setOpenImageModal={setOpenImageModal}
-                setSelectedProduct={setSelectedProduct}
+                setProductsVersion={setProductsVersion}
               />
-            </Route>
-            <Route path='/confidentialite-de-lapp'>
-              <Container
-                style={{
-                  color: "white",
-                  fontSize: "1.5em",
-                  textAlign: "center",
-                  lineHeight: "1.5em",
-                }}
-              >
-                <h2>Engagement de confidentialité</h2>
-                La protection de vos données est importante pour le Baravin1755
-                Le présent engagement de confidentialité s’applique à la façon
-                dont nous collectons, utilisons, divulguons, transférons et
-                conservons vos données. Veuillez prendre le temps de vous
-                familiariser avec nos pratiques en matière de protection des
-                données à caractère personnel et contactez-nous si vous avez des
-                questions.
-                <h2>
-                  Collecte et utilisation des données à caractère personnel
-                </h2>
-                Les données personnelles (ou « informations personnelles ») sont
-                des données qui peuvent être utilisées pour identifier de
-                manière unique ou contacter une seule personne.
-                <h2>
-                  Collecte et utilisation des données à caractère non-
-                  Divulgation à des tiers
-                </h2>
-                Aucune donnée n’est divulguée a des tiers.
-                <h2>Protection des données à caractère personnels</h2>
-                Le Baravin1755 prend des précautions – y compris des mesures
-                administratives, techniques et physiques – pour protéger vos
-                données personnelles contre la perte, le vol et la mauvaise
-                utilisation, ainsi que l’accès, la divulgation, l’altération et
-                la destruction non autorisés.
-                <h2>
-                  Intégrité et conservation des données à caractère personnel
-                </h2>
-                Vos données ne sont pas conservées, dés que votre réservation
-                est traitée (que vous recevez le mail de confirmation), vos
-                données sont effacées de nos serveurs de façon programmatique.
-                <h2>Questions sur la confidentialité</h2>
-                Si vous avez des questions ou des inquiétudes concernant le
-                traitement de vos données ou l’Engagement de confidentialité
-                d’Apple, contactez-nous.
-              </Container>
-            </Route>
-            <Route exact path="/admin">
-              <RequireAuth user={user}>
-                <AdminHome user={user} setUser={setUser} />
-              </RequireAuth>
-            </Route>
-            <Route path="/admin/products">
-              <RequireAuth user={user}>
-                <AdminProducts
-                  user={user}
-                  setAppMessage={setAppMessage}
-                  setOpenLoginModal={setOpenLoginModal}
-                  productsVersion={productsVersion}
-                  setProductsVersion={setProductsVersion}
-                />
-              </RequireAuth>
-            </Route>
-            <Route exact path="/admin/categories">
-              <RequireAuth user={user}>
-                <AdminCategories />
-              </RequireAuth>
-            </Route>
-            <Route exact path="/admin/categories/:parentId">
-              <RequireAuth user={user}>
-                <AdminCategories />
-              </RequireAuth>
-            </Route>
-            <Route path="/admin/events">
-              <RequireAuth user={user}>
-                <AdminEvents setAppMessage={setAppMessage} setOpenLoginModal={setOpenLoginModal} />
-              </RequireAuth>
-            </Route>
-            <Route path="/admin/themes">
-              <RequireAuth user={user}>
-                <AdminThemes setAppMessage={setAppMessage} />
-              </RequireAuth>
-            </Route>
-          </Switch>
+            </RequireAuth>
+          </Route>
+          <Route exact path="/admin/categories">
+            <RequireAuth user={user}>
+              <AdminCategories />
+            </RequireAuth>
+          </Route>
+          <Route exact path="/admin/categories/:parentId">
+            <RequireAuth user={user}>
+              <AdminCategories />
+            </RequireAuth>
+          </Route>
+          <Route path="/admin/events">
+            <RequireAuth user={user}>
+              <AdminEvents
+                setAppMessage={setAppMessage}
+                setOpenLoginModal={setOpenLoginModal}
+              />
+            </RequireAuth>
+          </Route>
+          <Route path="/admin/themes">
+            <RequireAuth user={user}>
+              <AdminThemes setAppMessage={setAppMessage} />
+            </RequireAuth>
+          </Route>
+        </Switch>
         <BottomAppBar user={user} setOpenLoginModal={setOpenLoginModal} />
       </>
     </div>

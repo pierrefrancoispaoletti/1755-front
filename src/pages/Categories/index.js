@@ -72,9 +72,14 @@ const Categories = ({
   }, [selectedCategory, productsVersion]);
 
   useEffect(() => {
-    if (!products.length) { setFilteredProducts([]); return; }
+    if (!products.length) {
+      setFilteredProducts([]);
+      return;
+    }
     if (dropdownValue) {
-      setFilteredProducts(products.filter((p) => p.subCategory === dropdownValue));
+      setFilteredProducts(
+        products.filter((p) => p.subCategory === dropdownValue),
+      );
     } else if (activeMenu) {
       setFilteredProducts(products.filter((p) => p.category === activeMenu));
     } else {
@@ -116,7 +121,9 @@ const Categories = ({
       )}
 
       {!loading && visibleProducts.length === 0 && (
-        <p className="categories-empty">Aucun produit disponible pour cette sélection.</p>
+        <p className="categories-empty">
+          Aucun produit disponible pour cette sélection.
+        </p>
       )}
 
       <div className="categories-products">

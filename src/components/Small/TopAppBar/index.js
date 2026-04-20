@@ -13,7 +13,7 @@ const TopAppBar = () => {
           alt="Logo Baravin 1755"
           className="topappbar-logo"
         />
-        <span className="topappbar-name">Baravin 1755</span>
+        <span className="topappbar-name">Bar à vin 1755</span>
       </Link>
     </header>
   );
