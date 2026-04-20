@@ -11,7 +11,7 @@ Back compagnon : `/Users/pierrefrancoispaoletti/appdevelopment/1755-back` (Herok
 - Design system maison dans `src/design-system/` (palette sombre bordeaux/or, Inter + DM Serif Display, composants Button/Sheet/TabBar/ListItem/IconPicker + iconMap Lucide)
 - `lucide-react@0.244.0` **pinné** (versions récentes ESM-only cassent CRA 4 / Webpack 4)
 - axios (fallback `fetch` pour le streaming admin `/api/products/allProducts`)
-- semantic-ui-react encore présent pour quelques wrappers résiduels (`<Transition>` dans App.js, `<Container>` sur `/confidentialite-de-lapp`). Plus de modal Semantic côté admin ni public depuis Plan 4.
+- **Plus de Semantic UI** depuis 2026-04-20. Toast maison + div natifs ont remplacé les derniers `Transition`/`Message`/`Container`/`Divider`.
 
 ## Commandes
 

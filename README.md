@@ -12,7 +12,7 @@ Front React de la carte du restaurant Baravin1755.
 - Design system maison `src/design-system/` (palette sombre bordeaux/or, Inter + DM Serif Display, composants Button / TabBar / Sheet / ListItem / IconPicker, iconMap Lucide)
 - axios (fallback `fetch` pour le streaming admin)
 - `lucide-react@0.244.0` (pinné, versions récentes ESM-only cassent CRA 4 / Webpack 4)
-- semantic-ui-react encore présent pour 1 ou 2 wrappers résiduels (`<Transition>` dans App.js)
+- **Semantic UI totalement retiré** depuis 2026-04-20
 
 ## Commandes
 
