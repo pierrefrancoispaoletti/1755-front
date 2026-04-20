@@ -81,6 +81,30 @@ const Products = ({ user, setAppMessage, setOpenLoginModal, productsVersion, set
 
   const catOptions = cats.map((c) => ({ value: c.slug, label: c.name }));
 
+  const catBySlug = useMemo(() => {
+    const m = new Map();
+    cats.forEach((c) => m.set(c.slug, c));
+    return m;
+  }, [cats]);
+
+  const resolveProductIcon = (p) => {
+    const candidates = [p.subCategory, p.category, p.type].filter(Boolean);
+    for (const slug of candidates) {
+      const c = catBySlug.get(slug);
+      if (c && c.icon) return c;
+    }
+    return null;
+  };
+
+  const formatPrice = (n) =>
+    typeof n === "number" ? `${n.toFixed(2).replace(".", ",")}€` : "";
+
+  const categoryPath = (p) =>
+    [p.type, p.category, p.subCategory]
+      .filter(Boolean)
+      .map((slug) => catBySlug.get(slug)?.name || slug)
+      .join(" › ");
+
   return (
     <div className="ds-root admin-page">
       <div className="admin-prod__header">
@@ -115,12 +139,19 @@ const Products = ({ user, setAppMessage, setOpenLoginModal, productsVersion, set
         <div className="admin-prod__empty">Aucun produit.</div>
       )}
 
-      {filtered.map((p) => (
+      {filtered.map((p) => {
+        const cat = resolveProductIcon(p);
+        return (
         <div key={p._id}>
           <ListItem
-            title={`${p.name} — ${p.price}€`}
-            subtitle={`${p.type || ""} ${p.subCategory ? "› " + p.subCategory : ""}`}
+            icon={cat?.icon || "Package"}
+            iconColor={cat?.iconColor}
+            badge={p.choice ? { icon: "Star", color: "#D4A24C" } : null}
+            title={p.name}
+            subtitle={`${formatPrice(p.price)} · ${categoryPath(p)}`}
             hidden={!p.visible}
+            onClick={() => { setSelected(p); setOpenEdit(true); }}
+            trail={<ICON_MAP.ChevronRight />}
           />
           <div className="admin-prod__actions">
             <button
@@ -164,7 +195,8 @@ const Products = ({ user, setAppMessage, setOpenLoginModal, productsVersion, set
             </button>
           </div>
         </div>
-      ))}
+        );
+      })}
 
       <AddProductModal
         setProducts={setProducts}
