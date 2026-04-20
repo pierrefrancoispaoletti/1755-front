@@ -17,6 +17,7 @@ const Products = ({ user, setAppMessage, setOpenLoginModal, productsVersion, set
   const [filterCat, setFilterCat] = useState("");
   const [visibilityFilter, setVisibilityFilter] = useState("all");
   const [choiceOnly, setChoiceOnly] = useState(false);
+  const [imageFilter, setImageFilter] = useState("all"); // all | with | without
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState(null);
@@ -58,9 +59,14 @@ const Products = ({ user, setAppMessage, setOpenLoginModal, productsVersion, set
         (visibilityFilter === "visible" && p.visible) ||
         (visibilityFilter === "hidden" && !p.visible);
       const matchChoice = !choiceOnly || !!p.choice;
-      return matchCat && matchQ && matchVisibility && matchChoice;
+      const hasImage = !!(p.image && p.image.data);
+      const matchImage =
+        imageFilter === "all" ||
+        (imageFilter === "with" && hasImage) ||
+        (imageFilter === "without" && !hasImage);
+      return matchCat && matchQ && matchVisibility && matchChoice && matchImage;
     });
-  }, [products, query, filterCat, visibilityFilter, choiceOnly]);
+  }, [products, query, filterCat, visibilityFilter, choiceOnly, imageFilter]);
 
   const togglePatch = async (p, patch) => {
     try {
@@ -209,6 +215,26 @@ const Products = ({ user, setAppMessage, setOpenLoginModal, productsVersion, set
                 type="button"
                 className={`admin-prod__filter-pill${visibilityFilter === o.value ? " admin-prod__filter-pill--active" : ""}`}
                 onClick={() => setVisibilityFilter(o.value)}
+              >
+                {o.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="admin-prod__filter-group">
+          <span className="admin-prod__filter-label">Image</span>
+          <div className="admin-prod__filter-pills">
+            {[
+              { value: "all", label: "Toutes" },
+              { value: "with", label: "Avec" },
+              { value: "without", label: "Sans" },
+            ].map((o) => (
+              <button
+                key={o.value}
+                type="button"
+                className={`admin-prod__filter-pill${imageFilter === o.value ? " admin-prod__filter-pill--active" : ""}`}
+                onClick={() => setImageFilter(o.value)}
               >
                 {o.label}
               </button>
