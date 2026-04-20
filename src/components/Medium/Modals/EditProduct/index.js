@@ -6,9 +6,6 @@ import { useCategories } from "../../../../services/useCategories";
 import { $SERVER } from "../../../../_const/_const";
 import "../AddProduct/productModal.css";
 
-const PARENT_HAS_SUBCAT = ["vins", "alcools", "cuisine", "cuisine-midi"];
-const CHILD_HAS_SUBCAT = ["rouges", "blancs", "premiums", "vins d'Exception"];
-
 const EditProductModal = ({
   product,
   setOpenEditProductModal,
@@ -49,24 +46,23 @@ const EditProductModal = ({
     });
   }, [product, openEditProductModal]);
 
+  const typeCategory = categories.find((c) => c.slug === edited.type);
+  const childCategory = typeCategory?.subCategories?.find(
+    (s) => s.slug === edited.category,
+  );
+  const needsCategory = !!(typeCategory?.subCategories?.length);
+  const needsSubCategory = !!(childCategory?.subCat?.length);
+
   useEffect(() => {
-    if (!CHILD_HAS_SUBCAT.includes(edited.category)) {
+    if (!needsSubCategory && edited.subCategory) {
       setEdited((prev) => ({ ...prev, subCategory: "" }));
     }
-  }, [edited.category]);
+  }, [needsSubCategory]);
 
   const change = (e) =>
     setEdited((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
   const onClose = () => setOpenEditProductModal(false);
-
-  const typeCategory = categories.find((c) => c.slug === edited.type);
-  const childCategory = typeCategory?.subCategories?.find(
-    (s) => s.slug === edited.category,
-  );
-
-  const needsCategory = PARENT_HAS_SUBCAT.includes(edited.type);
-  const needsSubCategory = CHILD_HAS_SUBCAT.includes(edited.category);
 
   const isInvalid =
     !edited.name ||

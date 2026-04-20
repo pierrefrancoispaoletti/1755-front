@@ -7,9 +7,6 @@ import { useCategories } from "../../../../services/useCategories";
 import { $SERVER, COMPRESSION_QUALITY } from "../../../../_const/_const";
 import "./productModal.css";
 
-const PARENT_HAS_SUBCAT = ["vins", "alcools", "cuisine", "cuisine-midi"];
-const CHILD_HAS_SUBCAT = ["rouges", "blancs", "premiums", "vins d'Exception"];
-
 const AddProductModal = ({
   selectedCategory,
   setAppMessage,
@@ -39,11 +36,18 @@ const AddProductModal = ({
     setProduct((p) => ({ ...p, type: selectedCategory?.slug || "" }));
   }, [selectedCategory]);
 
+  const typeCategory = categories.find((c) => c.slug === product.type);
+  const childCategory = typeCategory?.subCategories?.find(
+    (s) => s.slug === product.category,
+  );
+  const needsCategory = !!(typeCategory?.subCategories?.length);
+  const needsSubCategory = !!(childCategory?.subCat?.length);
+
   useEffect(() => {
-    if (!CHILD_HAS_SUBCAT.includes(product.category)) {
+    if (!needsSubCategory && product.subCategory) {
       setProduct((p) => ({ ...p, subCategory: "" }));
     }
-  }, [product.category]);
+  }, [needsSubCategory]);
 
   const change = (e) =>
     setProduct((p) => ({ ...p, [e.target.name]: e.target.value }));
@@ -64,14 +68,6 @@ const AddProductModal = ({
   };
 
   const onClose = () => setOpenAddProductModal(false);
-
-  const typeCategory = categories.find((c) => c.slug === product.type);
-  const childCategory = typeCategory?.subCategories?.find(
-    (s) => s.slug === product.category,
-  );
-
-  const needsCategory = PARENT_HAS_SUBCAT.includes(product.type);
-  const needsSubCategory = CHILD_HAS_SUBCAT.includes(product.category);
 
   const isInvalid =
     !product.name ||
