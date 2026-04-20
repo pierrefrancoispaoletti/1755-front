@@ -12,7 +12,11 @@ import "./products.css";
 const Products = ({ user, setAppMessage, setOpenLoginModal, productsVersion, setProductsVersion }) => {
   const [products, setProducts] = useState([]);
   const [cats, setCats] = useState([]);
+  const [catQuery, setCatQuery] = useState("");
+  const [catOpen, setCatOpen] = useState(false);
   const [filterCat, setFilterCat] = useState("");
+  const [visibilityFilter, setVisibilityFilter] = useState("all");
+  const [choiceOnly, setChoiceOnly] = useState(false);
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState(null);
@@ -43,11 +47,20 @@ const Products = ({ user, setAppMessage, setOpenLoginModal, productsVersion, set
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     return products.filter((p) => {
-      const matchCat = !filterCat || p.type === filterCat || p.category === filterCat || p.subCategory === filterCat;
+      const matchCat =
+        !filterCat ||
+        p.type === filterCat ||
+        p.category === filterCat ||
+        p.subCategory === filterCat;
       const matchQ = !q || (p.name || "").toLowerCase().includes(q);
-      return matchCat && matchQ;
+      const matchVisibility =
+        visibilityFilter === "all" ||
+        (visibilityFilter === "visible" && p.visible) ||
+        (visibilityFilter === "hidden" && !p.visible);
+      const matchChoice = !choiceOnly || !!p.choice;
+      return matchCat && matchQ && matchVisibility && matchChoice;
     });
-  }, [products, query, filterCat]);
+  }, [products, query, filterCat, visibilityFilter, choiceOnly]);
 
   const togglePatch = async (p, patch) => {
     try {
@@ -79,7 +92,27 @@ const Products = ({ user, setAppMessage, setOpenLoginModal, productsVersion, set
     }
   };
 
-  const catOptions = cats.map((c) => ({ value: c.slug, label: c.name }));
+  const filteredCatOptions = useMemo(() => {
+    const q = catQuery.trim().toLowerCase();
+    if (!q) return cats;
+    return cats.filter((c) => (c.name || "").toLowerCase().includes(q));
+  }, [cats, catQuery]);
+
+  const selectedCatLabel = filterCat
+    ? cats.find((c) => c.slug === filterCat)?.name || filterCat
+    : "";
+
+  const pickCategory = (slug, label) => {
+    setFilterCat(slug);
+    setCatQuery(label || "");
+    setCatOpen(false);
+  };
+
+  const clearCategory = () => {
+    setFilterCat("");
+    setCatQuery("");
+    setCatOpen(false);
+  };
 
   const catBySlug = useMemo(() => {
     const m = new Map();
@@ -116,16 +149,80 @@ const Products = ({ user, setAppMessage, setOpenLoginModal, productsVersion, set
 
       <div className="admin-prod__toolbar">
         <input
-          placeholder="Rechercher…"
+          placeholder="Rechercher un produit…"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
         />
-        <select value={filterCat} onChange={(e) => setFilterCat(e.target.value)}>
-          <option value="">Toutes catégories</option>
-          {catOptions.map((o) => (
-            <option key={o.value} value={o.value}>{o.label}</option>
-          ))}
-        </select>
+        <div className="admin-prod__combobox">
+          <input
+            placeholder="Toutes catégories"
+            value={catOpen ? catQuery : selectedCatLabel}
+            onChange={(e) => {
+              setCatQuery(e.target.value);
+              setCatOpen(true);
+              if (filterCat) setFilterCat("");
+            }}
+            onFocus={() => { setCatQuery(""); setCatOpen(true); }}
+            onBlur={() => setTimeout(() => setCatOpen(false), 150)}
+          />
+          {filterCat && (
+            <button
+              type="button"
+              className="admin-prod__combobox-clear"
+              onMouseDown={(e) => e.preventDefault()}
+              onClick={clearCategory}
+              aria-label="Effacer la catégorie"
+            >
+              <ICON_MAP.X size={14} />
+            </button>
+          )}
+          {catOpen && filteredCatOptions.length > 0 && (
+            <ul className="admin-prod__combobox-menu">
+              {filteredCatOptions.slice(0, 50).map((c) => (
+                <li key={c._id || c.slug}>
+                  <button
+                    type="button"
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => pickCategory(c.slug, c.name)}
+                  >
+                    {c.name}
+                    <span className="admin-prod__combobox-slug">{c.slug}</span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </div>
+
+      <div className="admin-prod__filters">
+        <div className="admin-prod__filter-group">
+          <span className="admin-prod__filter-label">Visibilité</span>
+          <div className="admin-prod__filter-pills">
+            {[
+              { value: "all", label: "Tous" },
+              { value: "visible", label: "Visibles" },
+              { value: "hidden", label: "Masqués" },
+            ].map((o) => (
+              <button
+                key={o.value}
+                type="button"
+                className={`admin-prod__filter-pill${visibilityFilter === o.value ? " admin-prod__filter-pill--active" : ""}`}
+                onClick={() => setVisibilityFilter(o.value)}
+              >
+                {o.label}
+              </button>
+            ))}
+          </div>
+        </div>
+        <button
+          type="button"
+          className={`admin-prod__filter-pill${choiceOnly ? " admin-prod__filter-pill--active" : ""}`}
+          onClick={() => setChoiceOnly((v) => !v)}
+          aria-pressed={choiceOnly}
+        >
+          <ICON_MAP.Heart size={12} /> Coups de cœur
+        </button>
       </div>
 
       <div className="admin-prod__add">
