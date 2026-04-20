@@ -4,7 +4,6 @@ import './index.css';
 import App from './components/App/App';
 import reportWebVitals from './reportWebVitals';
 import {HashRouter as Router} from "react-router-dom"
-import 'semantic-ui-css/semantic.min.css'
 
 ReactDOM.render(
     <Router basename="/">

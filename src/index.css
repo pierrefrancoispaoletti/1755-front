@@ -12,12 +12,3 @@ code {
     monospace;
 }
 
-.ui.segment {
-  border-radius: "" !important;
-  border: "" !important;
-}
-
-.column {
-  padding: 0 !important;
-  margin: 0 !important;
-}

@@ -2,7 +2,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Route, Switch } from "react-router";
-import { Container, Divider, Message, Transition } from "semantic-ui-react";
 import Categories from "../../pages/Categories";
 import CategoriesLanding from "../../pages/CategoriesLanding";
 import Home from "../../pages/Home";
@@ -97,27 +96,15 @@ const App = () => {
   return (
     <div className="App ds-root" style={{ position: "relative" }}>
       <>
-        <Transition
-          animation="jiggle"
-          duration={500}
-          visible={Object.keys(appMessage).length > 0}
-        >
-          <Message
-            style={{
-              position: "fixed",
-              top: 15,
-              zIndex: "1000",
-              width: "100%",
-            }}
-            hidden={Object.keys(appMessage).length === 0}
-            success={appMessage.success ? true : false}
-            error={!appMessage.success ? true : false}
+        {Object.keys(appMessage).length > 0 && (
+          <div
+            className={`app-toast${appMessage.success ? " app-toast--success" : " app-toast--error"}`}
+            role="status"
           >
             {appMessage.message}
-          </Message>
-        </Transition>
+          </div>
+        )}
         <TopAppBar />
-        <Divider hidden />
         <Login
           setUser={setUser}
           openLoginModal={openLoginModal}
@@ -152,14 +139,7 @@ const App = () => {
             />
           </Route>
           <Route path="/confidentialite-de-lapp">
-            <Container
-              style={{
-                color: "white",
-                fontSize: "1.5em",
-                textAlign: "center",
-                lineHeight: "1.5em",
-              }}
-            >
+            <div className="privacy ds-root">
               <h2>Engagement de confidentialité</h2>
               La protection de vos données est importante pour le Baravin1755 Le
               présent engagement de confidentialité s’applique à la façon dont
@@ -192,7 +172,7 @@ const App = () => {
               Si vous avez des questions ou des inquiétudes concernant le
               traitement de vos données ou l’Engagement de confidentialité
               d’Apple, contactez-nous.
-            </Container>
+            </div>
           </Route>
           <Route exact path="/admin">
             <RequireAuth user={user}>
