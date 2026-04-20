@@ -26,16 +26,6 @@
   display: block;
 }
 
-.pd-image--empty {
-  height: 120px;
-  background: linear-gradient(
-    180deg,
-    var(--ds-bg-elevated, #241820),
-    var(--ds-bg-deep, #0E0A10)
-  );
-  cursor: default;
-}
-
 .pd-head {
   position: relative;
   padding-left: var(--ds-space-3, 12px);

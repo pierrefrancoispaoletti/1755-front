@@ -15,7 +15,7 @@ const ProductDetail = ({ open, onClose, product, onOpenImage }) => {
   return (
     <Sheet open={open} onClose={onClose} title={null}>
       <div className="pd">
-        {imageSrc ? (
+        {imageSrc && (
           <button
             type="button"
             className="pd-image"
@@ -24,8 +24,6 @@ const ProductDetail = ({ open, onClose, product, onOpenImage }) => {
           >
             <img src={imageSrc} alt={p.name || ""} />
           </button>
-        ) : (
-          <div className="pd-image pd-image--empty" aria-hidden="true" />
         )}
 
         <div className="pd-head">
