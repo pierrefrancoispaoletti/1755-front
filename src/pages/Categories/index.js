@@ -27,10 +27,23 @@ const Categories = ({
   const { name, subCategories, slug } = selectedCategory;
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
-  const [hideChoice, setHideChoice] = useState(false);
-  const [priceSort, setPriceSort] = useState("default"); // default | asc | desc
+  const [hideChoice, setHideChoice] = useState(
+    () => localStorage.getItem("1755-hide-choice") === "1",
+  );
+  const [priceSort, setPriceSort] = useState(() => {
+    const v = localStorage.getItem("1755-price-sort");
+    return v === "asc" || v === "desc" ? v : "default";
+  });
   const cacheRef = useRef({});
   const lastVersionRef = useRef(productsVersion);
+
+  useEffect(() => {
+    localStorage.setItem("1755-hide-choice", hideChoice ? "1" : "0");
+  }, [hideChoice]);
+
+  useEffect(() => {
+    localStorage.setItem("1755-price-sort", priceSort);
+  }, [priceSort]);
 
   const cyclePriceSort = () => {
     setPriceSort((s) =>
