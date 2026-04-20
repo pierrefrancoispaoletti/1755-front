@@ -148,14 +148,6 @@ const AddEventModal = ({
           </button>
         </div>
         <div className="pm-actions">
-          <Button
-            variant="primary"
-            type="submit"
-            disabled={loading || !newEvent.name}
-            block
-          >
-            {loading ? "Ajout…" : "Ajouter"}
-          </Button>
           <button
             type="button"
             className="pm-cancel"
@@ -164,6 +156,13 @@ const AddEventModal = ({
           >
             Annuler
           </button>
+          <Button
+            variant="primary"
+            type="submit"
+            disabled={loading || !newEvent.name}
+          >
+            {loading ? "Ajout…" : "Ajouter"}
+          </Button>
         </div>
       </form>
     </Sheet>

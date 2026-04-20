@@ -256,14 +256,6 @@ const EditProductModal = ({
         </label>
 
         <div className="pm-actions">
-          <Button
-            variant="primary"
-            type="submit"
-            disabled={loading || isInvalid}
-            block
-          >
-            {loading ? "Enregistrement…" : "Enregistrer"}
-          </Button>
           <button
             type="button"
             className="pm-cancel"
@@ -272,6 +264,13 @@ const EditProductModal = ({
           >
             Annuler
           </button>
+          <Button
+            variant="primary"
+            type="submit"
+            disabled={loading || isInvalid}
+          >
+            {loading ? "Enregistrement…" : "Enregistrer"}
+          </Button>
         </div>
       </form>
     </Sheet>

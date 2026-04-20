@@ -293,14 +293,6 @@ const AddProductModal = ({
         </div>
 
         <div className="pm-actions">
-          <Button
-            variant="primary"
-            type="submit"
-            disabled={loading || isInvalid}
-            block
-          >
-            {loading ? "Ajout…" : "Ajouter"}
-          </Button>
           <button
             type="button"
             className="pm-cancel"
@@ -309,6 +301,13 @@ const AddProductModal = ({
           >
             Annuler
           </button>
+          <Button
+            variant="primary"
+            type="submit"
+            disabled={loading || isInvalid}
+          >
+            {loading ? "Ajout…" : "Ajouter"}
+          </Button>
         </div>
       </form>
     </Sheet>

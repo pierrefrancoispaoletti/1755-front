@@ -130,18 +130,32 @@
 
 .pm-actions {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: var(--ds-space-2, 8px);
   margin-top: var(--ds-space-2, 8px);
 }
 
+.pm-actions .ds-btn {
+  flex: 1;
+}
+
 .pm-cancel {
+  flex: 1;
   background: transparent;
-  border: none;
+  border: 1px solid var(--ds-border-subtle, #2C1E25);
+  border-radius: var(--ds-radius-pill, 999px);
   color: var(--ds-text-muted, #9A8B90);
-  font-size: var(--ds-size-small, 13px);
-  padding: 8px;
+  font-family: var(--ds-font-sans, "Inter", system-ui, sans-serif);
+  font-size: var(--ds-size-body, 15px);
+  padding: var(--ds-space-3, 12px) var(--ds-space-5, 20px);
+  min-height: 44px;
   cursor: pointer;
+  transition: background 120ms ease, color 120ms ease;
+}
+
+.pm-cancel:hover:not(:disabled) {
+  background: var(--ds-bg-elevated, #241820);
+  color: var(--ds-text-primary, #F5EFE8);
 }
 
 .pm-cancel:disabled {
@@ -183,4 +197,10 @@
 .pm-action-danger:disabled {
   opacity: 0.4;
   cursor: not-allowed;
+}
+
+.pm-note {
+  color: var(--ds-text-muted, #9A8B90);
+  font-size: var(--ds-size-tiny, 11px);
+  margin: 0;
 }

@@ -162,27 +162,17 @@ const UpdateImageModal = ({
           {image ? "Image sélectionnée — changer" : "Choisir une image"}
         </button>
 
+        {productImage && (
+          <button
+            type="button"
+            className="pm-action-danger"
+            disabled={loading}
+            onClick={handleDeleteImage}
+          >
+            Supprimer l'image actuelle
+          </button>
+        )}
         <div className="pm-actions">
-          {image && (
-            <Button
-              variant="primary"
-              type="submit"
-              disabled={loading}
-              block
-            >
-              {loading ? "Envoi…" : "Envoyer la nouvelle image"}
-            </Button>
-          )}
-          {productImage && (
-            <button
-              type="button"
-              className="pm-action-danger"
-              disabled={loading}
-              onClick={handleDeleteImage}
-            >
-              Supprimer l'image actuelle
-            </button>
-          )}
           <button
             type="button"
             className="pm-cancel"
@@ -191,6 +181,15 @@ const UpdateImageModal = ({
           >
             Annuler
           </button>
+          {image && (
+            <Button
+              variant="primary"
+              type="submit"
+              disabled={loading}
+            >
+              {loading ? "Envoi…" : "Envoyer"}
+            </Button>
+          )}
         </div>
       </form>
     </Sheet>
