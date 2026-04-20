@@ -1,9 +1,8 @@
 .pi {
   position: relative;
-  display: grid;
-  grid-template-columns: auto 1fr auto;
+  display: flex;
+  align-items: flex-start;
   gap: var(--ds-space-3, 12px);
-  align-items: start;
   padding: var(--ds-space-3, 12px) var(--ds-space-3, 12px);
   border-bottom: 1px solid var(--ds-border-subtle, #2C1E25);
 }
@@ -40,6 +39,7 @@
 }
 
 .pi-body {
+  flex: 1;
   min-width: 0;
 }
 
@@ -73,6 +73,8 @@
   color: var(--ds-text-primary, #F5EFE8);
   white-space: nowrap;
   align-self: flex-start;
+  margin-left: auto;
+  flex-shrink: 0;
 }
 
 /* Variante choice (coup de cœur) */
