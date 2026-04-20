@@ -1,10 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
-import { Button, Form, Header, Icon, Modal, Radio } from "semantic-ui-react";
-import { useCategories } from "../../../../services/useCategories";
 import Resizer from "react-image-file-resizer";
+import { Button, Sheet } from "../../../../design-system";
+import { useCategories } from "../../../../services/useCategories";
 import { $SERVER, COMPRESSION_QUALITY } from "../../../../_const/_const";
+import "./productModal.css";
+
+const PARENT_HAS_SUBCAT = ["vins", "alcools", "cuisine", "cuisine-midi"];
+const CHILD_HAS_SUBCAT = ["rouges", "blancs", "premiums", "vins d'Exception"];
 
 const AddProductModal = ({
   selectedCategory,
@@ -28,70 +32,63 @@ const AddProductModal = ({
     visible: true,
     image: "",
   });
-
   const [loading, setLoading] = useState(false);
   const inputFile = useRef(null);
 
   useEffect(() => {
-    setProduct({ ...product, type: selectedCategory.slug });
+    setProduct((p) => ({ ...p, type: selectedCategory?.slug || "" }));
   }, [selectedCategory]);
 
-  const changeProduct = (e) => {
-    let updatedValue = {};
-    updatedValue[e.target.name] = e.target.value;
-    setProduct({ ...product, ...updatedValue });
-  };
+  useEffect(() => {
+    if (!CHILD_HAS_SUBCAT.includes(product.category)) {
+      setProduct((p) => ({ ...p, subCategory: "" }));
+    }
+  }, [product.category]);
 
-  const setImage = async (e) => {
+  const change = (e) =>
+    setProduct((p) => ({ ...p, [e.target.name]: e.target.value }));
+
+  const setImage = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
     Resizer.imageFileResizer(
-      e.target.files[0],
+      file,
       363,
       360,
       "JPEG",
       COMPRESSION_QUALITY,
       0,
-      (uri) => {
-        setProduct({ ...product, image: uri });
-      },
-      "file"
+      (uri) => setProduct((p) => ({ ...p, image: uri })),
+      "file",
     );
   };
 
-  const token = localStorage.getItem("token-1755");
+  const onClose = () => setOpenAddProductModal(false);
 
-  const onChangeTypeRadio = (value) => {
-    let selectedCheckboxes = product.type;
+  const typeCategory = categories.find((c) => c.slug === product.type);
+  const childCategory = typeCategory?.subCategories?.find(
+    (s) => s.slug === product.category,
+  );
 
-    selectedCheckboxes = value;
+  const needsCategory = PARENT_HAS_SUBCAT.includes(product.type);
+  const needsSubCategory = CHILD_HAS_SUBCAT.includes(product.category);
 
-    setProduct({ ...product, type: selectedCheckboxes });
-  };
-
-  const onChangeCategoryRadio = (value) => {
-    let selectedCheckboxes = product.category;
-
-    selectedCheckboxes = value;
-
-    setProduct({ ...product, category: selectedCheckboxes });
-  };
-
-  const onChangeSubCategoryRadio = (value) => {
-    let selectedCheckboxes = product.subCategory;
-
-    selectedCheckboxes = value;
-
-    setProduct({ ...product, subCategory: selectedCheckboxes });
-  };
-
-  useEffect(() => {
-    if (product.category !== "rouges" || product.category !== "premiums") {
-      setProduct({ ...product, subCategory: "" });
-    }
-  }, [product.category]);
+  const isInvalid =
+    !product.name ||
+    !product.price ||
+    !product.type ||
+    (needsCategory && !product.category) ||
+    (needsSubCategory && !product.subCategory);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    let formData = new FormData();
+    const token = localStorage.getItem("token-1755");
+    if (!token) {
+      setOpenAddProductModal(false);
+      setOpenLoginModal(true);
+      return;
+    }
+    const formData = new FormData();
     formData.append("name", product.name);
     formData.append("description", product.description || "");
     formData.append("region", product.region || "");
@@ -102,246 +99,219 @@ const AddProductModal = ({
     formData.append("choice", product.choice || false);
     formData.append("visible", product.visible || true);
     formData.append("image", product.image || "");
-    if (token) {
-      setLoading(true);
-      axios({
-        method: "post",
-        url: `${$SERVER}/api/products/createProduct`,
-        data: formData,
-        headers: {
-          "content-type": "multipart/form-data",
-          Authorization: "Bearer " + token,
-        },
-      })
-        .then((response) => {
-          if (response && response.data.status === 200) {
-            setProducts(response.data.data);
-            setProductsVersion?.((v) => v + 1);
-            setProduct({
-              name: "",
-              region: "",
-              description: "",
-              price: "",
-              type: "",
-              category: "",
-              subCategory: "",
-              choice: false,
-              visible: true,
-              image: "",
-            });
-          }
-          setAppMessage({
-            success: response.data.status === 200 ? true : false,
-            message: response.data.message,
+
+    setLoading(true);
+    axios({
+      method: "post",
+      url: `${$SERVER}/api/products/createProduct`,
+      data: formData,
+      headers: {
+        "content-type": "multipart/form-data",
+        Authorization: "Bearer " + token,
+      },
+    })
+      .then((response) => {
+        if (response?.data?.status === 200) {
+          setProducts(response.data.data);
+          setProductsVersion?.((v) => v + 1);
+          setProduct({
+            name: "",
+            region: "",
+            description: "",
+            price: "",
+            type: "",
+            category: "",
+            subCategory: "",
+            choice: false,
+            visible: true,
+            image: "",
           });
-        })
-        .then(() => {
-          setOpenAddProductModal(false);
-        })
-        .catch((error) =>
-          setAppMessage({
-            success: false,
-            message: "Il y a eu un probleme, veuillez reessayer",
-          })
-        )
-        .finally(() => {
-          setLoading(false);
+        }
+        setAppMessage({
+          success: response.data.status === 200,
+          message: response.data.message,
         });
-    } else {
-      setOpenLoginModal(true);
-    }
+        setOpenAddProductModal(false);
+      })
+      .catch(() =>
+        setAppMessage({
+          success: false,
+          message: "Il y a eu un probleme, veuillez reessayer",
+        }),
+      )
+      .finally(() => setLoading(false));
   };
 
   return (
-    <Modal
-      onClose={() => setOpenAddProductModal(false)}
-      onOpen={() => setOpenAddProductModal(true)}
+    <Sheet
       open={openAddProductModal}
-      size="small"
+      onClose={onClose}
+      title={<h2 className="pm-title">Ajouter un produit</h2>}
     >
-      <Header icon>
-        <Icon name="add" />
-        Ajouter un Produit
-      </Header>
-      <Modal.Content>
-        <Form onSubmit={handleSubmit} id="addProduct-form">
-          <Form.Field required error={!product.name}>
-            <label>Nom du Produit</label>
+      <form id="addProduct-form" onSubmit={handleSubmit} className="pm-form">
+        <label className="pm-field">
+          <span className="pm-label">Nom</span>
+          <input
+            type="text"
+            name="name"
+            value={product.name}
+            onChange={change}
+            required
+          />
+        </label>
+
+        <label className="pm-field">
+          <span className="pm-label">Description</span>
+          <textarea
+            name="description"
+            rows={4}
+            value={product.description}
+            onChange={change}
+          />
+        </label>
+
+        <div className="pm-row">
+          <label className="pm-field pm-field--grow">
+            <span className="pm-label">Région</span>
             <input
-              value={product.name}
-              name="name"
               type="text"
-              onChange={(e) => changeProduct(e)}
-            />
-          </Form.Field>
-          <Form.Field>
-            <label>Description</label>
-            <textarea
-              value={product.description}
-              name="description"
-              rows="5"
-              cols="33"
-              onChange={(e) => changeProduct(e)}
-            />
-          </Form.Field>
-          <Form.Field>
-            <label>Région</label>
-            <input
-              value={product.region}
               name="region"
-              type="text"
-              onChange={(e) => changeProduct(e)}
+              value={product.region}
+              onChange={change}
             />
-          </Form.Field>
-          <Form.Field required error={!product.price}>
-            <label>Prix</label>
+          </label>
+          <label className="pm-field pm-field--price">
+            <span className="pm-label">Prix €</span>
             <input
+              type="number"
+              name="price"
               min={1}
               step={0.1}
               value={product.price}
-              name="price"
-              type="number"
-              onChange={(e) => changeProduct(e)}
+              onChange={change}
+              required
             />
-          </Form.Field>
-          <Form.Field required error={!product.type}>
-            <label>Type de Produit</label>
-            {categories.map(
-              (cat) =>
-                cat.slug && (
-                  <Radio
-                    style={{ padding: 5 }}
-                    key={cat.slug}
-                    label={cat.name}
-                    name={cat.slug}
-                    value={cat.slug}
-                    onChange={() => onChangeTypeRadio(cat.slug)}
-                    checked={product.type === cat.slug}
-                  />
-                )
-            )}
-          </Form.Field>
-          {(product.type === "vins" ||
-            product.type === "alcools" ||
-            product.type === "cuisine" ||
-            product.type === "cuisine-midi") && (
-            <Form.Field required error={!product.category}>
-              <label>Categorie de Produit</label>
-              {categories.map(
-                (cat) =>
-                  cat["slug"] === product.type &&
-                  cat.subCategories?.map((subC) => (
-                    <Radio
-                      style={{ padding: 5 }}
-                      key={subC.slug}
-                      label={subC.name}
-                      name={subC.slug}
-                      value={subC.slug}
-                      onChange={() => onChangeCategoryRadio(subC.slug)}
-                      checked={product.category === subC.slug}
-                    />
-                  ))
-              )}
-            </Form.Field>
-          )}
-          {(product.category === "rouges" ||
-            product.category === "vins d'Exception" ||
-            product.category === "blancs" ||
-            product.category === "premiums") && (
-            <Form.Field required error={!product.subCategory}>
-              <label>Sous Catégorie de Produit</label>
-              {categories.map(
-                (cat) =>
-                  cat["slug"] === product.type &&
-                  cat.subCategories?.map(
-                    (subC) =>
-                      subC["slug"] === product.category &&
-                      subC.subCat.map((sC) => (
-                        <Radio
-                          style={{ padding: 5 }}
-                          key={sC.slug}
-                          label={sC.name}
-                          name={sC.slug}
-                          value={sC.slug}
-                          onChange={() => onChangeSubCategoryRadio(sC.slug)}
-                          checked={product.subCategory === sC.slug}
-                        />
-                      ))
-                  )
-              )}
-            </Form.Field>
-          )}
-          <Form.Field>
-            <label>Choix du Patron ?</label>
-            <Radio
-              toggle
-              checked={product.choice}
-              onChange={() =>
-                setProduct({ ...product, choice: !product.choice })
-              }
-            />
-          </Form.Field>
-          <Form.Field>
-            <input
-              ref={inputFile}
-              accept="image/*"
-              id="addImage"
-              files={product.image}
-              type="file"
-              hidden
-              onChange={(e) => setImage(e)}
-            />
-            <Button
-              disabled={loading}
-              loading={loading}
-              type="button"
-              onClick={() => inputFile.current.click()}
-              color="orange"
-              inverted
-            >
-              Ajouter une image
-            </Button>
-          </Form.Field>
-        </Form>
-      </Modal.Content>
-      <Modal.Actions>
-        <Button
-          disabled={
-            loading ||
-            !product.name ||
-            !product.price ||
-            !product.type ||
-            ((product.type === "vins" ||
-              product.type === "alcools" ||
-              product.type === "cuisine" ||
-              product.type === "cuisine-midi") &&
-              !product.category) ||
-            ((product.category === "rouges" ||
-              product.category === "premiums" ||
-              product.category === "blancs") &&
-              !product.subCategory)
-          }
-          loading={loading}
-          color="green"
-          type="submit"
-          form="addProduct-form"
-          inverted
-        >
-          <Icon name="add" /> Ajouter
-        </Button>
-        <Button
-          disabled={loading}
-          loading={loading}
-          color="red"
-          type="submit"
-          form="addProduct-form"
-          inverted
-          onClick={() => setOpenAddProductModal(false)}
-        >
-          <Icon name="remove" /> Annuler
-        </Button>
-      </Modal.Actions>
-    </Modal>
+          </label>
+        </div>
+
+        <div className="pm-section">
+          <span className="pm-label">Type</span>
+          <div className="pm-pills">
+            {categories
+              .filter((c) => c.slug)
+              .map((c) => (
+                <button
+                  key={c.slug}
+                  type="button"
+                  className={`pm-pill${product.type === c.slug ? " pm-pill--active" : ""}`}
+                  onClick={() =>
+                    setProduct((p) => ({
+                      ...p,
+                      type: c.slug,
+                      category: "",
+                      subCategory: "",
+                    }))
+                  }
+                >
+                  {c.name}
+                </button>
+              ))}
+          </div>
+        </div>
+
+        {needsCategory && typeCategory?.subCategories?.length > 0 && (
+          <div className="pm-section">
+            <span className="pm-label">Catégorie</span>
+            <div className="pm-pills">
+              {typeCategory.subCategories.map((sub) => (
+                <button
+                  key={sub.slug}
+                  type="button"
+                  className={`pm-pill${product.category === sub.slug ? " pm-pill--active" : ""}`}
+                  onClick={() =>
+                    setProduct((p) => ({
+                      ...p,
+                      category: sub.slug,
+                      subCategory: "",
+                    }))
+                  }
+                >
+                  {sub.name}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {needsSubCategory && childCategory?.subCat?.length > 0 && (
+          <div className="pm-section">
+            <span className="pm-label">Sous-catégorie</span>
+            <div className="pm-pills">
+              {childCategory.subCat.map((sc) => (
+                <button
+                  key={sc.slug}
+                  type="button"
+                  className={`pm-pill${product.subCategory === sc.slug ? " pm-pill--active" : ""}`}
+                  onClick={() =>
+                    setProduct((p) => ({ ...p, subCategory: sc.slug }))
+                  }
+                >
+                  {sc.name}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <label className="pm-toggle">
+          <input
+            type="checkbox"
+            checked={product.choice}
+            onChange={() => setProduct((p) => ({ ...p, choice: !p.choice }))}
+          />
+          <span>Coup de cœur</span>
+        </label>
+
+        <div className="pm-section">
+          <input
+            ref={inputFile}
+            type="file"
+            accept="image/*"
+            hidden
+            onChange={setImage}
+          />
+          <button
+            type="button"
+            className="pm-file-btn"
+            onClick={() => inputFile.current.click()}
+            disabled={loading}
+          >
+            {product.image
+              ? "Image sélectionnée — changer"
+              : "Ajouter une image"}
+          </button>
+        </div>
+
+        <div className="pm-actions">
+          <Button
+            variant="primary"
+            type="submit"
+            disabled={loading || isInvalid}
+            block
+          >
+            {loading ? "Ajout…" : "Ajouter"}
+          </Button>
+          <button
+            type="button"
+            className="pm-cancel"
+            onClick={onClose}
+            disabled={loading}
+          >
+            Annuler
+          </button>
+        </div>
+      </form>
+    </Sheet>
   );
 };
 

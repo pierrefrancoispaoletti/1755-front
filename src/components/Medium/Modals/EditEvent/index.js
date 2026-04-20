@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Button, Sheet } from "../../../design-system";
-import { $SERVER } from "../../../_const/_const";
+import { Button, Sheet } from "../../../../design-system";
+import { $SERVER } from "../../../../_const/_const";
 
 const EditEventModal = ({
   event,

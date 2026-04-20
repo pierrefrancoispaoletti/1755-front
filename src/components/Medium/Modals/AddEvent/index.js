@@ -1,8 +1,9 @@
 import axios from "axios";
 import React, { useRef, useState } from "react";
-import { Button, Form, Header, Icon, Modal } from "semantic-ui-react";
 import Resizer from "react-image-file-resizer";
+import { Button, Sheet } from "../../../../design-system";
 import { $SERVER, COMPRESSION_QUALITY } from "../../../../_const/_const";
+import "../AddProduct/productModal.css";
 
 const AddEventModal = ({
   setEvent,
@@ -18,182 +19,154 @@ const AddEventModal = ({
     like: 0,
     image: "",
   });
-
-  let date = new Date();
-
   const [loading, setLoading] = useState(false);
+  const inputFile = useRef(null);
 
-  const changeEvent = (e) => {
-    let updatedValue = {};
-    updatedValue[e.target.name] = e.target.value;
-    setNewEvent({ ...newEvent, ...updatedValue });
-  };
+  const today = new Date().toISOString().split("T")[0];
 
-  const setImage = async (e) => {
+  const change = (e) =>
+    setNewEvent((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+
+  const setImage = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
     Resizer.imageFileResizer(
-      e.target.files[0],
+      file,
       363,
       360,
       "JPEG",
       COMPRESSION_QUALITY,
       0,
-      (uri) => {
-        setNewEvent({ ...newEvent, image: uri });
-      },
+      (uri) => setNewEvent((prev) => ({ ...prev, image: uri })),
       "file",
     );
   };
-  const inputEventFile = useRef(null);
 
-  const token = localStorage.getItem("token-1755");
+  const onClose = () => setOpenAddEventModal(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    let formData = new FormData();
+    const token = localStorage.getItem("token-1755");
+    if (!token) {
+      setOpenAddEventModal(false);
+      setOpenLoginModal(true);
+      return;
+    }
+    const formData = new FormData();
     formData.append("name", newEvent.name);
     formData.append("description", newEvent.description || "");
     formData.append("date", newEvent.date || "");
     formData.append("like", 0);
     formData.append("image", newEvent.image || "");
-    if (token) {
-      setLoading(true);
-      axios({
-        method: "post",
-        url: `${$SERVER}/api/events/createEvent`,
-        data: formData,
-        headers: {
-          "content-type": "multipart/form-data",
-          Authorization: "Bearer " + token,
-        },
-      })
-        .then((response) => {
-          if (response && response.data.status === 200) {
-            setEvent(response.data.data);
-            setNewEvent({
-              name: "",
-              description: "",
-              date: "",
-              like: 0,
-              image: "",
-            });
-          }
-          setAppMessage({
-            success: response.data.status === 200 ? true : false,
-            message: response.data.message,
+    setLoading(true);
+    axios({
+      method: "post",
+      url: `${$SERVER}/api/events/createEvent`,
+      data: formData,
+      headers: {
+        "content-type": "multipart/form-data",
+        Authorization: "Bearer " + token,
+      },
+    })
+      .then((response) => {
+        if (response?.data?.status === 200) {
+          setEvent(response.data.data);
+          setNewEvent({
+            name: "",
+            description: "",
+            date: "",
+            like: 0,
+            image: "",
           });
-        })
-        .then(() => {
-          setOpenAddEventModal(false);
-        })
-        .catch((error) =>
-          setAppMessage({
-            success: false,
-            message: "Il y a eu un probleme, veuillez reessayer",
-          }),
-        )
-        .finally(() => {
-          setLoading(false);
+        }
+        setAppMessage({
+          success: response.data.status === 200,
+          message: response.data.message,
         });
-    } else {
-      setOpenLoginModal(true);
-    }
+        setOpenAddEventModal(false);
+      })
+      .catch(() =>
+        setAppMessage({
+          success: false,
+          message: "Il y a eu un probleme, veuillez reessayer",
+        }),
+      )
+      .finally(() => setLoading(false));
   };
+
   return (
-    <Modal
-      closeIcon
-      onClose={() => setOpenAddEventModal(false)}
-      onOpen={() => setOpenAddEventModal(true)}
+    <Sheet
       open={openAddEventModal}
-      size='small'
+      onClose={onClose}
+      title={<h2 className="pm-title">Ajouter un événement</h2>}
     >
-      <Header icon>
-        <Icon name='add' />
-        Ajouter un Evenement
-      </Header>
-      <Modal.Content>
-        <Form
-          onSubmit={handleSubmit}
-          id='addEvent-form'
-        >
-          <Form.Field
+      <form id="addEvent-form" onSubmit={handleSubmit} className="pm-form">
+        <label className="pm-field">
+          <span className="pm-label">Nom de l'événement</span>
+          <input
+            type="text"
+            name="name"
+            value={newEvent.name}
+            onChange={change}
             required
-            error={!newEvent.name}
+          />
+        </label>
+        <label className="pm-field">
+          <span className="pm-label">Description</span>
+          <textarea
+            name="description"
+            rows={4}
+            value={newEvent.description}
+            onChange={change}
+          />
+        </label>
+        <label className="pm-field">
+          <span className="pm-label">Date</span>
+          <input
+            type="date"
+            name="date"
+            value={newEvent.date}
+            min={today}
+            onChange={change}
+          />
+        </label>
+        <div className="pm-section">
+          <input
+            ref={inputFile}
+            type="file"
+            accept="image/*"
+            hidden
+            onChange={setImage}
+          />
+          <button
+            type="button"
+            className="pm-file-btn"
+            onClick={() => inputFile.current.click()}
+            disabled={loading}
           >
-            <label>Nom de l'evenement</label>
-            <input
-              value={newEvent.name}
-              name='name'
-              type='text'
-              onChange={(e) => changeEvent(e)}
-            />
-          </Form.Field>
-          <Form.Field>
-            <label>Description</label>
-            <textarea
-              value={newEvent.description}
-              name='description'
-              rows='5'
-              cols='33'
-              onChange={(e) => changeEvent(e)}
-            />
-          </Form.Field>
-          <Form.Field>
-            <label>Date de l'evenement</label>
-            <input
-              value={newEvent.date}
-              name='date'
-              type='date'
-              min={date.toISOString().split("T")[0]}
-              onChange={(e) => changeEvent(e)}
-            />
-          </Form.Field>
-          <Form.Field>
-            <input
-              ref={inputEventFile}
-              accept='image/*'
-              id='addEventImage'
-              files={newEvent.image}
-              type='file'
-              hidden
-              onChange={(e) => setImage(e)}
-            />
-            <Button
-              disabled={loading}
-              loading={loading}
-              type='button'
-              onClick={() => inputEventFile.current.click()}
-              color='orange'
-              inverted
-            >
-              Ajouter une image
-            </Button>
-          </Form.Field>
-        </Form>
-      </Modal.Content>
-      <Modal.Actions>
-        <Button
-          disabled={loading || !newEvent.name}
-          loading={loading}
-          color='green'
-          type='submit'
-          form='addEvent-form'
-          inverted
-        >
-          <Icon name='add' /> Ajouter
-        </Button>
-        <Button
-          disabled={loading}
-          loading={loading}
-          color='red'
-          type='submit'
-          form='addEvent-form'
-          inverted
-          onClick={() => setOpenAddEventModal(false)}
-        >
-          <Icon name='remove' /> Annuler
-        </Button>
-      </Modal.Actions>
-    </Modal>
+            {newEvent.image ? "Image sélectionnée — changer" : "Ajouter une image"}
+          </button>
+        </div>
+        <div className="pm-actions">
+          <Button
+            variant="primary"
+            type="submit"
+            disabled={loading || !newEvent.name}
+            block
+          >
+            {loading ? "Ajout…" : "Ajouter"}
+          </Button>
+          <button
+            type="button"
+            className="pm-cancel"
+            onClick={onClose}
+            disabled={loading}
+          >
+            Annuler
+          </button>
+        </div>
+      </form>
+    </Sheet>
   );
 };
 
