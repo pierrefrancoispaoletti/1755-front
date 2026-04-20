@@ -1,12 +1,7 @@
 import React from "react";
 import { buildImageSrc } from "../../../services/image";
 import "./productitem.css";
-
-const WINE_FILET = {
-  rouges: "#6B1A2C",
-  roses: "#8a5560",
-  blancs: "#9a7a32",
-};
+import { WINE_COLORS } from "../../../_const/_const";
 
 const formatPrice = (p) => {
   if (typeof p !== "number") return "";
@@ -17,12 +12,14 @@ const ProductItem = ({
   product,
   setOpenImageModal,
   setSelectedProduct,
+  onOpenDetail,
 }) => {
   if (!product || !product.visible) return null;
 
-  const { name, type, region, description, price, category, choice, image } = product;
+  const { name, type, region, description, price, category, choice, image } =
+    product;
 
-  const filetColor = type === "vins" ? WINE_FILET[category] : null;
+  const filetColor = type === "vins" ? WINE_COLORS[category] : null;
 
   const imageSrc = buildImageSrc(image);
 
@@ -33,14 +30,34 @@ const ProductItem = ({
     setOpenImageModal(true);
   };
 
+  const openDetail = () => {
+    if (onOpenDetail) onOpenDetail(product);
+  };
+
+  const onKeyDown = (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      openDetail();
+    }
+  };
+
   const regionLine = region || "";
 
   const Wrapper = choice ? "article" : "div";
   const rootClass = choice ? "pi pi--choice" : "pi";
 
   return (
-    <Wrapper className={rootClass}>
-      {filetColor && <span className="pi-filet" style={{ background: filetColor }} />}
+    <Wrapper
+      className={`${rootClass} pi--interactive`}
+      role="button"
+      tabIndex={0}
+      onClick={openDetail}
+      onKeyDown={onKeyDown}
+      aria-label={`Détails ${name}`}
+    >
+      {filetColor && (
+        <span className="pi-filet" style={{ background: filetColor }} />
+      )}
       {choice && <span className="pi-choice-badge">★ COUP DE CŒUR</span>}
       {imageSrc && (
         <button

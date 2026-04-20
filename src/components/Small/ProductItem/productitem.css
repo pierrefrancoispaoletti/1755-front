@@ -7,6 +7,17 @@
   border-bottom: 1px solid var(--ds-border-subtle, #2C1E25);
 }
 
+.pi--interactive {
+  cursor: pointer;
+  transition: background 120ms ease;
+}
+
+.pi--interactive:hover,
+.pi--interactive:focus-visible {
+  background: var(--ds-bg-surface, #1B1118);
+  outline: none;
+}
+
 .pi:last-child {
   border-bottom: none;
 }

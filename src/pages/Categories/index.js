@@ -5,6 +5,7 @@ import { useParams } from "react-router";
 import Loader from "../../components/Small/Loader";
 import ProductItem from "../../components/Small/ProductItem";
 import CategoryFilterPills from "../../components/Small/CategoryFilterPills";
+import ProductDetail from "../../components/Medium/Modals/ProductDetail";
 import { useCategories } from "../../services/useCategories";
 import { $SERVER } from "../../_const/_const";
 import "./categories.css";
@@ -27,6 +28,8 @@ const Categories = ({
   const { name, subCategories, slug } = selectedCategory;
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
+  const [detailProduct, setDetailProduct] = useState(null);
+  const [detailOpen, setDetailOpen] = useState(false);
   const [hideChoice, setHideChoice] = useState(
     () => localStorage.getItem("1755-hide-choice") === "1",
   );
@@ -180,9 +183,23 @@ const Categories = ({
               product={p}
               setOpenImageModal={setOpenImageModal}
               setSelectedProduct={setSelectedProduct}
+              onOpenDetail={(prod) => {
+                setDetailProduct(prod);
+                setDetailOpen(true);
+              }}
             />
           ))}
       </div>
+
+      <ProductDetail
+        open={detailOpen}
+        onClose={() => setDetailOpen(false)}
+        product={detailProduct}
+        onOpenImage={(prod) => {
+          setSelectedProduct(prod);
+          setOpenImageModal(true);
+        }}
+      />
     </main>
   );
 };
