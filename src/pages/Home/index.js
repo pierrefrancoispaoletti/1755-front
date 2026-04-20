@@ -5,6 +5,7 @@ import { Heart } from "lucide-react";
 import { Button, ICON_MAP } from "../../design-system";
 import { useCategoriesTree } from "../../services/useCategoriesTree";
 import Copyright from "../../components/Small/Copyright";
+import { buildImageSrc } from "../../services/image";
 import { $SERVER } from "../../_const/_const";
 import "./home.css";
 
@@ -17,13 +18,6 @@ const formatEventDate = (d) => {
       month: "long",
     });
   } catch { return ""; }
-};
-
-const arrayBufferToBase64 = (buffer) => {
-  let binary = "";
-  const bytes = [].slice.call(new Uint8Array(buffer));
-  bytes.forEach((b) => (binary += String.fromCharCode(b)));
-  return window.btoa(binary);
 };
 
 const Home = ({ event }) => {
@@ -51,10 +45,7 @@ const Home = ({ event }) => {
     setLike((n) => n + 1);
   };
 
-  let eventImageSrc = null;
-  if (hasEvent && event.image?.data?.data) {
-    eventImageSrc = `data:${event.image.contentType};base64,${arrayBufferToBase64(event.image.data.data)}`;
-  }
+  const eventImageSrc = hasEvent ? buildImageSrc(event.image) : null;
 
   return (
     <main className="home ds-root">

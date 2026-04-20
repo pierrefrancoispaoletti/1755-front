@@ -1,17 +1,11 @@
 import React from "react";
+import { buildImageSrc } from "../../../services/image";
 import "./productitem.css";
 
 const WINE_FILET = {
   rouges: "#6B1A2C",
   roses: "#8a5560",
   blancs: "#9a7a32",
-};
-
-const arrayBufferToBase64 = (buffer) => {
-  let binary = "";
-  const bytes = [].slice.call(new Uint8Array(buffer));
-  bytes.forEach((b) => (binary += String.fromCharCode(b)));
-  return window.btoa(binary);
 };
 
 const formatPrice = (p) => {
@@ -30,10 +24,7 @@ const ProductItem = ({
 
   const filetColor = type === "vins" ? WINE_FILET[category] : null;
 
-  let imageSrc = null;
-  if (image?.data?.data) {
-    imageSrc = `data:${image.contentType};base64,${arrayBufferToBase64(image.data.data)}`;
-  }
+  const imageSrc = buildImageSrc(image);
 
   const openImage = (e) => {
     e.stopPropagation();

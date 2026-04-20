@@ -1,14 +1,8 @@
 import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
 import { X } from "lucide-react";
+import { buildImageSrc } from "../../../../services/image";
 import "./imageLightbox.css";
-
-const arrayBufferToBase64 = (buffer) => {
-  let binary = "";
-  const bytes = [].slice.call(new Uint8Array(buffer));
-  bytes.forEach((b) => (binary += String.fromCharCode(b)));
-  return window.btoa(binary);
-};
 
 const formatPrice = (p) =>
   typeof p === "number" ? `${p.toFixed(2).replace(".", ",")}€` : "";
@@ -31,10 +25,7 @@ const ImageLightbox = ({ openImageModal, setOpenImageModal, product }) => {
   if (!openImageModal || !product) return null;
 
   const { image, name, price } = product;
-  let src = null;
-  if (image?.data?.data) {
-    src = `data:${image.contentType};base64,${arrayBufferToBase64(image.data.data)}`;
-  }
+  const src = buildImageSrc(image);
 
   return ReactDOM.createPortal(
     <div
