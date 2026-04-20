@@ -1,70 +1,133 @@
-# Getting Started with Create React App
+# 1755-front
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Front React de la carte du restaurant Baravin1755.
 
-## Available Scripts
+- **Prod** : https://baravin1755.com (GitHub Pages sur le repo `pierrefrancoispaoletti/1755-front`, branche `master` via `gh-pages`).
+- **Back compagnon** : https://le-1755.herokuapp.com (repo `1755-back`, Heroku app `le-1755`).
 
-In the project directory, you can run:
+## Stack
 
-### `npm start`
+- React 17 + react-router 5 (HashRouter)
+- CRA 4 / react-scripts (build avec `NODE_OPTIONS=--openssl-legacy-provider`)
+- Design system maison `src/design-system/` (palette sombre bordeaux/or, Inter + DM Serif Display, composants Button / TabBar / Sheet / ListItem / IconPicker, iconMap Lucide)
+- axios (fallback `fetch` pour le streaming admin)
+- `lucide-react@0.244.0` (pinné, versions récentes ESM-only cassent CRA 4 / Webpack 4)
+- semantic-ui-react encore présent pour 1 ou 2 wrappers résiduels (`<Transition>` dans App.js)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Commandes
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+```bash
+npm start            # dev server sur http://localhost:3000
+npm run build        # build prod
+npm run deploy       # build + gh-pages -b master -d build
+```
 
-### `npm test`
+Après `npm run deploy`, **toujours** faire `git push origin main` pour synchroniser la branche source (gh-pages ne pousse que `master`).
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Environnement local
 
-### `npm run build`
+`src/_const/_const.js` contient l'URL du back. **La valeur committée pointe toujours sur `https://le-1755.herokuapp.com`.** Pour tester en local contre un back local, modifier la ligne manuellement vers `http://localhost:8080` (port 8080 parce qu'AirPlay occupe 5000 sur macOS) et **ne jamais commiter** cette modif.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Avant tout `git add` / `git commit` : vérifier `git status` et exclure `src/_const/_const.js` s'il ne contient que le toggle d'URL.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Structure
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```
+src/
+├── _const/          # $SERVER + constantes (gitignored car toggle local)
+├── components/
+│   ├── App/         # App.js racine, routes, chrome, état lifté
+│   ├── Medium/Modals/
+│   │   ├── AddEvent/ EditEvent/
+│   │   ├── AddProduct/ EditProduct/ UpdateImageModal/  # modals admin en Sheet DS
+│   │   ├── ImageLightbox/                              # zoom image produit public
+│   │   └── Login/                                      # login admin en Sheet DS
+│   └── Small/
+│       ├── BottomAppBar/                 # tab bar persistante (visiteur + admin)
+│       ├── CategoryFilterPills/          # pills 2 niveaux sur /categories/:slug
+│       ├── Copyright/                    # footer compact sur la Home
+│       ├── Loader/
+│       ├── ProductItem/                  # row produit DS (thumbnail + filet vin + choice)
+│       ├── RequireAuth/                  # garde-fou /admin/*
+│       └── TopAppBar/                    # bandeau logo + nom sérifé
+├── design-system/
+│   ├── tokens.css                        # --ds-* variables palette / typo / espacement
+│   ├── iconMap.js                        # Lucide icons par nom
+│   ├── components/ (Button, Sheet, TabBar, ListItem, IconPicker)
+│   └── index.js
+├── pages/
+│   ├── Admin/ (Categories, Products, Events, Themes, Home, CategoryEditSheet)
+│   ├── Categories/                       # /categories/:slug (lecture seule stricte)
+│   ├── CategoriesLanding/                # /categories (landing grille 2-col)
+│   └── Home/                              # / avec hero + event + raccourcis + footer
+└── services/
+    ├── categoriesApi.js                   # fetchTree, fetchFlat, CRUD JWT
+    ├── useCategories.js                   # hook tree legacy (avec icônes JSX rendues)
+    ├── useCategoriesTree.js               # hook tree brut (pour rendu custom)
+    ├── categoriesAdapter.js               # treeToLegacy (filtre visible à tous niveaux)
+    └── image.js                           # buildImageSrc (shape fr/non-fr)
+```
 
-### `npm run eject`
+## Architecture clé
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### Routing et shell
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+`App.js` monte dans l'ordre : `<TopAppBar>` (sticky, sombre), `<Login>` (Sheet DS portal), `<Switch>` des routes, `<BottomAppBar>` (fixed bottom, safe-area). Les routes publiques sont `/`, `/categories`, `/categories/:categorie`, `/confidentialite-de-lapp`. Les routes `/admin/*` sont wrappées par `<RequireAuth>`.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### Chargement des produits
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+- **Visiteur** : `Categories` (`src/pages/Categories/index.js`) fait un fetch lazy `GET /api/products?type=<slug>&lang=<iso2>` au mount, avec cache en session (`useRef`) indexé par `${type}_${lang}`. Invalidation via `productsVersion` (compteur dans App.js). Guard contre `selectedCategory` stale : on ne fetch que si `selectedCategory.slug === params.categorie`.
+- **Admin connecté** : `App.js` fetch en plus `/api/products/allProducts` (VF brute). Guard par `if (!user) return`.
 
-## Learn More
+### Design system
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Tous les composants publics et admin consomment `src/design-system/` :
+- Tokens CSS dans `tokens.css` (cascade via `.ds-root` posée sur `<div className="App ds-root">` + racine de chaque page).
+- `<Sheet>` utilise `ReactDOM.createPortal` sur `document.body` (mémoire : Semantic UI `Sidebar.Pushable` casse `position: fixed` sinon).
+- `ImageLightbox` = portal plein écran, fermeture `Escape` / tap overlay.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Catégories en DB
 
-### Code Splitting
+L'arbre vient de `GET /api/categories?tree=1` (back Mongoose model `Category`, hiérarchie par `parentId`). Deux hooks :
+- `useCategories()` — renvoie le format legacy (`subCategories`, `subCat`) avec icônes Lucide pré-rendues. Consommé par pages admin, Categories public, modals produit.
+- `useCategoriesTree()` — renvoie le tree brut (icon en string, iconColor, order, visible). Consommé par Home featured et CategoriesLanding qui re-rendent les icônes à la taille voulue.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Invalidation : `invalidateCategoriesCache()` + `invalidateCategoriesTreeCache()` — à appeler après chaque mutation admin catégorie (actuellement wiré dans `/admin/categories` reorder et delete, à étendre aux autres CRUD si besoin).
 
-### Analyzing the Bundle Size
+### Admin `/admin/*`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Drill-down 3 niveaux pour les catégories, CRUD produits via `AddProduct` / `EditProduct` / `UpdateImageModal` en Sheet DS. Liste produits avec combobox catégorie typeable, filtres Visibilité / Coups de cœur. Boutons d'action compacts (pills 28px muted), cards `ListItem` avec icône catégorie résolue et badge Star doré si `choice: true`.
 
-### Making a Progressive Web App
+### Images produits
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+`src/services/image.buildImageSrc(image)` gère les 2 shapes renvoyés par le back (FR = Buffer `{type, data:[bytes]}`, autres langues = base64 string — dû au `toObject()` sur le path non-fr côté back).
 
-### Advanced Configuration
+## Internationalisation
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Aucune lib i18n côté front. Les descriptions arrivent du back déjà localisées selon `navigator.language.slice(0,2)`. La librairie `react-auto-translate` et la clé `GOOGLE_API_KEY` ont été retirées du bundle en 2026-04.
 
-### Deployment
+## Pas de tests automatisés
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Pas de Jest/Mocha configuré. Vérification manuelle :
+- Syntaxe JSX : `node -e "require('@babel/parser').parse(require('fs').readFileSync('<path>','utf8'), {sourceType:'module', plugins:['jsx']})"`
+- UI : `npm start` + navigateur.
+- Playwright MCP utilisable en session Claude Code si besoin de screenshots / assertions.
 
-### `npm run build` fails to minify
+Ne pas introduire de test framework sans demande explicite.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Points d'attention
+
+- **Pas de merge sur `main`** sans feu vert explicite. `npm run deploy` également gatekept.
+- `lucide-react` **pinné** à 0.244.0. Ne pas bumper sans vérifier le build CRA 4.
+- `$SERVER` dans `_const.js` est un toggle local. Jamais commiter la valeur localhost.
+- La base MongoDB est partagée dev/prod (back `database/index.js` hardcode l'URI Atlas). Toute mutation locale impacte la prod.
+- Routes produit back : `/api/products?type=X&lang=Y` publique et localisée, `/api/products/allProducts` admin VF. Ne pas confondre.
+- Les mutations admin produits (`POST /api/products/updateProduct` etc.) renvoient toute la DB produits (tous types confondus) — les handlers admin filtrent par type si besoin.
+
+## Spécifications et plans
+
+Dans `docs/superpowers/` :
+- `specs/2026-04-18-admin-bottom-bar-design.md` — design admin bottom bar.
+- `specs/2026-04-18-i18n-server-side-design.md` — traduction serveur-side.
+- `specs/2026-04-18-public-visual-migration-design.md` — migration visuelle publique.
+- `plans/2026-04-18-plan-1-back-categories.md` à `plans/2026-04-18-plan-4-public-visual-migration.md` — plans d'exécution détaillés.
