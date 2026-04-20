@@ -27,8 +27,16 @@ const Categories = ({
   const { name, subCategories, slug } = selectedCategory;
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
+  const [hideChoice, setHideChoice] = useState(false);
+  const [priceSort, setPriceSort] = useState("default"); // default | asc | desc
   const cacheRef = useRef({});
   const lastVersionRef = useRef(productsVersion);
+
+  const cyclePriceSort = () => {
+    setPriceSort((s) =>
+      s === "default" ? "asc" : s === "asc" ? "desc" : "default",
+    );
+  };
 
   useEffect(() => {
     const s = params?.categorie;
@@ -95,10 +103,16 @@ const Categories = ({
 
   const visibleProducts = (filteredProducts || [])
     .filter((p) => p.visible)
+    .filter((p) => !hideChoice || !p.choice)
     .sort((a, b) => {
+      if (priceSort === "asc") return (a.price || 0) - (b.price || 0);
+      if (priceSort === "desc") return (b.price || 0) - (a.price || 0);
       if (!!a.choice !== !!b.choice) return a.choice ? -1 : 1;
       return (a.price || 0) - (b.price || 0);
     });
+
+  const priceSortLabel =
+    priceSort === "asc" ? "Prix ↑" : priceSort === "desc" ? "Prix ↓" : "Prix";
 
   return (
     <main className="categories ds-root">
@@ -113,6 +127,25 @@ const Categories = ({
         setDropdownValue={setDropdownValue}
         typeSlug={slug}
       />
+
+      <div className="categories-options">
+        <button
+          type="button"
+          className={`cat-opt${priceSort !== "default" ? " cat-opt--active" : ""}`}
+          onClick={cyclePriceSort}
+          aria-label="Trier par prix"
+        >
+          {priceSortLabel}
+        </button>
+        <button
+          type="button"
+          className={`cat-opt${hideChoice ? " cat-opt--active" : ""}`}
+          onClick={() => setHideChoice((v) => !v)}
+          aria-pressed={hideChoice}
+        >
+          {hideChoice ? "Afficher les coups de cœur" : "Masquer les coups de cœur"}
+        </button>
+      </div>
 
       {loading && (
         <div className="categories-loader">
