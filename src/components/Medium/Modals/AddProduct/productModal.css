@@ -44,7 +44,7 @@
   border: 1px solid var(--ds-border-subtle, #2C1E25);
   border-radius: var(--ds-radius-sm, 8px);
   color: var(--ds-text-primary, #F5EFE8);
-  padding: 10px 12px;
+  padding: var(--ds-space-3, 12px) var(--ds-space-3, 12px);
   font-size: var(--ds-size-body, 15px);
   font-family: var(--ds-font-sans, "Inter", system-ui, sans-serif);
   resize: vertical;
@@ -108,7 +108,7 @@
 }
 
 .pm-file-btn {
-  padding: 10px 14px;
+  padding: var(--ds-space-3, 12px) var(--ds-space-4, 16px);
   background: transparent;
   border: 1px dashed var(--ds-border-subtle, #2C1E25);
   border-radius: var(--ds-radius-sm, 8px);
@@ -180,7 +180,7 @@
 }
 
 .pm-action-danger {
-  padding: 10px 14px;
+  padding: var(--ds-space-3, 12px) var(--ds-space-4, 16px);
   background: transparent;
   border: 1px solid rgba(192, 57, 43, 0.4);
   border-radius: var(--ds-radius-pill, 999px);

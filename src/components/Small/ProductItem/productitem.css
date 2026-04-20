@@ -25,7 +25,7 @@
   height: 48px;
   padding: 0;
   border: none;
-  border-radius: 8px;
+  border-radius: var(--ds-radius-sm, 8px);
   overflow: hidden;
   background: var(--ds-bg-elevated, #241820);
   cursor: pointer;

@@ -221,7 +221,7 @@ const Products = ({ user, setAppMessage, setOpenLoginModal, productsVersion, set
           onClick={() => setChoiceOnly((v) => !v)}
           aria-pressed={choiceOnly}
         >
-          <ICON_MAP.Heart size={12} /> Coups de cœur
+          <ICON_MAP.Heart size={14} /> Coups de cœur
         </button>
       </div>
 

@@ -8,12 +8,12 @@
 .admin-prod__toolbar select {
   flex: 1;
   min-width: 140px;
-  padding: 10px 12px;
+  padding: var(--ds-space-3) var(--ds-space-3);
   border-radius: var(--ds-radius-sm);
   border: 1px solid var(--ds-border-subtle);
   background: var(--ds-bg-elevated);
   color: var(--ds-text-primary);
-  font-size: 15px;
+  font-size: var(--ds-size-body);
 }
 .admin-prod__header {
   display: flex;
@@ -48,9 +48,9 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
+  gap: var(--ds-space-1);
   min-height: 28px;
-  padding: 4px 10px;
+  padding: var(--ds-space-1) var(--ds-space-3);
   border-radius: var(--ds-radius-pill);
   background: transparent;
   border: 1px solid var(--ds-border-subtle);
@@ -102,12 +102,12 @@
 
 .admin-prod__combobox input {
   width: 100%;
-  padding: 10px 32px 10px 12px;
+  padding: var(--ds-space-3) var(--ds-space-8) var(--ds-space-3) var(--ds-space-3);
   border-radius: var(--ds-radius-sm);
   border: 1px solid var(--ds-border-subtle);
   background: var(--ds-bg-elevated);
   color: var(--ds-text-primary);
-  font-size: 15px;
+  font-size: var(--ds-size-body);
   box-sizing: border-box;
 }
 
@@ -211,8 +211,8 @@
 .admin-prod__filter-pill {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  padding: 4px 10px;
+  gap: var(--ds-space-1);
+  padding: var(--ds-space-1) var(--ds-space-3);
   border-radius: var(--ds-radius-pill);
   background: transparent;
   border: 1px solid var(--ds-border-subtle);
