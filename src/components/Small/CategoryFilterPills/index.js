@@ -1,11 +1,6 @@
 import React from "react";
 import "./categoryFilterPills.css";
-
-const WINE_PILL_COLORS = {
-  rouges: "#6B1A2C",
-  roses: "#8a5560",
-  blancs: "#9a7a32",
-};
+import { WINE_COLORS } from "../../../_const/_const";
 
 const CategoryFilterPills = ({
   subCategories = [],
@@ -27,7 +22,11 @@ const CategoryFilterPills = ({
   const isWine = typeSlug === "vins";
 
   const activeParent = subCategories.find((s) => s.slug === activeMenu);
-  const hasChildren = !!(activeParent && Array.isArray(activeParent.subCat) && activeParent.subCat.length > 0);
+  const hasChildren = !!(
+    activeParent &&
+    Array.isArray(activeParent.subCat) &&
+    activeParent.subCat.length > 0
+  );
 
   const onClickParent = (slug) => {
     if (activeMenu === slug) {
@@ -50,16 +49,24 @@ const CategoryFilterPills = ({
         <button
           type="button"
           className={`cfp-pill${!activeMenu ? " cfp-pill--active" : ""}`}
-          onClick={() => { setActiveMenu(""); setDropdownValue(""); }}
+          onClick={() => {
+            setActiveMenu("");
+            setDropdownValue("");
+          }}
         >
           Tous<span className="cfp-badge">{totalVisible}</span>
         </button>
         {subCategories.map((s) => {
           const isActive = activeMenu === s.slug;
-          const wineColor = isWine ? WINE_PILL_COLORS[s.slug] : null;
-          const style = isActive && wineColor
-            ? { background: wineColor, borderColor: wineColor, color: s.slug === "blancs" ? "#0E0A10" : "#F5EFE8" }
-            : undefined;
+          const wineColor = isWine ? WINE_COLORS[s.slug] : null;
+          const style =
+            isActive && wineColor
+              ? {
+                  background: wineColor,
+                  borderColor: wineColor,
+                  color: s.slug === "blancs" ? "#0E0A10" : "#F5EFE8",
+                }
+              : undefined;
           return (
             <button
               key={s.slug}
@@ -68,7 +75,8 @@ const CategoryFilterPills = ({
               style={style}
               onClick={() => onClickParent(s.slug)}
             >
-              {s.name}<span className="cfp-badge">{countBySubCategory(s.slug)}</span>
+              {s.name}
+              <span className="cfp-badge">{countBySubCategory(s.slug)}</span>
             </button>
           );
         })}
@@ -85,7 +93,8 @@ const CategoryFilterPills = ({
                 className={`cfp-subpill${dropdownValue === sc.slug ? " cfp-subpill--active" : ""}`}
                 onClick={() => onClickChild(sc.slug)}
               >
-                {sc.name}<span className="cfp-subbadge">{countBySubSub(sc.slug)}</span>
+                {sc.name}
+                <span className="cfp-subbadge">{countBySubSub(sc.slug)}</span>
               </button>
             ))}
           </div>
