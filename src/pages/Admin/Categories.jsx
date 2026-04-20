@@ -1,7 +1,9 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { Button, ListItem, ICON_MAP } from "../../design-system";
-import { fetchFlat, deleteCategory } from "../../services/categoriesApi";
+import { fetchFlat, deleteCategory, moveCategory } from "../../services/categoriesApi";
+import { invalidateCategoriesCache } from "../../services/useCategories";
+import { invalidateCategoriesTreeCache } from "../../services/useCategoriesTree";
 import CategoryEditSheet from "./CategoryEditSheet";
 import "./admin.css";
 import "./categories.css";
@@ -64,6 +66,31 @@ const Categories = () => {
     if (!window.confirm(`Supprimer "${cat.name}" ?`)) return;
     try {
       await deleteCategory(cat._id);
+      invalidateCategoriesCache();
+      invalidateCategoriesTreeCache();
+      await load();
+    } catch (e) {
+      setError(e.response?.data?.message || e.message);
+    }
+  };
+
+  const handleReorder = async (cat, direction) => {
+    const siblings = children;
+    const idx = siblings.findIndex((c) => c._id === cat._id);
+    const target = direction === "up" ? idx - 1 : idx + 1;
+    if (target < 0 || target >= siblings.length) return;
+    const other = siblings[target];
+    try {
+      await moveCategory(cat._id, {
+        parentId: cat.parentId || null,
+        order: other.order,
+      });
+      await moveCategory(other._id, {
+        parentId: other.parentId || null,
+        order: cat.order,
+      });
+      invalidateCategoriesCache();
+      invalidateCategoriesTreeCache();
       await load();
     } catch (e) {
       setError(e.response?.data?.message || e.message);
@@ -113,8 +140,9 @@ const Categories = () => {
         <div className="admin-cat__empty">Aucune sous-catégorie.</div>
       )}
 
-      {children.map((cat) => {
-        const hasKids = all.some((c) => String(c.parentId) === String(cat._id));
+      {children.map((cat, idx) => {
+        const isFirst = idx === 0;
+        const isLast = idx === children.length - 1;
         return (
           <div key={cat._id}>
             <ListItem
@@ -128,12 +156,38 @@ const Categories = () => {
               trail={<ICON_MAP.ChevronRight />}
             />
             <div className="admin-cat__actions">
-              <Button variant="ghost" onClick={() => handleEdit(cat)}>
-                <ICON_MAP.Edit /> Éditer
-              </Button>
-              <Button variant="danger" onClick={() => handleDelete(cat)}>
-                <ICON_MAP.Trash /> Supprimer
-              </Button>
+              <button
+                type="button"
+                className="admin-cat__action-btn"
+                onClick={() => handleReorder(cat, "up")}
+                disabled={isFirst}
+                aria-label="Monter"
+              >
+                <ICON_MAP.ChevronUp size={16} />
+              </button>
+              <button
+                type="button"
+                className="admin-cat__action-btn"
+                onClick={() => handleReorder(cat, "down")}
+                disabled={isLast}
+                aria-label="Descendre"
+              >
+                <ICON_MAP.ChevronDown size={16} />
+              </button>
+              <button
+                type="button"
+                className="admin-cat__action-btn"
+                onClick={() => handleEdit(cat)}
+              >
+                <ICON_MAP.Edit size={14} /> Éditer
+              </button>
+              <button
+                type="button"
+                className="admin-cat__action-btn admin-cat__action-btn--danger"
+                onClick={() => handleDelete(cat)}
+              >
+                <ICON_MAP.Trash size={14} /> Supprimer
+              </button>
             </div>
           </div>
         );
