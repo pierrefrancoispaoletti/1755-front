@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { Button, ICON_MAP } from "../../design-system";
 import { fetchFlat as fetchCategoriesFlat } from "../../services/categoriesApi";
+import { fetchStatsSummary } from "../../services/statsApi";
 import { $SERVER } from "../../_const/_const";
 import "./admin.css";
 import "./adminHome.css";
@@ -10,6 +11,11 @@ const AdminHome = ({ user, setUser }) => {
   const [products, setProducts] = useState([]);
   const [cats, setCats] = useState([]);
   const [event, setEvent] = useState(null);
+  const [statsSummary, setStatsSummary] = useState({
+    totalScans: 0,
+    distinctLanguages: 0,
+    languages: [],
+  });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -20,17 +26,23 @@ const AdminHome = ({ user, setUser }) => {
       setError("");
       try {
         const token = localStorage.getItem("token-1755");
-        const [prodRes, flat, eventRes] = await Promise.all([
+        const [prodRes, flat, eventRes, statsRes] = await Promise.all([
           axios.get(`${$SERVER}/api/products/allProducts`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
           fetchCategoriesFlat(),
           axios.get(`${$SERVER}/api/events/getEvent`).catch(() => ({ data: {} })),
+          fetchStatsSummary().catch(() => ({
+            totalScans: 0,
+            distinctLanguages: 0,
+            languages: [],
+          })),
         ]);
         if (!active) return;
         setProducts(prodRes.data?.data || []);
         setCats(flat || []);
         setEvent(eventRes.data?.data || null);
+        setStatsSummary(statsRes);
       } catch (e) {
         if (active) setError(e.message || "Erreur de chargement");
       } finally {
@@ -169,7 +181,69 @@ const AdminHome = ({ user, setUser }) => {
                   : "Ajoute-en un dans la section Events"
               }
             />
+            <StatCard
+              icon="Eye"
+              label="Scans du menu"
+              value={statsSummary.totalScans}
+              hint={
+                statsSummary.totalScans
+                  ? "Cumul depuis mise en place"
+                  : "Aucun scan enregistré"
+              }
+            />
+            <StatCard
+              icon="MapPin"
+              label="Langues utilisées"
+              value={statsSummary.distinctLanguages}
+              hint={
+                statsSummary.languages.length
+                  ? statsSummary.languages
+                      .slice(0, 3)
+                      .map((l) => `${l.lang.toUpperCase()} ${l.count}`)
+                      .join(" · ")
+                  : "—"
+              }
+            />
           </section>
+
+          {statsSummary.languages.length > 0 && (
+            <section className="admin-home__section">
+              <h2 className="admin-home__section-title">Répartition par langue</h2>
+              <div className="admin-home__bars">
+                {statsSummary.languages.map((l) => {
+                  const pct = statsSummary.totalScans
+                    ? (l.count / statsSummary.totalScans) * 100
+                    : 0;
+                  return (
+                    <div key={l.lang} className="admin-home__bar">
+                      <div className="admin-home__bar-head">
+                        <span className="admin-home__bar-name">
+                          {ICON_MAP.MapPin && (
+                            <ICON_MAP.MapPin
+                              size={14}
+                              strokeWidth={1.75}
+                              style={{ color: "var(--ds-accent-gold)" }}
+                            />
+                          )}
+                          {l.lang.toUpperCase()}
+                        </span>
+                        <span className="admin-home__bar-count">{l.count}</span>
+                      </div>
+                      <div className="admin-home__bar-track">
+                        <div
+                          className="admin-home__bar-fill"
+                          style={{
+                            width: `${pct}%`,
+                            background: "var(--ds-accent-gold)",
+                          }}
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </section>
+          )}
 
           <section className="admin-home__section">
             <h2 className="admin-home__section-title">Répartition par catégorie racine</h2>
