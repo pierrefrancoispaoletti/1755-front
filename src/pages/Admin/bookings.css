@@ -1,0 +1,9 @@
+.admin-bookings {
+  padding: var(--ds-space-4, 16px);
+}
+
+.admin-bookings__empty {
+  text-align: center;
+  padding: var(--ds-space-5, 24px);
+  color: var(--ds-text-muted, #9A8B90);
+}

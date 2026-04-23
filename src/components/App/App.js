@@ -18,6 +18,7 @@ import AdminCategories from "../../pages/Admin/Categories";
 import AdminProducts from "../../pages/Admin/Products";
 import AdminEvents from "../../pages/Admin/Events";
 import AdminThemes from "../../pages/Admin/Themes";
+import AdminBookings from "../../pages/Admin/Bookings";
 import Reservation from "../../pages/Reservation";
 import { readStoredSession } from "../../services/auth";
 import { useNativePushRegistration } from "../../services/pushNotifications";
@@ -224,6 +225,14 @@ const App = () => {
           <Route path="/admin/themes">
             <RequireAuth user={user}>
               <AdminThemes setAppMessage={setAppMessage} />
+            </RequireAuth>
+          </Route>
+          <Route path="/admin/bookings">
+            <RequireAuth user={user}>
+              <AdminBookings
+                setAppMessage={setAppMessage}
+                pushNotificationToken={pushNotificationToken}
+              />
             </RequireAuth>
           </Route>
         </Switch>
