@@ -60,6 +60,10 @@ import {
   Filter,
   Settings,
   Menu,
+  Lock,
+  Unlock,
+  Phone,
+  Mail,
 } from "lucide-react";
 
 export const ICON_MAP = {
@@ -124,6 +128,10 @@ export const ICON_MAP = {
   Filter,
   Settings,
   Menu,
+  Lock,
+  Unlock,
+  Phone,
+  Mail,
 };
 
 // Sous-ensemble proposé dans l'IconPicker admin (~40 icônes resto/bar)
