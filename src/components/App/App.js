@@ -19,6 +19,7 @@ import AdminProducts from "../../pages/Admin/Products";
 import AdminEvents from "../../pages/Admin/Events";
 import AdminThemes from "../../pages/Admin/Themes";
 import { readStoredSession } from "../../services/auth";
+import { useNativePushRegistration } from "../../services/pushNotifications";
 import "../../design-system";
 
 const App = () => {
@@ -39,6 +40,7 @@ const App = () => {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [eventLoading, setEventLoading] = useState(false);
   const [productsVersion, setProductsVersion] = useState(0);
+  const pushNotificationToken = useNativePushRegistration();
 
   useEffect(() => {
     if (Object.keys(appMessage).length !== 0) {
