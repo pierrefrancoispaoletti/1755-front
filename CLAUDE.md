@@ -26,11 +26,25 @@ npm run cap:sync     # build + copy into ios/
 ### iOS (Capacitor)
 
 - `appId` : `com.baravin1755` (conservé pour continuité stores — **ne jamais changer**).
-- Node **≥22** requis par `@capacitor/cli@8` — `nvm use default` (alias sur v22).
-- `capacitor.config.json` à la racine, dossier `ios/` versionné (hors `ios/App/Pods`, `ios/App/build`).
-- `npx cap open ios` → Xcode. Signing & Capabilities : activer Push Notifications, sélectionner Team Apple.
-- Store actuel = v1.4.8 (resas legacy). Nouveau bundle unifié part en **v2.0.0** build 1. Bumper `CURRENT_PROJECT_VERSION` à chaque archive.
+- Node **≥22** requis par `@capacitor/cli@8` — `nvm use default` (alias sur v22) avant tout `npx cap ...`.
+- `capacitor.config.json` à la racine, dossier `ios/` versionné (hors `ios/App/Pods`, `ios/App/build`, SPM caches).
+- `npx cap open ios` → Xcode. Signing & Capabilities : Team `6NW72C6Q6Q` + Push Notifications activées (entitlements dans `ios/App/App/App.entitlements`).
+- Firebase iOS : `GoogleService-Info.plist` dans `ios/App/App/`, FirebaseCore + FirebaseMessaging via SPM (https://github.com/firebase/firebase-ios-sdk), init dans `AppDelegate.swift` (`FirebaseApp.configure()` + swizzling du `didRegisterForRemoteNotificationsWithDeviceToken`).
+- Projet Firebase = `resas-d1707`. APNs Authentication Key `.p8` (n'expire pas) uploadée sur Firebase Console → Cloud Messaging.
+- Store actuel (legacy resas) = v1.4.8. Nouveau bundle unifié part en **v2.0.0 build 2** (bumper `CURRENT_PROJECT_VERSION` à chaque archive).
 - Push natif : hook `src/services/pushNotifications.js` (no-op web). Web Push = non implémenté.
+- Target renommé `App` → `Baravin 1755`, sortie `Baravin 1755.app`.
+
+### Android (à faire depuis PC Windows)
+
+**Ne jamais scaffolder `android/` depuis ce Mac.** Le keystore de release Play Store est sur le PC Windows du user — tout le workflow Android se fait là-bas.
+
+Sur Windows, après `git pull` de `main` :
+1. `npm install @capacitor/android@latest`
+2. `npx cap add android`
+3. `npx cap sync android`
+4. Télécharger `google-services.json` depuis Firebase Console (projet `resas-d1707`, bundleId `com.baravin1755`), placer dans `android/app/`.
+5. Android Studio : configurer signing avec le `.keystore` local, Generate Signed Bundle, upload Play Console.
 
 Après `npm run deploy`, **toujours** `git push origin main` pour synchroniser la branche source (gh-pages ne push que `master`).
 
