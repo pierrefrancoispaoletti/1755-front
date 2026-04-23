@@ -3,8 +3,6 @@ import { useHistory, useLocation } from "react-router-dom";
 import { TabBar, ICON_MAP } from "../../../design-system";
 import "./BottomAppBar.css";
 
-const RESA_URL = "https://pierrefrancoispaoletti.github.io/1755-resas";
-
 const BottomAppBar = ({ user, setOpenLoginModal }) => {
   const history = useHistory();
   const location = useLocation();
@@ -36,8 +34,8 @@ const BottomAppBar = ({ user, setOpenLoginModal }) => {
       key: "resa",
       label: "Résa",
       icon: ICON_MAP.CalendarCheck,
-      active: false,
-      onClick: () => window.open(RESA_URL, "_blank", "noopener,noreferrer"),
+      active: pathname === "/reserver",
+      onClick: () => history.push("/reserver"),
     },
     {
       key: "compte",
@@ -75,11 +73,11 @@ const BottomAppBar = ({ user, setOpenLoginModal }) => {
       onClick: () => history.push("/admin/events"),
     },
     {
-      key: "a-themes",
-      label: "Thèmes",
-      icon: ICON_MAP.Palette,
-      active: pathname.startsWith("/admin/themes"),
-      onClick: () => history.push("/admin/themes"),
+      key: "a-bookings",
+      label: "Résas",
+      icon: ICON_MAP.CalendarCheck,
+      active: pathname.startsWith("/admin/bookings"),
+      onClick: () => history.push("/admin/bookings"),
     },
     {
       key: "a-quit",
