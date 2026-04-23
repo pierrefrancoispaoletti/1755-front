@@ -1,0 +1,17 @@
+{
+  "appId": "com.baravin1755",
+  "appName": "Baravin 1755",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "build",
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 0
+    },
+    "PushNotifications": {
+      "presentationOptions": ["badge", "sound", "alert"]
+    }
+  },
+  "cordova": {},
+  "server": { "allowNavigation": ["le-1755.herokuapp.com/*"] }
+}
