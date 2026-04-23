@@ -1,0 +1,77 @@
+.reservation {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: var(--ds-space-5, 24px) var(--ds-space-4, 16px);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-4, 16px);
+}
+
+.reservation__closed {
+  text-align: center;
+  padding: var(--ds-space-6, 32px) var(--ds-space-4, 16px);
+  background: var(--ds-bg-elevated, #241820);
+  border-radius: var(--ds-radius-md, 16px);
+  color: var(--ds-text-primary, #F5EFE8);
+  font-family: var(--ds-font-serif, "DM Serif Display", Georgia, serif);
+  font-size: var(--ds-size-h2, 18px);
+}
+
+.reservation__title {
+  font-family: var(--ds-font-serif, "DM Serif Display", Georgia, serif);
+  color: var(--ds-accent-gold, #D4A24C);
+  font-size: var(--ds-size-h1, 22px);
+  margin: 0 0 var(--ds-space-2, 8px);
+  text-align: center;
+}
+
+.reservation__subtitle {
+  color: var(--ds-text-muted, #9A8B90);
+  text-align: center;
+  margin: 0 0 var(--ds-space-3, 12px);
+  font-size: var(--ds-size-small, 13px);
+}
+
+.reservation__success,
+.reservation__error {
+  text-align: center;
+  padding: var(--ds-space-5, 24px);
+  border-radius: var(--ds-radius-md, 16px);
+  background: var(--ds-bg-elevated, #241820);
+}
+
+.reservation__success { color: var(--ds-accent-gold, #D4A24C); }
+.reservation__error { color: var(--ds-accent-wine, #7B2E3E); }
+
+.reservation__field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-1, 4px);
+}
+
+.reservation__field label {
+  color: var(--ds-text-muted, #9A8B90);
+  font-size: var(--ds-size-small, 13px);
+}
+
+.reservation__field input {
+  background: var(--ds-bg-elevated, #241820);
+  border: 1px solid var(--ds-border, rgba(255,255,255,0.08));
+  border-radius: var(--ds-radius-sm, 10px);
+  color: var(--ds-text-primary, #F5EFE8);
+  padding: 12px;
+  font-size: var(--ds-size-body, 15px);
+  font-family: inherit;
+}
+
+.reservation__field input:focus {
+  outline: none;
+  border-color: var(--ds-accent-gold, #D4A24C);
+}
+
+.reservation__hint {
+  color: var(--ds-accent-gold, #D4A24C);
+  font-size: var(--ds-size-small, 13px);
+  text-align: center;
+  margin-top: var(--ds-space-1, 4px);
+}

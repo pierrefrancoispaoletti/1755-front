@@ -18,6 +18,7 @@ import AdminCategories from "../../pages/Admin/Categories";
 import AdminProducts from "../../pages/Admin/Products";
 import AdminEvents from "../../pages/Admin/Events";
 import AdminThemes from "../../pages/Admin/Themes";
+import Reservation from "../../pages/Reservation";
 import { readStoredSession } from "../../services/auth";
 import { useNativePushRegistration } from "../../services/pushNotifications";
 import "../../design-system";
@@ -142,6 +143,12 @@ const App = () => {
               setDropdownValue={setDropdownValue}
               setOpenImageModal={setOpenImageModal}
               setSelectedProduct={setSelectedProduct}
+            />
+          </Route>
+          <Route path="/reserver">
+            <Reservation
+              setAppMessage={setAppMessage}
+              pushNotificationToken={pushNotificationToken}
             />
           </Route>
           <Route path="/confidentialite-de-lapp">
