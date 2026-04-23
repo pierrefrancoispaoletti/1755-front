@@ -12,6 +12,7 @@ Back compagnon : `/Users/pierrefrancoispaoletti/appdevelopment/1755-back` (Herok
 - `lucide-react@0.244.0` **pinné** (versions récentes ESM-only cassent CRA 4 / Webpack 4)
 - axios (fallback `fetch` pour le streaming admin `/api/products/allProducts`)
 - **Plus de Semantic UI** depuis 2026-04-20. Toast maison + div natifs ont remplacé les derniers `Transition`/`Message`/`Container`/`Divider`.
+- **Capacitor 8** (`@capacitor/core|ios|push-notifications`) — iOS depuis 2026-04-23. Android non câblé (volontaire, peut être ajouté).
 
 ## Commandes
 
@@ -19,7 +20,17 @@ Back compagnon : `/Users/pierrefrancoispaoletti/appdevelopment/1755-back` (Herok
 npm start            # dev server (CRA)
 npm run build        # build prod
 npm run deploy       # build + gh-pages -b master -d build
+npm run cap:sync     # build + copy into ios/
 ```
+
+### iOS (Capacitor)
+
+- `appId` : `com.baravin1755` (conservé pour continuité stores — **ne jamais changer**).
+- Node **≥22** requis par `@capacitor/cli@8` — `nvm use default` (alias sur v22).
+- `capacitor.config.json` à la racine, dossier `ios/` versionné (hors `ios/App/Pods`, `ios/App/build`).
+- `npx cap open ios` → Xcode. Signing & Capabilities : activer Push Notifications, sélectionner Team Apple.
+- Store actuel = v1.4.8 (resas legacy). Nouveau bundle unifié part en **v2.0.0** build 1. Bumper `CURRENT_PROJECT_VERSION` à chaque archive.
+- Push natif : hook `src/services/pushNotifications.js` (no-op web). Web Push = non implémenté.
 
 Après `npm run deploy`, **toujours** `git push origin main` pour synchroniser la branche source (gh-pages ne push que `master`).
 
@@ -61,8 +72,9 @@ L'ordre JSX : `<TopAppBar>` (sticky, sombre, logo + nom sérifé), `<Login>` (Sh
 - `/` → Home (hero + event card + 3 raccourcis catégories + footer compact).
 - `/categories` → `CategoriesLanding` (grille 2-col des catégories racines visibles).
 - `/categories/:categorie` → `Categories` avec `CategoryFilterPills` 2 niveaux.
+- `/reserver` → formulaire de réservation public (DS, remplace l'ancienne app `1755-resas`).
 - `/confidentialite-de-lapp` → texte légal.
-- `/admin` + `/admin/{categories,products,events,themes}` → `<RequireAuth>` wrapper.
+- `/admin` + `/admin/{categories,products,events,themes,bookings}` → `<RequireAuth>` wrapper. Tab admin "Thèmes" remplacée par "Résas" dans la BottomAppBar ; route `/admin/themes` reste accessible via URL directe.
 
 ### Chargement des produits
 
@@ -147,3 +159,4 @@ Specs et plans d'exécution dans `docs/superpowers/` :
 - `plans/2026-04-18-plan-2-front-shell.md`
 - `plans/2026-04-18-plan-3-admin-functional.md`
 - `plans/2026-04-18-plan-4-public-visual-migration.md`
+- `plans/2026-04-23-plan-5-unification-capacitor.md` — unification `1755-resas` + iOS (Capacitor 8).
