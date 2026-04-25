@@ -13,9 +13,11 @@ export async function fetchAllBookings() {
 }
 
 export async function createBooking(booking, pushNotificationToken = "") {
+  const bookingPayload = pushNotificationToken
+    ? { ...booking, pushNotificationToken }
+    : { ...booking };
   const { data } = await axios.post(`${$SERVER}/api/bookings/createBooking`, {
-    booking,
-    pushNotificationToken,
+    booking: bookingPayload,
   });
   return data;
 }
