@@ -12,7 +12,7 @@ Back compagnon : `/Users/pierrefrancoispaoletti/appdevelopment/1755-back` (Herok
 - `lucide-react@0.244.0` **pinné** (versions récentes ESM-only cassent CRA 4 / Webpack 4)
 - axios (fallback `fetch` pour le streaming admin `/api/products/allProducts`)
 - **Plus de Semantic UI** depuis 2026-04-20. Toast maison + div natifs ont remplacé les derniers `Transition`/`Message`/`Container`/`Divider`.
-- **Capacitor 8** (`@capacitor/core|ios|push-notifications`) — iOS depuis 2026-04-23. Android non câblé (volontaire, peut être ajouté).
+- **Capacitor 8** (`@capacitor/core|ios|android|push-notifications`) — iOS depuis 2026-04-23, Android depuis 2026-04-25.
 
 ## Commandes
 
@@ -26,25 +26,35 @@ npm run cap:sync     # build + copy into ios/
 ### iOS (Capacitor)
 
 - `appId` : `com.baravin1755` (conservé pour continuité stores — **ne jamais changer**).
-- Node **≥22** requis par `@capacitor/cli@8` — `nvm use default` (alias sur v22) avant tout `npx cap ...`.
+- Node **≥22** requis par `@capacitor/cli@8`. Sur Mac : `nvm use default` (alias sur v22). Sur Windows : Node v24 installé nativement, rien à activer.
 - `capacitor.config.json` à la racine, dossier `ios/` versionné (hors `ios/App/Pods`, `ios/App/build`, SPM caches).
 - `npx cap open ios` → Xcode. Signing & Capabilities : Team `6NW72C6Q6Q` + Push Notifications activées (entitlements dans `ios/App/App/App.entitlements`).
 - Firebase iOS : `GoogleService-Info.plist` dans `ios/App/App/`, FirebaseCore + FirebaseMessaging via SPM (https://github.com/firebase/firebase-ios-sdk), init dans `AppDelegate.swift` (`FirebaseApp.configure()` + swizzling du `didRegisterForRemoteNotificationsWithDeviceToken`).
 - Projet Firebase = `resas-d1707`. APNs Authentication Key `.p8` (n'expire pas) uploadée sur Firebase Console → Cloud Messaging.
-- Store actuel (legacy resas) = v1.4.8. Nouveau bundle unifié part en **v2.0.0 build 2** (bumper `CURRENT_PROJECT_VERSION` à chaque archive).
+- Store legacy `1755-resas` iOS = v1.4.8. Nouveau bundle unifié iOS pas encore shipped, **versionName `2.1.0`** (aligné Android), `CURRENT_PROJECT_VERSION` à bumper à chaque archive.
 - Push natif : hook `src/services/pushNotifications.js` (no-op web). Web Push = non implémenté.
 - Target renommé `App` → `Baravin 1755`, sortie `Baravin 1755.app`.
 
-### Android (à faire depuis PC Windows)
+### Android (Capacitor) — workflow Windows uniquement
 
-**Ne jamais scaffolder `android/` depuis ce Mac.** Le keystore de release Play Store est sur le PC Windows du user — tout le workflow Android se fait là-bas.
+**Tout le workflow Android se fait depuis le PC Windows du user.** Le Mac n'a pas le keystore de release et n'a pas Android Studio configuré.
 
-Sur Windows, après `git pull` de `main` :
-1. `npm install @capacitor/android@latest`
-2. `npx cap add android`
-3. `npx cap sync android`
-4. Télécharger `google-services.json` depuis Firebase Console (projet `resas-d1707`, bundleId `com.baravin1755`), placer dans `android/app/`.
-5. Android Studio : configurer signing avec le `.keystore` local, Generate Signed Bundle, upload Play Console.
+- `appId` : `com.baravin1755` (continuité Play Store legacy `1755-resas`).
+- versionName **2.1.0**, dernier `versionCode` shipped Internal testing = **32**. Legacy à versionCode 30, **downgrade interdit** par Google Play.
+- SDK : `compileSdk 36`, `targetSdk 36`, `minSdk 24` (defaults Capacitor 8, alignés sur la mandate Google Play d'août 2026).
+- Firebase : `google-services.json` dans `android/app/` (gitignoré). Projet `resas-d1707` partagé avec iOS. FCM natif Firebase, pas d'upload de clé comme APNs.
+- Keystore d'upload : `C:\Users\Utilisateur\keystore\1755resaskey.jks` + `1755resaskey.pem`. Credentials dans Android Studio Password Safe (`%APPDATA%\Google\AndroidStudio<version>\c.kdbx`). Play App Signing actif côté Google → en cas de perte, reset upload key via Play Console (1-2 jours).
+- Bloc `signingConfigs.release` dans `android/app/build.gradle` lit conditionnellement `android/keystore.properties` (gitignoré). Si absent, Studio UI signe via Generate Signed Bundle qui lit le Password Safe.
+
+**Workflow release Android :**
+
+1. `git pull origin main`
+2. PowerShell : `$env:NODE_OPTIONS="--openssl-legacy-provider"` (CRA 4 + Node 17+ exigent ce flag pour `npm run build`).
+3. `npm run build && npx cap sync android`.
+4. Bumper `versionCode` (+1) et éventuellement `versionName` dans `android/app/build.gradle`.
+5. Android Studio → `Build > Generate Signed Bundle / APK` → AAB → release. Studio remplit le keystore depuis Password Safe.
+6. Output : `android/app/release/app-release.aab` → upload Play Console.
+7. **Toujours passer par Internal testing** avant Production. Promotion vers Production = action manuelle, jamais automatique.
 
 Après `npm run deploy`, **toujours** `git push origin main` pour synchroniser la branche source (gh-pages ne push que `master`).
 
@@ -158,6 +168,7 @@ Toutes les modals admin (`AddEvent`, `EditEvent`, `AddProduct`, `EditProduct`, `
 ## Points d'attention
 
 - Route back produits : `/api/products?type=X&lang=Y` (publique, localisée) ou `/api/products/allProducts` (admin, VF). Ne pas confondre.
+- **Contrat `POST /api/bookings/createBooking`** : `pushNotificationToken` doit être inclus **dans l'objet `booking`** (`{ booking: { ..., pushNotificationToken } }`). Le back accepte aussi en fallback `pushNotificationToken` racine du body (`{ booking, pushNotificationToken }`) pour compat avec les anciens clients déjà déployés. Front actuel envoie au format propre. Le validator middleware valide `pushNotificationToken` dans `booking`.
 - Mutations admin (`POST /api/products/updateProduct`, etc.) renvoient toute la DB produits (tous types confondus). Filtrer par `type` côté consumer si besoin.
 - BG mode sombre : `html`, `body` et `.App` ont tous `#0E0A10` en background + `min-height: 100vh` sur body et .App pour éviter la bande blanche sous le footer.
 - `react-image-file-resizer` utilisé dans `AddProduct`, `AddEvent`, `UpdateImageModal` pour compresser à 363×360 JPEG qualité `COMPRESSION_QUALITY` (dans `_const.js`) avant upload multipart.
@@ -174,3 +185,4 @@ Specs et plans d'exécution dans `docs/superpowers/` :
 - `plans/2026-04-18-plan-3-admin-functional.md`
 - `plans/2026-04-18-plan-4-public-visual-migration.md`
 - `plans/2026-04-23-plan-5-unification-capacitor.md` — unification `1755-resas` + iOS (Capacitor 8).
+- `specs/2026-04-25-android-capacitor-design.md` — scaffold + release Android Capacitor 8 v2.1.0.
