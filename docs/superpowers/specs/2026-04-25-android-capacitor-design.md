@@ -132,12 +132,11 @@ android {
 **À chaque release** :
 1. Sur n'importe quelle machine : `npm run build` + commit + push `main`.
 2. Sur Windows : `git pull origin main`.
-3. `nvm use default` (Node ≥22 requis par Capacitor 8 CLI).
-4. Bumper `versionCode` (+1) et `versionName` dans `android/app/build.gradle`.
-5. `npx cap sync android`.
-6. Android Studio → `Build > Generate Signed Bundle / APK` → Android App Bundle (AAB) → release. Studio remplit le keystore via Password Safe.
-7. Output : `android/app/release/app-release.aab`.
-8. Play Console → app `Baravin 1755` → **Internal testing** (ou Production selon décision) → Create new release → upload AAB → Save → Review → Start rollout.
+3. Bumper `versionCode` (+1) et `versionName` dans `android/app/build.gradle`.
+4. `npx cap sync android`.
+5. Android Studio → `Build > Generate Signed Bundle / APK` → Android App Bundle (AAB) → release. Studio remplit le keystore via Password Safe.
+6. Output : `android/app/release/app-release.aab`.
+7. Play Console → app `Baravin 1755` → **Internal testing** (ou Production selon décision) → Create new release → upload AAB → Save → Review → Start rollout.
 
 **Aucune publication automatique** : chaque étape est manuelle dans Play Console. Le rollout progressif est disponible si le user le souhaite (5% → 100% avec pauses).
 
@@ -149,7 +148,7 @@ Découpage en phases avec un commit par phase, sur la branche `feat/android-capa
 
 ### Phase 1 — Scaffold
 
-- `nvm use default`
+- Vérifier `node --version` ≥ 22 (Capacitor 8 CLI le requiert). Sur le PC Windows : Node v24 installé nativement, pas de manager de versions, rien à activer.
 - `npm install @capacitor/android@8`
 - `npx cap add android`
 - Premier `npx cap sync android`
