@@ -257,7 +257,7 @@ const Categories = ({
                 : { color: "white" }
         }
       >
-        {activeMenu ? `Les ${activeMenu}` : name}
+        {selectedCategory.name}
         {(category.categorie === "vins" || category.categorie === "alcools") &&
           !!dropdownValue && (
             <Transition
