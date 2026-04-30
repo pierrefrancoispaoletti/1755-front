@@ -40,6 +40,9 @@ const CategoriesSidebar = ({
     if (selectedCategory.slug === "cuisine") {
       setActiveMenu("tapas");
     }
+    if (selectedCategory.slug === "cuisine-midi") {
+      setActiveMenu("plats-midi");
+    }
   }, [selectedCategory]);
   console.log(user);
   return (
@@ -47,28 +50,23 @@ const CategoriesSidebar = ({
       <Grid.Column>
         <Sidebar.Pushable as={Segment}>
           <Sidebar
-            style={{ background: isBefore18h() ? COLOR_ACARCIARA : COLOR_1755 }}
+            style={{ background: COLOR_1755 }}
             as={Menu}
-            animation='overlay'
-            icon='labeled'
+            animation="overlay"
+            icon="labeled"
             onHide={() => setSidebarVisible(false)}
             onShow={() => setSidebarVisible(true)}
             vertical
             visible={sidebarVisible}
-            width='thin'
+            width="thin"
           >
-            <Link
-              to={`/`}
-              onClick={() => setSelectedCategory({})}
-            >
-              <Menu.Item className='categories-sidebar-item'>
+            <Link to={`/`} onClick={() => setSelectedCategory({})}>
+              <Menu.Item className="categories-sidebar-item">
                 <Menu.Header>
                   <img
-                    width='100px'
-                    src={`./assets/images/${
-                      isBefore18h() ? "aCarciaraNormal.png" : "1755small.png"
-                    }`}
-                    alt=''
+                    width="100px"
+                    src="./assets/images/1755small.png"
+                    alt=""
                   />
                 </Menu.Header>
               </Menu.Item>
@@ -86,7 +84,7 @@ const CategoriesSidebar = ({
                       setSidebarVisible(false);
                     }}
                   >
-                    <Menu.Item className='categories-sidebar-item'>
+                    <Menu.Item className="categories-sidebar-item">
                       <Menu.Header>{category.icon}</Menu.Header>
 
                       <span>{category.name}</span>

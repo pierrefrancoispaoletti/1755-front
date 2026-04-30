@@ -81,22 +81,19 @@ const Home = ({
     }
   };
   return (
-    <Container className='home'>
+    <Container className="home">
       {user && (
-        <div className='home-addbutton'>
+        <div className="home-addbutton">
           {event && Object.keys(event).length === 0 && (
             <Button
               loading={loading}
               disabled={loading}
-              color='green'
+              color="green"
               circular
-              size='medium'
+              size="medium"
               onClick={() => setOpenAddEventModal(true)}
             >
-              <FontAwesomeIcon
-                icon={faPlus}
-                size='2x'
-              />
+              <FontAwesomeIcon icon={faPlus} size="2x" />
             </Button>
           )}
           {event && Object.keys(event).length > 0 && (
@@ -114,15 +111,12 @@ const Home = ({
               <Button
                 loading={loading}
                 disabled={loading}
-                color='red'
+                color="red"
                 circular
-                size='medium'
+                size="medium"
                 onClick={() => handleDeleteEvent(event._id)}
               >
-                <FontAwesomeIcon
-                  icon={faTrashAlt}
-                  size='2x'
-                />
+                <FontAwesomeIcon icon={faTrashAlt} size="2x" />
               </Button>
             </>
           )}
@@ -130,16 +124,10 @@ const Home = ({
       )}
       {event && Object.keys(event).length > 0 && (
         <>
-          <Header
-            className='home-header'
-            as='h1'
-          >
+          <Header className="home-header" as="h1">
             {event.name}
           </Header>
-          <Container
-            text
-            className='home-presentation'
-          >
+          <Container text className="home-presentation">
             {event.image && (
               <div>
                 <img
@@ -160,16 +148,16 @@ const Home = ({
               </p>
             )}
             <p>{event.description}</p>
-            <div className='home-like-button'>
+            <div className="home-like-button">
               <Button
                 disabled={vote ? true : false}
                 icon
                 circular
-                color='facebook'
+                color="facebook"
                 onClick={() => handleAddLike()}
               >
                 <FontAwesomeIcon
-                  size='1x'
+                  size="1x"
                   icon={faThumbsUp}
                   style={{
                     "--fa-secondary-color": "white",
@@ -194,13 +182,7 @@ const Home = ({
       )}
       {event && Object.keys(event).length === 0 && (
         <div style={{ display: "flex", justifyContent: "center" }}>
-          <img
-            height='300px'
-            src={`./assets/images/${
-              isBefore18h() ? "aCarciaraNormal.png" : "1755medium.png"
-            }`}
-            alt=''
-          />
+          <img height="300px" src="./assets/images/1755medium.png" alt="" />
         </div>
       )}
     </Container>

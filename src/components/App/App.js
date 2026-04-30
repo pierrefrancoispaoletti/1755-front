@@ -42,7 +42,7 @@ const App = () => {
   const [productsVersion, setProductsVersion] = useState(0);
 
   useEffect(() => {
-    const backgroundColor = isBefore18h() ? COLOR_ACARCIARA : COLOR_1755;
+    const backgroundColor = COLOR_1755;
     document.body.style.background = backgroundColor;
 
     const elementsToUpdate = [
@@ -118,13 +118,10 @@ const App = () => {
   }, []);
 
   return (
-    <div
-      className='App'
-      style={{ position: "relative" }}
-    >
+    <div className="App" style={{ position: "relative" }}>
       <>
         <Transition
-          animation='jiggle'
+          animation="jiggle"
           duration={500}
           visible={Object.keys(appMessage).length > 0}
         >
@@ -168,10 +165,7 @@ const App = () => {
             setAppMessage={setAppMessage}
           />
           <Switch>
-            <Route
-              exact
-              path='/'
-            >
+            <Route exact path="/">
               <AddEventModal
                 setEvent={setEvent}
                 setAppMessage={setAppMessage}
@@ -188,7 +182,7 @@ const App = () => {
                 setOpenEditEventModal={setOpenEditEventModal}
               />
             </Route>
-            <Route path='/categories/:categorie'>
+            <Route path="/categories/:categorie">
               <AddProductModal
                 setProducts={setProducts}
                 setProductsVersion={setProductsVersion}
@@ -240,7 +234,7 @@ const App = () => {
                 setSelectedProduct={setSelectedProduct}
               />
             </Route>
-            <Route path='/confidentialite-de-lapp'>
+            <Route path="/confidentialite-de-lapp">
               <Container
                 style={{
                   color: "white",

@@ -81,7 +81,7 @@ const categories = [
       },
       {
         name: "Vins d'exception",
-        slug: "vins d'Exception",
+        slug: "vins-d-exception",
         icon: (
           <span
             style={{
